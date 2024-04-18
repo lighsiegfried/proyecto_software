@@ -11,9 +11,9 @@
 <body class="text-center">
     
 <main class="form-signin w-100 m-auto">
-  <form action="config/recovery.php" method="POST">
-    <h2>Inventario de Notas</h2>
-    <h2 class="h3 mb-3 fw-normal">Por favor, inicia sesión</h2>
+  <form action="config/recovery.php" method="POST" class="form-background">
+    <h1>RECUPERAR USUARIO</h1>
+    <h4 class=" mb-3 fw-normal">Ingresa correo del usuario, para restaurar contraseña</h4>
     <div class="form-floating my-3">
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
       <label for="floatingInput">Correo electrónico</label>

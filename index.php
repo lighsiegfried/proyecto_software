@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="librerias/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css">
-  <title>Inicio</title>
+  <title>Inicio de sesion</title>
 </head> 
 <body class="text-center">
   
@@ -14,19 +14,18 @@
   <div class="form-background">
     <main class="form-signin w-100 m-auto">
       <form action="config/login.php" method="POST">
-        <h1>Inventario de Notas</h1>
-        <h1>Iniciar sesión</h1>
+        <h1>INICIO DE SESION</h1>
         <div class="form-floating">
           <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
-          <label for="floatingInput">Correo electrónico</label>
+          <label for="floatingInput">USUARIO</label>
         </div>
-        <div class="form-floating">
+        <div class="form-floating mt-5">
           <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
-          <label for="floatingPassword">Password</label>
+          <label for="floatingPassword">CONTRASEÑA</label>
         </div>
 
-        <button class="button w-100" type="submit">Iniciar sesión</button>
-        <div class="my-2">
+        <button class="button w-100" type="submit">INGRESAR</button>
+        <div class="my-2" type="text">
           <a href="recovery.php">¿Olvidaste tu contraseña?</a>
         </div>
         <?php 

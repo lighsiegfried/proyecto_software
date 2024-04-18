@@ -1,0 +1,4 @@
+iniciar sesion sin datos** error
+
+
+si el usuario cambia la contrasenia, redireccionarlo al inicio para que inicie seccion...
