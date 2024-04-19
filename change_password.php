@@ -30,8 +30,8 @@
   <main id="exito" class="form-signin w-100 m-auto" style="display: none;">
       <div class="form-background" >
           <h2>Usuario Recuperado exitosamente. </h2>
-            <div class="col-md-6 ">
-              <img src="img/user.png" alt="titulo"/>
+            <div class="col-md-6 col-md-offset-3">
+              <img src="img/user.png" class="img-responsive center-block"/>
               <div class="h-30"></div>
             </div>
       </div>
