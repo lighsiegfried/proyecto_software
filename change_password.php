@@ -10,8 +10,8 @@
 </head>
 <body class="text-center">
     
-<main class="form-signin w-100 m-auto">
-  <form action="config/change_password.php" method="POST" class="form-background">
+<main id="main1" class="form-signin w-100 m-auto" style="display: block;">
+  <form action="config/change_password.php" method="POST" class="form-background" id="passwordForm">
     <h2>Inventario de Notas</h2>
     <h2 class="h3 mb-3 fw-normal">Recupera tu contraseña</h2>
     <div class="form-floating my-3">
@@ -27,15 +27,21 @@
     <button id="confirmButton" class="w-100 btn btn-lg btn-primary" type="submit">Confirmar</button>
   </form>
 </main>
-  </body>
-</html>
-<script>
-  document.getElementById("passwordForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    // Redirecciona a la vista deseada
-    window.location.href = ""; // Cambia "nueva_vista.html" por la ruta de tu vista deseada
-  });
-</script>
-
+  <main id="exito" class="form-signin w-100 m-auto" style="display: none;">
+      <div class="form-background" >
+          <h2>Usuario Recuperado exitosamente. </h2>
+            <div class="col-md-6 ">
+              <img src="img/user.png" alt="titulo"/>
+              <div class="h-30"></div>
+            </div>
+      </div>
+  </main>
 </body>
 </html>
+<script>
+  //document.getElementById("passwordForm").addEventListener("submit", function(event) {
+    //event.preventDefault();
+    document.getElementById("main1").style.display = "none";
+    document.getElementById("exito").style.display = "block"; 
+  //});
+</script>
