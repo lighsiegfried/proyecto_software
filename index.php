@@ -12,11 +12,12 @@
   
 <div class="container">
   <div class="form-background">
+    
     <main class="form-signin w-100 m-auto">
       <form action="config/login.php" method="POST">
         <h1>INICIO DE SESION</h1>
         <div class="form-floating">
-          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+          <input type="usuario" class="form-control" id="floatingInput" placeholder="name@example.com" name="usuario">
           <label for="floatingInput">USUARIO</label>
         </div>
         <div class="form-floating mt-5">
@@ -36,7 +37,7 @@
             <?php 
             switch ($_GET['message']) {
               case 'ok':
-                echo 'Por favor, revisa tu correo';
+                echo 'Por favor, revisa tu correo'; 
                 break;
               case 'success_password':
                 echo 'Inicia sesión con tu nueva contraseña';

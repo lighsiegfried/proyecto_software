@@ -2,22 +2,89 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-?>
+?> 
+<!-- saque los iconos de : https://remixicon.com/  Referencia unicamente-->
+      <!--=============== header cabezita xd ===============-->
+      <header class="header">
+         <nav class="nav container">
+            <div class="nav__data">
+               <a href="#" class="nav__logo">
+                  <i class="ri-planet-line"></i> Inventario de notas
+               </a>
+               
+               <div class="nav__toggle" id="nav-toggle">
+                  <i class="ri-menu-line nav__burger"></i>
+                  <i class="ri-close-line nav__close"></i>
+               </div>
+            </div>
 
-<div id="menu">
-    <ul>
-        <li><a href="index.php" class="btn btn-primary">Inicio</a></li>
-        <div class="mt-2"></div>
-        <?php if(isset($_SESSION['user'])): ?>
-            <li><a href="perfil.php" class="btn btn-success">Perfil</a></li>
-            <div class="mt-2"></div>
-            <li><a href="../config/logout.php" class="btn btn-warning ">Cerrar sesión</a></li>
-        <?php else: ?>
-            <li><a href="login.php">Iniciar sesión</a></li>
-            <div class="mt-3"></div>
-            <li><a href="registro.php">Registrarse</a></li>
-        <?php endif; ?>
-        <!-- Agrega más elementos del menú según sea necesario -->
-    </ul>
-</div>
+            <!--=============== nav bar===============-->
+            <div class="nav__menu" id="nav-menu">
+               <ul class="nav__list">
+
+                        <li class="dropdown__item">
+                            <div class="nav__link">
+                                <i class="ri-bar-chart-line"></i><a href="#" class="nav__link" title="Reportes de alumnos"> Reportes </a><i class="ri-add-line dropdown__add"></i>
+                            </div>
+                        </li>
+            <!--=============== dropdown usuarios ===============-->
+            <li class="dropdown__item">
+                     <div class="nav__link">
+                     <a href="#" class="nav__link" title="Listado de usuarios">Usuarios</a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                     </div>
+
+                     <ul class="dropdown__menu">
+                        <li>
+                           <a href="#" class="dropdown__link">
+                              <i class="ri-user-line" title="Gestion de perfiles"></i> Perfiles
+                           </a>                          
+                        </li>
+
+                        <li>
+                           <a href="#" class="dropdown__link">
+                              <i class="ri-lock-line" title="Permisos de usuarios"></i> Permisos
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+
+                  <!--=============== dropdown estudiantes ===============-->
+                  <li class="dropdown__item">
+                     <div class="nav__link" >
+                     <a href="#" class="nav__link" title="Listado de estudiantes">Estudiantes </a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                     </div>
+
+                     <ul class="dropdown__menu">
+                        <li>
+                           <a href="#" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> -Modulo en construccion  
+                           </a>  
+                           <!-- class="ri-pie-chart-line"                         -->
+                        </li>
+                     </ul>
+                  </li>
+                  <li class="dropdown__item"><a href="#" class="nav__link" title="Actividades de alumnos">Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i></a></li>
+                  <li class="dropdown__item"><a href="#" class="nav__link" title="Cerrar sesion">Salir<i class="ri-logout-box-r-line"></i></a></li>  
+               </ul>
+            </div>
+         </nav>
+      </header>
+<script>
+    /*=============== SHOW MENU ===============*/
+const showMenu = (toggleId, navId) =>{
+   const toggle = document.getElementById(toggleId),
+         nav = document.getElementById(navId)
+
+   toggle.addEventListener('click', () =>{
+       // Add show-menu class to nav menu
+       nav.classList.toggle('show-menu')
+
+       // Add show-icon to show and hide the menu icon
+       toggle.classList.toggle('show-icon')
+   })
+}
+
+showMenu('nav-toggle','nav-menu')
+</script>
+
 
