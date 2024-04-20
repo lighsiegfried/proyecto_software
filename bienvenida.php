@@ -17,16 +17,13 @@
   <link rel="stylesheet" href="menu/assets/css/styles.css">
 </head> 
 <body>
-  <div style="margin: 100px 0 0 10px;"><?php include('menu/menu.php'); ?></div>
+<div style="margin: 100px 0 0 10px;"><?php include('menu/menu.php'); ?></div>
 
 
   <div class="containeer">
     <div class="row">
       <div class="col-12">
-        <h1>Bienvenido <?php echo $_SESSION['user'];?> - <?php echo $_SESSION['rol']; ?> </h1>
-        <a href="modulos/gastos" class="btn btn-success">Modulo en contruccion*  </a>
-        <a href="modulos/categorias" class="btn btn-primary">Categorías Modulo en construccion</a>
-        <a href="modulos/usuarios" class="btn btn-secondary">Usuarios Modulo en construccion</a>
+        <h1 Style="font-size: 45px; font-weight: bold;" >Bienvenido <?php echo $_SESSION['user'];?> - <?php echo $_SESSION['rol']; ?> </h1>
       </div>
     </div>
   </div>

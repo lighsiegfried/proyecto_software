@@ -63,7 +63,7 @@ where t3.correo = 'wvasquezg1@miumg.edu.gt' and t1.pass = 1;
 
 
 select 
-	t1.usuario,t2.nombre as rol,t3.correo,t4.descripcion,t1.pass
+	t1.id,t1.usuario,t2.nombre as rol,t3.correo,t4.descripcion,t1.pass
 FROM 
 ( /*tabla login*/ 
 	select id,usuario,id_rol,id_personas,pass from login ) t1 left join 
@@ -73,10 +73,33 @@ FROM
 	select id,correo,id_puesto from persona ) t3 on t1.id_personas = t3.id left JOIN 
 (/*tabla puesto*/ 
 	select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
-where t3.correo = 'wvasquezg1@miumg.edu.gt' and t1.pass = 22;
+where t1.usuario = 'Pepito' and t1.pass = '$2y$10$SqZDBkRwD96vmvij72UVS.Oo5tf8qCBZI9bPhzhSx.x7Kjfyg92IW';
 -----------------------------------------------------------------------
+select pass from login where pass = '$2y$10$SqZDBkRwD96vmvij72UVS.Oo5tf8qCBZI9bPhzhSx.x7Kjfyg92IW' ;
+select * from login where id=1
+update login set id_rol = 1 where id = 1; 
 
-update login set pass = 1 where id = 1; 
+
+
+select 
+
+from
+(
+/*tabla persona*/
+select id,nombres,apellidos,correo,id_puesto from persona ) t1 left join 
+(
+/*tabla puesto tomar solo el id=6*/
+select id,descripcion from puesto ) t2 left join 
+(
+/*tabla clase*/
+select id,grado,seccion,fecha from clase) t3 left join 
+(
+/*tabla estudiante*/
+select id,clave,total_nota,id_persona,id_clase from estudiante) t4 left join 
+where t1.usuario = 'Pepito' and t1.pass = ''; 
+
+
+
 
 
 

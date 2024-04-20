@@ -5,7 +5,7 @@ $password = $_POST['password'];
 
 $query = "
 select 
-	t1.id,t1.usuario,t2.nombre as rol,t3.correo,t4.descripcion
+	t1.id,t1.usuario,t2.nombre as rol,t3.correo,t4.descripcion,t1.pass
 FROM 
 ( /*tabla login*/ 
 	select id,usuario,id_rol,id_personas,pass from login ) t1 left join 
@@ -15,22 +15,27 @@ FROM
 	select id,correo,id_puesto from persona ) t3 on t1.id_personas = t3.id left JOIN 
 (/*tabla puesto*/ 
 	select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
-where t1.usuario = '$usuario' and t1.pass = $password;
+where t1.usuario = '$usuario ' and t1.pass = $password ;
 ";
-///$query = "select * from login where usuario= '$password'";
+
 $result = $conexion->query($query);
 $row = $result->fetch_assoc();
  
  if($result->num_rows > 0){
-   session_start();
-   $_SESSION['usuario'] = $usuario;
-   $_SESSION['rol'] = $row['rol'];
-   header("Location: ../bienvenida.php");
+    session_start();
+    $_SESSION['id'] = $row['id'];
+    $_SESSION['user'] = $row['usuario'];
+    $_SESSION['rol'] = $row['rol'];
+    $_SESSION['correo'] = $row['correo'];
+    $_SESSION['descripcion'] = $row['descripcion'];
+
+
+   header("Location: ../bienvenida.php"); 
  }else{
    header("Location: ../index.php");
  }
 
-
+/*codigo con fallos - se podra reutilizar mas adelante*/
 // if ($pass_hash && password_verify($password, $pass_hash)) {
 //    $query = "
 //    select t1.id,t1.usuario,t2.nombre as rol,t3.correo,t4.descripcion

@@ -1,2 +1,9 @@
-erro**iniciar sesion sin datos** error
-cambio**si el usuario cambia la contrasenia, redireccionarlo al inicio para que inicie seccion...
+error ** iniciar sesion sin datos** error agregar validacion
+error ** al cargar logo en diferentes rutas, navegacion del navbar
+error ** al darle doble click a los enlaces del navbar redirecciona nuevamente lo que ocaciona doble ruta y se pierde el link
+
+
+
+--seguir con el modulo de estudiantes
+--seguir con el modulo de reportes
+

@@ -9,8 +9,7 @@
   <script src="./librerias/jquery-3.7.1.js"></script>
   <script src="./librerias/jquery-3.7.1.min.js"></script>
   <script src="./librerias/sweetalert2@11.js"></script>
-
-  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="menu/assets/css/styles.css">
   <title>Reset</title>
   <style>
     main {
@@ -27,9 +26,10 @@
 </head>
 
 <body class="text-center">
-
-  <main id="main1" class="form-signin w-100 m-auto" style="display: block;">
-  <form action="config/change_password.php" method="POST" class="form-background" id="passwordForm" >
+  
+<div  class="containeer" style="position: relative;"> 
+  <main id="main1" style="display: block;" class="form-background" >
+  <form action="config/change_password.php" method="POST" class="form-signin w-100 m-auto" id="passwordForm" onsubmit="return validarContraseñas();" >
       <h2>Ingrese su nueva contraseña</h2>
       <h2 class="h3 mb-3 fw-normal"></h2>
       <div class="form-floating my-3">
@@ -45,25 +45,16 @@
       <button id="confirmButton" class="w-100 btn btn-lg btn-primary" type="submit">Confirmar</button>
     </form>
   </main>
-
-  <main id="exito" class="form-signin w-100 m-auto" style="display: none;">
-    <div class="form-background">
-      <h2>Usuario Recuperado exitosamente. </h2>
-      <img src="img/user.png" id="centrada" />
-      <form action="index.php">
-        <button class="button w-100" type="submit">INGRESAR</button>
-      </form>
-    </div>
-  </main>
+</div>
 
 </body>
 
 </html>
 <script>
+function validarContraseñas() {
     var contrasenia1 = document.getElementById('contra1').value;
     var contrasenia2 = document.getElementById('contra2').value;
-  //validaciones.
-function validarContraseñas() {
+
     if (contrasenia1 !== contrasenia2) {  
         Swal.fire({
             icon: "error",
@@ -72,17 +63,15 @@ function validarContraseñas() {
         });
         return false; 
     } else {
-        document.getElementById("main1").style.display = "none";
-        document.getElementById("exito").style.display = "block";
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Cambio Realizado exitosamente",
-            showConfirmButton: false,
-            timer: 2000
-        });
-        return false;
+        return true;
     }
 }
-
+function togglePasswordVisibility() {
+    var passwordInput = document.getElementById('contra1');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+}
 </script>

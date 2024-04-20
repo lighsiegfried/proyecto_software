@@ -5,12 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="librerias/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="menu/assets/css/styles.css">
   <title>Inicio de sesion</title>
 </head> 
 <body class="text-center">
   
-<div class="container">
+<div class="containeer">
   <div class="form-background">
     
     <main class="form-signin w-100 m-auto">
