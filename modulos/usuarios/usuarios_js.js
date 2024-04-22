@@ -63,82 +63,50 @@ $(document).ready(function (){
     //---------------------------------------------------------------------------------------------------------------------------------------
 
     function get_contenido(){
-        //get_lista_completa();
-        //get_lista_bodega();
-        test();
+        get_lista_usuarios();
     }
 
     get_contenido();
 
-    function test(){
+    function get_lista_usuarios(){
         $('#lista').html(set_spinner);
         $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
-            accion: 'get_lista'
-        }, success: function (data) {   
-            $('#lista').html(data);
-        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
-    }
-
-
-
-    function get_lista_completa(year,month){
-        $('#lista_completa').html(set_spinner);
-        $.ajax({ async: true, type: 'post', url: 'bulto_controlador.php', data: {
-            accion: 'get_kardex_procesos_general_vista'
+            accion: 'get_lista_vista'
         }, success: function (data) {
-            $('#lista_completa').html(data);
-            //estructura de la tabla
-            $.ajax({ async: true, type: 'post', url: 'bulto_controlador.php', data: {
-                accion: 'get_kardex_procesos_general_datos',
-                year: year,
-                month: month,
-                fecha_seleccionada:fecha_seleccionada
+            $('#lista').html(data);
+            //estructura de la datatable
+            $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+                accion: 'get_lista_datos'
             }, success: function (data) {
-                 var datos = JSON.parse(data);
+                var datos;
+                try {
+                    datos = JSON.parse(data);
+                   } catch (error) {
+                   //console.error("Error al analizar JSON:", error);
+                   }
+                now = new Date();
+                fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
                 var contarsigeneral=0;
                 var contarnogeneral=0;
                 var tablaOrigen= $('#tablaOrigen').DataTable({
                       data:datos,
                       select: 'single',
                     columns:[
-                        { data: 'id_copia'},
-                        { data: 'codigo_barra'},
-                        { data: 'tipo_orden'},
-                        { data: 'pedido'},
-                        { data: 'paso',"bSortable": false,},
-                        { data: 'bodega'},
-                        { data: 'proceso_bodega',"bSortable": false,},
-                        { data: 'estado',"bSortable": false,},
-                        { data: 'actual',"bSortable": false,},
-                        { data: 'activo'},
-                        { data: 'accion_observacion',"bSortable": false,},
-                        { data: 'fecha_solicitud'},
-                        { data: 'nombre'},
-                        { data: 'fecha_usuario',"bSortable": false,},
-                        {
-                            data: 'tiempo_transcurrido',
-                            render: function (data, type , column) {
-                                var conversion = DataTable.render
-                                    if (type === 'display') {
-                                        let color = 'green';
-                                            
-                                        if (data === '' ) {
-                                            color = 'green';
-                                            contarsigeneral++;
-                                        }else {
-                                            color = 'red';
-                                            contarnogeneral++;
-                                        }
-                                        return `<span style="color:${color}">${data}</span>`;
-                                    }
-                                return conversion;
-                            }
-                        }, 
+                        { data: 'id'},
+                        { data: 'usuario'},
+                        { data: 'rol'},
+                        { data: 'nombres'},
+                        { data: 'apellidos'},
+                        { data: 'correo',"bSortable": false,},
+                        { data: 'descripcion'},
+                        { data: 'acciones'}
                     ],
                     order:[
-                       [0, 'desc']
+                       [0, 'asc']
                     ],
-                    dom: 'Bfrt<"col-md-6 inline"i> <"col-md-6 inline"p>',
+                    dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
+                         "<'row'<'col-md-12'tr>>" +
+                         "<'row'<'col-md-6'i><'col-md-6'p>>",
                     
                     buttons: {
                         dom: {
@@ -154,7 +122,7 @@ $(document).ready(function (){
                             {
                                 extend:    'copyHtml5',
                                 text:      '<i class="material-icons">content_copy</i><br>Copiar',
-                                title:'Kardex - Inventario de Movimientos  ',
+                                title:'Usuarios registrados',
                                 titleAttr: 'Copiar',
                                 className: 'btn btn-app export barras',
                                 exportOptions: {
@@ -163,12 +131,13 @@ $(document).ready(function (){
                             },
                             {
                                 extend:    'pdfHtml5',
-                                orientation: 'landscape',
+                                orientation: 'letter',
                                 pageSize: 'LEGAL',
                                 text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
-                                title:'Kardex - Inventario de Movimientos  ',
+                                title:'Usuarios registrados',
                                 titleAttr: 'PDF',
                                 className: 'btn btn-app export pdf',
+                                filename: `Usuarios registrados - ${fecha.toString()}`,
                                 exportOptions: {
                                     // columns: [ 0, 1,2,3,4,5,6 ]
                                     columnsDefs:[{
@@ -184,7 +153,7 @@ $(document).ready(function (){
                                 },//tr > td > colspan > 7  
                                 customize:function(doc) {
                                     doc.styles.title = {
-                                        color: '#ae8b68',
+                                        color: '#223673',
                                         fontSize: '20',
                                         alignment: 'center'
                                     },
@@ -193,21 +162,42 @@ $(document).ready(function (){
                                         'max-width': '70px',
                                     },
                                     doc.styles.tableHeader = {
-                                        fillColor:'#ae8b68', 
+                                        fillColor:'#3068bf', 
                                         color:'white',
                                         alignment:'center'
                                     },
                                     doc.content[1].margin = [ 1, 0, 2.5, 0 ],
                                     doc.defaultStyle.fontSize = 6,
                                     doc.defaultStyle.alignment='center'
+                                },
+                                iniCompleto: function() { //permite seleccion personalizada de columnas a imprimir en PDF
+                                    var tabla = this.api();
+                                    var seleccion = tabla.rows({ seleccion: true }).count();
+                                
+                                    if (seleccion > 0) {
+                                        var columnaSeleccionada = tabla.columns({ seleccion: true }).indexes();
+                                        var exportOpciones = {
+                                            columnas: columnaSeleccionada
+                                        };
+                                        var botonPDF = tablaOrigen.button('.export.pdf');
+                                        botonPDF[0].inst.s.dt.button('.export.pdf').text('Exportar Selección');
+                                        botonPDF[0].inst.s.dt.button('.export.pdf').conf.exportOpciones = exportOpciones;
+
+                                        var botonDeColvis = tablaOrigen.button('.export.barras');
+                                        botonDeColvis[0].inst.s.dt.button('.export.barras').conf.exportOpciones = {
+                                            columnas: columnaSeleccionada
+                                        };
+                                    }
+                                },
+                                select: {
+                                    style: 'multi'
                                 }
 
                             },
-
                             {
                                 extend:    'excelHtml5',
                                 text:      '<i class="material-icons">content_copy</i><br>Excel',
-                                title:'Kardex - Inventario de Movimientos Excel ',
+                                title:'Usuarios registrados',
                                 titleAttr: 'Excel',
                                 className: 'btn btn-app export excel',
                                 exportOptions: {
@@ -217,24 +207,11 @@ $(document).ready(function (){
                             {
                                 extend:    'csvHtml5',
                                 text:      '<i class="material-icons">open_in_browser</i><br>CSV',
-                                title:'Kardex - Inventario de Movimientos CSV',
+                                title:'Usuarios registrados CSV',
                                 titleAttr: 'CSV',
                                 className: 'btn btn-app export csv',
                                 exportOptions: {
                                     // columns: [ 0, 1 ]
-                                }
-                            },
-                            {
-                                extend:    'print',
-                                orientation: 'landscape',
-                                pageSize: 'LEGAL',
-                                autoPrint: false,
-                                text:      '<i class="material-icons">local_printshop</i><br>Imprimir',
-                                title:'Kardex - Inventario de Movimientos ',
-                                titleAttr: 'Imprimir',
-                                className: 'btn btn-app export imprimir',
-                                exportOptions: {
-                                    // columns: [ 0, 5 ]
                                 }
                             },
                             {
@@ -257,19 +234,25 @@ $(document).ready(function (){
                             }
                         ]
                     }, 
-                    columnDefs: [ {
-                        // targets: [
-                        //     -1
-                        // ], 
-                        // visible: false
-                        targets: [1],
+                    columnDefs: [{
+                        targets: 7,
+                        sortable: false,
+                        render: function(data, type, full, meta) {
+                            return "<center>" +
+                                        "<button type='button' class='btn btn-primary btn-sm btnEditar' data-toggle='modal' data-target='#modal-actualizar-categoria'> " +
+                                        "<i class='material-icons'>edit</i></i>" +
+                                        "</button>" +
+                                        "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
+                                        "<i class='material-icons'>close</i></i>" +
+                                        "</button>" +
+                                   "</center>";
+                        },
                         selectable: false,
-                        copy: false
-
-                    } ],
+                        copy: false // Corrección del error tipográfico aquí
+                    }],
                     "language":idioma_espanol,
                     select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": true,"Sortable":false, 
-                    "lengthMenu": [[10,40,70,100, -1],[10,40,70,100,"Mostrar Todo"]],
+                    "lengthMenu": [[5,10,40,70,100, -1],[5,10,40,70,100,"Mostrar Todo"]],
                 });
     
             }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });

@@ -6,6 +6,9 @@ Resuelto **error ** correo outlook no manda correo para reinicio de contrasenia
 Resuelto **error ** validar roles por usuarios
 Resuelto **error ** compatibilidad de php 8.1 
 
+vulnerabilidad al consultar los links - usuarios
+
+
 consulta ** verificar compatibilidad datatable
 
 

@@ -6,7 +6,168 @@ class usuarios_vista{
 
 function get_lista_vista(){
     ?>  
-    <h1> PRUEBA  </h1>
+    <style>
+        .checkbox-xl .form-check-input 
+            {
+                scale: 2;
+            }
+        .checkbox-xl .form-check-label 
+            {
+                padding-left: 5px; 
+                margin-left: 5px; 
+            }
+</style>
+<form id="lista_general_from1" method="post" class="mt-4">
+ <div class="row justify-content-center ">
+
+     <div class="btn-agregar-usuario btnAgregar">
+            <button type="button" class="btn btn-info btn-sm mb-4" data-toggle="modal" data-target="#modal-gestionar-usuario" data-dismiss="modal"><i class="material-icons">group_add</i> Agregar usuario</button>
+     </div>
+
+    <div class="col-11">
+    <div class="card shadow">
+        <div class="card-header">
+            <h5> Listado de usuarios registrados</h5>
+        </div>
+        <div class="card-body">
+          <div class="dataTables_wrapper dt-bootstrap4">
+           <div class="table-responsive">
+            <table id="tablaOrigen" class="table table-striped table-bordered table-ml table-hover  p-3" style="width:100%">
+                <thead class="table-active ">
+                <tr>   
+                    <th scope="col" class="text-center">No.</th>
+                    <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
+                    <th scope="col" class="text-center">Rol</th>
+                    <th scope="col" class="text-center">Nombres</th>
+                    <th scope="col" class="text-center">Apellidos</th>
+                    <th scope="col" class="text-center">Correo</th>
+                    <th scope="col" class="text-center">Descripcion de Rol</th> 
+                    <th scope="col" class="text-center">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+            <!-- Se auto llena con informacion desde el Javascript -->
+                </tbody>
+                    <tfoot class="table-active">
+                        <tr>
+                        <th scope="col" class="text-center">No.</th>
+                        <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
+                        <th scope="col" class="text-center">Rol</th>
+                        <th scope="col" class="text-center">Nombres</th>
+                        <th scope="col" class="text-center">Apellidos</th>
+                        <th scope="col" class="text-center">Correo</th>
+                        <th scope="col" class="text-center">Descripcion de Rol</th>  
+                        <th scope="col" class="text-center">Opciones</th>
+                    </tfoot>
+            </table>
+           </div>
+         </div>
+       </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="modal fade" id="modal-gestionar-usuario">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- modal header -->
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" arial-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- modal body -->
+            <div class="modal-body">
+
+            </div>
+
+            <!-- modal footer  -->
+            <div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"></button>
+                <button type="button" id="" class="btn btn-primary"></button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="modal fade" id="observaciones" tabindex="-1" aria-labelledby="obsercacionesLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 80%; max-width: 2000px;">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="obsercacionesLabel">Pedido:  11  ,  Version: 11</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height: 80vh;">
+                <iframe id="modalIframe" src="" frameborder="0" style="width: 100%; height: 100%; "></iframe>
+            </div>
+            <div class="modal-footer">
+                <a>fecha subida: 11, fecha modificacion: 11 </a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Button trigger modal -->
+        <div>
+            <div class="row justify-content-center">
+                <button id="openModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#observaciones">
+                Revisar nuevamente Plano Mecanico
+                </button>
+            </div>
+            <div class="mt-5"></div>
+        </div>
+
+
+        <button type="button" class="btn btn-primary" id="miBoton">
+        Launch demo modal
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="miModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+</form>
+<script>
+        $(document).ready(function() {
+
+        
+
+            $("#miBoton").click(function() {
+                $("#miModal").modal('show');
+            });
+
+            $("#openModalBtn").click(function() {
+                $("#observaciones").modal('show');
+            });
+
+
+
+        });
+</script>
     <?php
 }
 
