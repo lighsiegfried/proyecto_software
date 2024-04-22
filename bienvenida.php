@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="menu/assets/css/styles.css">
 </head> 
 <body>
+  
 <div style="margin: 100px 0 0 10px;"><?php include('menu/menu.php'); ?></div>
 
 
@@ -24,6 +25,7 @@
     <div class="row">
       <div class="col-12">
         <h1 Style="font-size: 45px; font-weight: bold;" >Bienvenido <?php echo $_SESSION['user'];?> - <?php echo $_SESSION['rol']; ?> </h1>
+        <p>La versión de PHP es: <?php echo phpversion(); ?></p>
       </div>
     </div>
   </div>

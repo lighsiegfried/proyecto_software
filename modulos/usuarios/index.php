@@ -1,39 +1,32 @@
 <?php 
-require_once('../../config/config.php');
-
-// Suponiendo que el nombre de usuario se almacena en una variable llamada $usuario
-$usuario = $_POST['usuario']; // Asegúrate de obtener el valor del nombre de usuario de donde corresponda en tu aplicación
-
-// Evita la vulnerabilidad de inyección SQL utilizando sentencias preparadas
-$query = "
-select t1.usuario,t2.nombre
-FROM (
-    /*tabla login*/
- select  id,usuario,id_rol from login
-) t1 left join
-(/*tabla roles*/
-    select id,nombre,descripcion from roles
-) t2 on t1.id_rol = t2.id
-where t1.usuario = ?;
-";
-$stmt = $conexion->prepare($query);
-
-// Verifica si la preparación de la consulta fue exitosa
-if ($stmt) {
-    // Enlaza parámetros y ejecuta la consulta
-    $stmt->bind_param("s", $usuario);
-    $stmt->execute();
-
-    // Obtiene el resultado de la consulta
-    $result = $stmt->get_result();
-    
-    // Verifica si se obtuvieron resultados
-    if ($result->num_rows > 0) {
-        echo "La consulta se realizó con éxito y se encontraron resultados.";
-    } else {
-        echo "La consulta se realizó con éxito pero no se encontraron resultados.";
-    }
-} else {
-    echo "Error al preparar la consulta.";
-}
+  require_once '../../config/validate_session.php';
+  //require_once 'config/validate_roles.php';
+  
+  require_once('../../config/config.php');
+  //librerias
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./../../librerias/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <script type="text/javascript" src="./../../librerias/jquery-3.7.1.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../menu/assets/css/styles.css">
+</head> 
+<body>
+<div style="margin: 100px 0 0 10px;"><?php include('../../menu/menu.php'); ?></div>
+
+
+  <div class="containeer">
+    <div class="row">
+      <div class="col-12">
+        <h1 Style="font-size: 45px; font-weight: bold;" >Usuarios </h1>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

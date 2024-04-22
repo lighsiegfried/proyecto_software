@@ -73,33 +73,98 @@ FROM
 	select id,correo,id_puesto from persona ) t3 on t1.id_personas = t3.id left JOIN 
 (/*tabla puesto*/ 
 	select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
-where t1.usuario = 'Pepito' and t1.pass = '$2y$10$SqZDBkRwD96vmvij72UVS.Oo5tf8qCBZI9bPhzhSx.x7Kjfyg92IW';
+where t1.usuario = 'Pepito' and t1.pass = '1';
 -----------------------------------------------------------------------
 select pass from login where pass = '$2y$10$SqZDBkRwD96vmvij72UVS.Oo5tf8qCBZI9bPhzhSx.x7Kjfyg92IW' ;
 select * from login where id=1
-update login set id_rol = 1 where id = 1; 
-
+update login set pass = 1 where id = 1; 
 
 
 select 
-
+ t1.nombres,t1.apellidos,t3.grado,t3.seccion, t4.total_nota
 from
 (
 /*tabla persona*/
 select id,nombres,apellidos,correo,id_puesto from persona ) t1 left join 
 (
-/*tabla puesto tomar solo el id=6*/
-select id,descripcion from puesto ) t2 left join 
+/*tabla puesto tomar solo el id=6 alumnos*/
+select id,descripcion from puesto where id=6) t2 on t2.id = t1.id_puesto left join 
 (
-/*tabla clase*/
+/*tabla clase */
 select id,grado,seccion,fecha from clase) t3 left join 
 (
 /*tabla estudiante*/
-select id,clave,total_nota,id_persona,id_clase from estudiante) t4 left join 
-where t1.usuario = 'Pepito' and t1.pass = ''; 
+select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_persona = t1.id
+where t1.id = 1 and t4.id_clase = t3.id; 
+
+insert into clase values (3,'Tercero Basico','B',now())
+select * from clase
+
+agregamos como persona 
+select * from persona where id=5  id=id++
+CREATE SEQUENCE persona_id_seq START WITH 1; /*que inicia secuencia en el id=1*/
+insert into persona values(NEXT VALUE FOR persona_id_seq,2,'manitas','pies','','','',6)
+
+agregar alumno:
+insert into estudinte values (1,1,'',1,1)
+
+,id_puesto=6 alumnos
+
+select * from persona where id_puesto=6
+
+insert into estudiante values(4,4,null,6,3)
+
+select id,clave,total_nota,id_persona,id_clase from estudiante
 
 
 
+select 
+ t1.nombres,t1.apellidos,t3.grado,t3.seccion, t4.total_nota
+from
+(
+/*tabla persona*/
+select id,nombres,apellidos,correo,id_puesto from persona ) t1 left join 
+(
+/*tabla puesto tomar solo el id=6 alumnos*/
+select id,descripcion from puesto where id=6) t2 on t2.id = t1.id_puesto left join 
+(
+/*tabla clase */
+select id,grado,seccion,fecha from clase) t3 left join 
+(
+/*tabla estudiante*/
+select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_persona = t1.id
+where t1.id = 1 and t4.id_clase = t3.id; 
+
+
+select 
+	t1.id as id1, t2.id as id2,t1.nombres,t2.descripcion
+from
+(
+/*tabla persona*/
+select id,nombres,apellidos,correo,id_puesto from persona ) t1 left join 
+(
+/*tabla puesto tomar solo el id=6 alumnos*/
+select id,descripcion from puesto where id=6) t2 on t2.id = t1.id_puesto left join
+(
+/*tabla clase */
+select id,grado,seccion,fecha from clase) t3 left join 
+(
+/*tabla estudiante*/
+select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clase = t3.id
+where t2.id = 6
+
+
+
+
+select 
+	t3.id as idclase
+from
+(
+/*tabla clase */
+select id,grado,seccion,fecha from clase) t3 left join 
+(
+/*tabla estudiante*/
+select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clase = t3.id
 
 
 
