@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-04-2024 a las 05:41:30
+-- Tiempo de generación: 23-04-2024 a las 16:10:35
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 5.6.40
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `actividad` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nombre_actividad` varchar(30) DEFAULT NULL,
   `descripcion` text,
   `punteo` decimal(10,0) DEFAULT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `actividad` (
 --
 
 CREATE TABLE `actividad2` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nota_actividad` decimal(10,0) DEFAULT NULL,
   `id_estudiantes` int(11) DEFAULT NULL,
   `id_actividad` int(11) DEFAULT NULL
@@ -56,7 +56,7 @@ CREATE TABLE `actividad2` (
 --
 
 CREATE TABLE `clase` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `grado` varchar(25) DEFAULT NULL,
   `seccion` char(2) DEFAULT NULL,
   `fecha` date DEFAULT NULL
@@ -69,7 +69,7 @@ CREATE TABLE `clase` (
 --
 
 CREATE TABLE `estudiante` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `clave` smallint(6) DEFAULT NULL,
   `total_nota` int(11) DEFAULT NULL,
   `id_persona` int(11) DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `estudiante` (
 --
 
 CREATE TABLE `etapa` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nombre_etapa` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -94,7 +94,7 @@ CREATE TABLE `etapa` (
 --
 
 CREATE TABLE `examen` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nombre_examen` varchar(25) DEFAULT NULL,
   `descripcion` text,
   `total_examen` smallint(6) DEFAULT NULL
@@ -107,7 +107,7 @@ CREATE TABLE `examen` (
 --
 
 CREATE TABLE `examen2` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nota_examen` decimal(10,0) DEFAULT NULL,
   `id_estudiante` int(11) DEFAULT NULL,
   `id_examen` int(11) DEFAULT NULL
@@ -120,7 +120,7 @@ CREATE TABLE `examen2` (
 --
 
 CREATE TABLE `login` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `usuario` varchar(20) DEFAULT NULL,
   `id_rol` int(11) DEFAULT NULL,
   `id_personas` int(11) DEFAULT NULL,
@@ -132,10 +132,10 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id`, `usuario`, `id_rol`, `id_personas`, `pass`) VALUES
-(1, 'Wilson', 1, 1, '1'),
+(1, 'Wilson', 1, 1,'1'),
 (2, 'Pepito', 1, 2, '1'),
-(3, 'Mario', 2, 3,  '1'),
-(4, 'Push', 3, 4,   '1');
+(3, 'Mario', 2, 3,'1'),
+(4, 'Push', 3, 4, '1');
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ INSERT INTO `login` (`id`, `usuario`, `id_rol`, `id_personas`, `pass`) VALUES
 --
 
 CREATE TABLE `modulos` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `tipo_modelo` varchar(25) DEFAULT NULL,
   `comentario` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -156,7 +156,7 @@ CREATE TABLE `modulos` (
 --
 
 CREATE TABLE `permisos` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `agregar` tinyint(1) DEFAULT NULL,
   `eliminar` tinyint(1) DEFAULT NULL,
   `modificar` tinyint(1) DEFAULT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE `permisos` (
 --
 
 CREATE TABLE `persona` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `codigo_personal` int(11) DEFAULT NULL,
   `nombres` varchar(30) DEFAULT NULL,
   `apellidos` varchar(30) DEFAULT NULL,
@@ -200,7 +200,7 @@ INSERT INTO `persona` (`id`, `codigo_personal`, `nombres`, `apellidos`, `direcci
 --
 
 CREATE TABLE `puesto` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `descripcion` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -224,7 +224,7 @@ INSERT INTO `puesto` (`id`, `descripcion`) VALUES
 --
 
 CREATE TABLE `roles` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nombre` varchar(15) DEFAULT NULL,
   `descripcion` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -331,6 +331,92 @@ ALTER TABLE `puesto`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `actividad`
+--
+ALTER TABLE `actividad`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `actividad2`
+--
+ALTER TABLE `actividad2`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `clase`
+--
+ALTER TABLE `clase`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `estudiante`
+--
+ALTER TABLE `estudiante`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `etapa`
+--
+ALTER TABLE `etapa`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `examen`
+--
+ALTER TABLE `examen`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `examen2`
+--
+ALTER TABLE `examen2`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `login`
+--
+ALTER TABLE `login`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `modulos`
+--
+ALTER TABLE `modulos`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `permisos`
+--
+ALTER TABLE `permisos`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `persona`
+--
+ALTER TABLE `persona`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `puesto`
+--
+ALTER TABLE `puesto`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(253) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
 
 --
 -- Filtros para la tabla `actividad`

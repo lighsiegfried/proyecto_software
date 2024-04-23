@@ -1,9 +1,14 @@
 <?php 
-  require_once '../../config/validate_session.php';
-  //require_once 'config/validate_roles.php';
+require_once '../../config/validate_session.php';
+//require_once 'config/validate_roles.php';
   
-  require_once('../../config/config.php');
-  //librerias
+require_once('../../config/config.php');
+//librerias
+get_pdo();
+//librerias
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

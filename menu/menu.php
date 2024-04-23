@@ -4,12 +4,16 @@
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
+
+//manipular carpeta raiz "proyecto_software"
+require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos/rutas.php');
+
 ?>
 <header class="header">
    <nav class="nav container">
       <div class="nav__data">
-         <a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/bienvenida.php" class="nav__logo">
-            <img src="/proyecto_software/img/logo.png" style="width: 100px; height: auto;  padding: 15px;"></img>
+         <a href="<?php echo $server_schema . $division . $server_host . $bienvenida ?>" class="nav__logo">
+            <img src="<?php echo $logoapp ?>" style="width: 100px; height: auto;  padding: 15px;"></img>
             Inventario de notas
          </a>
 
@@ -28,20 +32,20 @@ if (session_status() == PHP_SESSION_NONE) {
 
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/reportes/index.php" class="nav__link" title="Reportes de alumnos"> Reportes
+                        <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
                         </a><i class="ri-add-line dropdown__add"></i>
                      </div>
                   </li>
                   <!--=============== dropdown usuarios ===============-->
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/usuarios/index.php" class="nav__link" title="Listado de usuarios">Usuarios</a><i
+                        <a href="<?php echo $server_schema . $division . $server_host . $usuariosver ?>" class="nav__link" title="Listado de usuarios">Usuarios</a><i
                            class="ri-arrow-down-s-line dropdown__arrow"></i>
                      </div>
 
                      <ul class="dropdown__menu">
                         <li>
-                           <a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/usuarios/index.php" class="dropdown__link">
+                           <a href="<?php $server_schema . $division . $server_host . $usuariosver ?>" class="dropdown__link">
                               <i class="ri-user-line" title="Gestion de perfiles"></i> Perfiles
                            </a>
                         </li>
@@ -57,7 +61,7 @@ if (session_status() == PHP_SESSION_NONE) {
                   <!--=============== dropdown estudiantes ===============-->
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/estudiantes/index.php" class="nav__link" title="Listado de estudiantes">Estudiantes
+                        <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="nav__link" title="Listado de estudiantes">Estudiantes
                         </a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
                      </div>
 
@@ -70,20 +74,20 @@ if (session_status() == PHP_SESSION_NONE) {
                         </li>
                      </ul>
                   </li>
-                  <li class="dropdown__item"><a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/actividades/index.php" class="nav__link" title="Actividades de alumnos">Actividades<i
+                  <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="nav__link" title="Actividades de alumnos">Actividades<i
                            class="ri-arrow-down-s-line dropdown__arrow"></i></a></li>
                <?php elseif ($rol === 'Profesor'): ?>
 
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/reportes/index.php" class="nav__link" title="Reportes de alumnos"> Reportes
+                        <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
                         </a><i class="ri-add-line dropdown__add"></i>
                      </div>
                   </li>
                   <!--=============== dropdown estudiantes ===============-->
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/estudiantes/index.php" class="nav__link" title="Listado de estudiantes">Estudiantes </a><i
+                        <a href="<?php echo $server_schema . $division . $server_host . $estudiantes ?>" class="nav__link" title="Listado de estudiantes">Estudiantes </a><i
                            class="ri-arrow-down-s-line dropdown__arrow"></i>
                      </div>
 
@@ -96,18 +100,18 @@ if (session_status() == PHP_SESSION_NONE) {
                         </li>
                      </ul>
                   </li>
-                  <li class="dropdown__item"><a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/actividades/index.php" class="nav__link" title="Actividades de alumnos">Actividades<i
+                  <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host . $actividades ?>" class="nav__link" title="Actividades de alumnos">Actividades<i
                            class="ri-arrow-down-s-line dropdown__arrow"></i></a></li>
                <?php elseif ($rol === 'Consultor'): ?>
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/modulos/reportes/index.php" class="nav__link" title="Reportes de alumnos"> Reportes
+                        <i class="ri-bar-chart-line"></i><a href="<?php  echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
                         </a><i class="ri-add-line dropdown__add"></i>
                      </div>
                   </li>
                <?php endif; ?>
             <?php endif; ?>
-            <li class="dropdown__item"><a href="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>/proyecto_software/config/logout.php" class="nav__link" title="Cerrar sesion">Salir<i
+            <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host. $retornoIndex ?>" class="nav__link" title="Cerrar sesion">Salir<i
                            class="ri-logout-box-r-line"></i></a></li>
          </ul>
       </div>
