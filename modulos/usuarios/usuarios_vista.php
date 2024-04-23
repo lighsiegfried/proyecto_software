@@ -73,7 +73,7 @@ class usuarios_vista
             </div>
 
             <div class="modal fade" id="modal-gestionar-usuario">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <!-- modal header -->
                         <div class="modal-header">
