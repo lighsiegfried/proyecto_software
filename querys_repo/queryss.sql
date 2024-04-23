@@ -168,10 +168,9 @@ select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clas
 
 
 
-
-
+/*tabla de usuarios*/
         select 
-        t1.usuario,t2.nombre as rol,t3.nombres,t3.apellidos,t3.correo,t4.descripcion, 'X' as acciones
+        t1.id,t1.usuario,t2.nombre as rol,t3.nombres,t3.apellidos,t3.correo,t4.descripcion, 'X' as acciones
     FROM 
     ( /*tabla login*/ 
         select id,usuario,id_rol,id_personas,pass from login ) t1 left join 
@@ -183,10 +182,19 @@ select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clas
         select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
 
 
+/*manda a traer el ultimo id*/				
+select id+1 as id from persona order by id desc limit 1
 
+/*query crear un usuario y una persona*/
+start transaction;
+-- Insertar en la tabla de persona
+insert into persona (nombres, apellidos, correo, id_puesto)
+values ('linux ze', 'Op', 'linux@gmail.com', 4);/*en el ultimo dato desplegar una lista de que es, que profesion*/
+-- Insertar en la tabla de login
+insert into login (usuario, id_rol, id_personas, pass)
+values ('viajero', 2, 6, '1');
 
-
-
+commit;
 
 
 
