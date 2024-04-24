@@ -88,21 +88,21 @@ class usuarios_vista
                                     <div class="form-group">
                                         <label for="txtnombres">Nombres</label>
                                         <input type="text" class="form-control no-uppercase" name="nombres" id="txtnombres"
-                                            placeholder="Ingrese Nombres" autocomplete="off">
+                                            placeholder="Ingrese Nombres" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="txtapellidos">Apellidos</label>
                                         <input type="text" class="form-control no-uppercase" name="apellidos" id="txtapellidos"
-                                            placeholder="Ingrese Apellidos" autocomplete="off">
+                                            placeholder="Ingrese Apellidos" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="txtcorreo">Correo</label>
                                         <input type="text" class="form-control no-uppercase" name="correo" id="txtcorreo"
-                                            placeholder="Ingrese Correo" autocomplete="off">
+                                            placeholder="Ingrese Correo" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -123,7 +123,7 @@ class usuarios_vista
                                     <div class="form-group">
                                         <label for="txtusuario">Usuario</label>
                                         <input type="text" class="form-control no-uppercase" name="usuario" id="txtusuario"
-                                            placeholder="Ingrese Usuario" autocomplete="off">
+                                            placeholder="Ingrese Usuario" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -140,7 +140,7 @@ class usuarios_vista
                                     <div class="form-group">
                                         <label for="txtcontrasenia">Contraseña</label>
                                         <input type="text" class="form-control no-uppercase" name="contrasenia" id="txtcontrasenia"
-                                            placeholder="Ingrese Contraseña" autocomplete="off">
+                                            placeholder="Ingrese Contraseña" autocomplete="off" required>
                                     </div>
                                 </div>
                             </div>
