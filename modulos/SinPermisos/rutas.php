@@ -35,3 +35,9 @@ $actividades = '/proyecto_software/modulos/actividades/index.php';
 //reportes
 $reportes = '/proyecto_software/modulos/reportes/index.php';
 
+//3312.gif
+$gif3312 = '/proyecto_software/modulos/SinPermisos/3312.gif';
+
+//3312.jpg
+$jpg3312 = '/proyecto_software/modulos/SinPermisos/3312.jpg'; 
+

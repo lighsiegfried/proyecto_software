@@ -18,178 +18,181 @@ class usuarios_vista
                 text-transform: none !important;
             }
         </style>
-
-        <form id="lista_general_from1" method="post" class="mt-4">
-            <div class="row justify-content-center ">
-
+        <div class="row justify-content-center ">
+            <form id="lista_general_from1" method="post" class="mt-4">
                 <div class="btn-agregar-usuario btnAgregar">
                     <button id="agregar_usuario" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-gestionar-usuario" data-dismiss="modal"><i class="material-icons">group_add</i>
-                        Agregar usuario</button>
+                        data-target="#modal-gestionar-usuario" data-dismiss="modal">
+                        <i class="material-icons">group_add</i>
+                        Agregar usuario
+                    </button>
                 </div>
-
-                <div class="col-11">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5> Listado de usuarios registrados</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="dataTables_wrapper dt-bootstrap4">
-                                <div class="table-responsive">
-                                    <table id="tablaOrigen" class="table table-striped table-bordered table-ml table-hover  p-3"
-                                        style="width:100%">
-                                        <thead class="table-active ">
-                                            <tr>
-                                                <th scope="col" class="text-center">No.</th>
-                                                <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
-                                                <th scope="col" class="text-center">Rol</th>
-                                                <th scope="col" class="text-center">Nombres</th>
-                                                <th scope="col" class="text-center">Apellidos</th>
-                                                <th scope="col" class="text-center">Correo</th>
-                                                <th scope="col" class="text-center">Descripcion de Rol</th>
-                                                <th scope="col" class="text-center">Opciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Se auto llena con informacion desde el Javascript -->
-                                        </tbody>
-                                        <tfoot class="table-active">
-                                            <tr>
-                                                <th scope="col" class="text-center">No.</th>
-                                                <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
-                                                <th scope="col" class="text-center">Rol</th>
-                                                <th scope="col" class="text-center">Nombres</th>
-                                                <th scope="col" class="text-center">Apellidos</th>
-                                                <th scope="col" class="text-center">Correo</th>
-                                                <th scope="col" class="text-center">Descripcion de Rol</th>
-                                                <th scope="col" class="text-center">Opciones</th>
-                                        </tfoot>
-                                    </table>
+                <div class="modal fade" id="modal-gestionar-usuario">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Agregar nuevo usuario</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtnombres">Nombres</label>
+                                            <input type="text" class="form-control no-uppercase" name="nombres" id="txtnombres"
+                                                placeholder="Ingrese Nombres" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtapellidos">Apellidos</label>
+                                            <input type="text" class="form-control no-uppercase" name="apellidos"
+                                                id="txtapellidos" placeholder="Ingrese Apellidos" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtcorreo">Correo</label>
+                                            <input type="text" class="form-control no-uppercase" name="correo" id="txtcorreo"
+                                                placeholder="Ingrese Correo" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtpuesto">Puesto</label>
+                                            <select name="puesto" class="form-control" id="txtpuesto">
+                                                <option value="1">Gestor del Sistema</option>
+                                                <option value="2">Director</option>
+                                                <option value="3">Subdirector</option>
+                                                <option value="4">Profesor</option>
+                                                <option value="5">Presidente de clase</option>
+                                                <option value="6">Alumno</option>
+                                                <option value="7">Padres</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtusuario">Usuario</label>
+                                            <input type="text" class="form-control no-uppercase" name="usuario" id="txtusuario"
+                                                placeholder="Ingrese Usuario" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtrol">Privilegios</label>
+                                            <select name="rol" class="form-control" id="txtrol">
+                                                <option value="1">Administrador</option>
+                                                <option value="2">Profesor</option>
+                                                <option value="3">Consultor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtcontrasenia">Contraseña</label>
+                                            <input type="text" class="form-control no-uppercase" name="contrasenia"
+                                                id="txtcontrasenia" placeholder="Ingrese Contraseña" autocomplete="off"
+                                                required>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <!-- modal footer  -->
+                            <div class="modal-footer justify-content-end">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="modal fade" id="modal-gestionar-usuario">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <!-- modal header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title">Agregar nuevo usuario</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <!-- modal body -->
-                        <div class="modal-body">
-                            <!-- çategoria ruta y estado -->
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtnombres">Nombres</label>
-                                        <input type="text" class="form-control no-uppercase" name="nombres" id="txtnombres"
-                                            placeholder="Ingrese Nombres" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtapellidos">Apellidos</label>
-                                        <input type="text" class="form-control no-uppercase" name="apellidos" id="txtapellidos"
-                                            placeholder="Ingrese Apellidos" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtcorreo">Correo</label>
-                                        <input type="text" class="form-control no-uppercase" name="correo" id="txtcorreo"
-                                            placeholder="Ingrese Correo" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtpuesto">Puesto</label>
-                                        <select name="puesto" class="form-control" id="txtpuesto">
-                                            <option value="1">Gestor del Sistema</option>
-                                            <option value="2">Director</option>
-                                            <option value="3">Subdirector</option>
-                                            <option value="4">Profesor</option>
-                                            <option value="5">Presidente de clase</option>
-                                            <option value="6">Alumno</option>
-                                            <option value="7">Padres</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtusuario">Usuario</label>
-                                        <input type="text" class="form-control no-uppercase" name="usuario" id="txtusuario"
-                                            placeholder="Ingrese Usuario" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtrol">Privilegios</label>
-                                        <select name="rol" class="form-control" id="txtrol">
-                                            <option value="1">Administrador</option>
-                                            <option value="2">Profesor</option>
-                                            <option value="3">Consultor</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="txtcontrasenia">Contraseña</label>
-                                        <input type="text" class="form-control no-uppercase" name="contrasenia" id="txtcontrasenia"
-                                            placeholder="Ingrese Contraseña" autocomplete="off" required>
-                                    </div>
-                                </div>
+            </form>
+            <div class="col-11">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h5> Listado de usuarios registrados</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="dataTables_wrapper dt-bootstrap4">
+                            <div class="table-responsive">
+                                <table id="tablaOrigen" class="table table-striped table-bordered table-ml table-hover  p-3"
+                                    style="width:100%">
+                                    <thead class="table-active ">
+                                        <tr>
+                                            <th scope="col" class="text-center">No.</th>
+                                            <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center">Rol</th>
+                                            <th scope="col" class="text-center">Nombres</th>
+                                            <th scope="col" class="text-center">Apellidos</th>
+                                            <th scope="col" class="text-center">Correo</th>
+                                            <th scope="col" class="text-center">Descripcion de Rol</th>
+                                            <th scope="col" class="text-center">Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Se auto llena con informacion desde el Javascript -->
+                                    </tbody>
+                                    <tfoot class="table-active">
+                                        <tr>
+                                            <th scope="col" class="text-center">No.</th>
+                                            <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center">Rol</th>
+                                            <th scope="col" class="text-center">Nombres</th>
+                                            <th scope="col" class="text-center">Apellidos</th>
+                                            <th scope="col" class="text-center">Correo</th>
+                                            <th scope="col" class="text-center">Descripcion de Rol</th>
+                                            <th scope="col" class="text-center">Opciones</th>
+                                    </tfoot>
+                                </table>
                             </div>
-                        </div>
-
-                        <!-- modal footer  -->
-                        <div class="modal-footer justify-content-end">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" id="" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-
-
-
-
-            <!-- <div class="modal fade" id="observaciones" tabindex="-1" aria-labelledby="obsercacionesLabel" aria-hidden="true">
-        <div class="modal-dialog" style="width: 80%; max-width: 2000px;">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="obsercacionesLabel">Pedido:  11  ,  Version: 11</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="height: 80vh;">
-                <iframe id="modalIframe" src="" frameborder="0" style="width: 100%; height: 100%; "></iframe>
-            </div>
-            <div class="modal-footer">
-                <a>fecha subida: 11, fecha modificacion: 11 </a>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
             </div>
         </div>
-    </div> -->
-
-        </form>
-        <script>
-            $(document).ready(function () {
-
-                $("#agregar_usuario").click(function () {
-                    $("#modal-gestionar-usuario").modal('show');
-                });
 
 
-            });
-        </script>
+        <!-- <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Show a second modal and hide this one with the button below.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Open second modal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Hide this modal and show the first with the button below.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Back to first</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a> -->
         <?php
     }
 

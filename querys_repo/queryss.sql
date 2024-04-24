@@ -166,8 +166,8 @@ select id,grado,seccion,fecha from clase) t3 left join
 /*tabla estudiante*/
 select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clase = t3.id
 
-
-
+-------------------------------------------------------------------------------------------------------------------
+USUARIOS 
 /*tabla de usuarios*/
         select 
         t1.id,t1.usuario,t2.nombre as rol,t3.nombres,t3.apellidos,t3.correo,t4.descripcion, 'X' as acciones
@@ -180,7 +180,6 @@ select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clas
         select id,nombres,apellidos,correo,id_puesto from persona ) t3 on t1.id_personas = t3.id left JOIN 
     (/*tabla puesto*/ 
         select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
-
 
 /*manda a traer el ultimo id*/				
 select id+1 as id from persona order by id desc limit 1
@@ -195,6 +194,29 @@ insert into login (usuario, id_rol, id_personas, pass)
 values ('viajero', 2, 6, '1');
 
 commit;
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
