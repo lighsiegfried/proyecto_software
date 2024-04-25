@@ -169,9 +169,9 @@ select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clas
 -------------------------------------------------------------------------------------------------------------------
 USUARIOS 
 /*tabla de usuarios*/
-        select 
+    select 
         t1.id,t1.usuario,t2.nombre as rol,t3.nombres,t3.apellidos,t3.correo,t4.descripcion, 'X' as acciones
-    FROM 
+    from 
     ( /*tabla login*/ 
         select id,usuario,id_rol,id_personas,pass from login ) t1 left join 
     (/*tabla roles*/ 
@@ -195,29 +195,38 @@ values ('viajero', 2, 6, '1');
 
 commit;
 ------------------------------------------------------------------------------------------------------------------
+/*eliminacion de usuarios y personas*/
+select id_personas from login where id = 7
+select * from login where id = 7
+/* query's*/
+delete from login where id = 7 
+delete from persona where id = 5
+-----------------------------------------------------------------------------------------------------------------
 
 
+select id_personas from login where id=1
+
+select * from persona
+
+start transaction;
+-- Actualizar la tabla de persona
+update persona
+set nombres = 'Pepito',
+    apellidos = 'Lopez',
+    correo = 'xlive123x@gmail.com',
+    id_puesto = '4'
+where id = 2; -- id_persona en tabla login
+
+-- actualiza la tabla login
+update login
+set usuario = 'Pepitoo',
+    id_rol = '2',
+    id_personas = 2,
+    pass = '2'
+where id = 2; -- id unico en tabla login
+
+commit;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+select * from persona
+select * from login where id=2 

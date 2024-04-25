@@ -259,14 +259,132 @@ $(document).ready(function (){
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
     }
 
-    $(this).on('click','.btn-agregar-usuario', function(e){e.preventDefault();
-        accion_data="registrar";
+    $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar
+        var datos = tablaOrigen.row($(this).parents('tr')).data();
+        console.log(datos);
+        var id = datos["id"];
+        var usuario = datos["usuario"];
+        var rol = datos["rol"];
+        var nombres = datos["nombres"];
+        var apellidos = datos["apellidos"];
+        var correo = datos["correo"];
+        var descripcion = datos["descripcion"]; //puesto
+        if(rol === "Admin"){
+            rol = 1
+        } else if ( rol === "Profesor"){
+            rol = 2
+        } else if ( rol === "Consultor"){
+            rol = 3
+        }
+        if (descripcion === "Gestor del Sistema"){
+            descripcion = 1
+        } else if (descripcion === "Director"){
+            descripcion = 2
+        } else if (descripcion === "Subdirector"){
+            descripcion = 3
+        } else if (descripcion === "Profesor"){
+            descripcion = 4
+        } else if (descripcion === "Presidente de clase"){
+            descripcion = 5
+        } else if (descripcion === "Alumno"){
+            descripcion = 6
+        } else if (descripcion === "Padres"){
+            descripcion = 7
+        }
+        $("#txtusuario").val(usuario);
+        $("#txtrol").val(rol);
+        $("#txtnombres").val(nombres);
+        $("#txtapellidos").val(apellidos);
+        $("#txtcorreo").val(correo);
+        $("#txtpuesto").val(descripcion);
+        $("#modal-gestionar-usuario").modal('show');
+        $("#btnGuardar").click(function () {
+            contrasenia = $('#txtcontrasenia').val() //captura nueva contrasenia
+                if(nombres === null || nombres === undefined || nombres === '' || 
+                   apellidos === null || apellidos === undefined || apellidos === '' ||
+                   correo === null || correo === undefined || correo === '' || 
+                   usuario === null || usuario === undefined || usuario === '' || 
+                   contrasenia === null || contrasenia === undefined || contrasenia === '' 
+                ){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Llenar todos los campos, por favor.."
+                      });
+                      
+                } else {
+                    Swal.fire({
+                        title: "Estas seguro?",
+                        text: "Los datos se actualizarán",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Si!"
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          Swal.fire({
+                            title: "Actualizacion efectuada",
+                            text: "Se recargara la lista..",
+                            icon: "success"
+                          });
+                                $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+                                    accion: 'editar_usuario',
+                                    id:id,
+                                    nombres: nombres,
+                                    apellidos: apellidos,
+                                    correo: correo,     
+                                    puesto: descripcion,
+                                    usuario: usuario,
+                                    rol: rol,
+                                    contrasenia: contrasenia
+                                }, success: function (data) { 
+                                    console.log(data);
+                                    $("#modal-gestionar-usuario").modal('hide');
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
+                                }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                        }//confirmacion sweet-close
+                      });//modal guardar sweet-close
+                } //fin else-close
+        });//btnGuardar-close
+
+
     });
 
-    $(this).on('click','.btnEditar', function(e){e.preventDefault();
+    $(this).on('click','.btnEliminar', function(e){e.preventDefault(); //eliminar
         var data = tablaOrigen.row($(this).parents('tr')).data();
-        $('#')
-    });//
+        var id = data["id"];
+        var datos = new FormData();
+        datos.append('id', id);
+        Swal.fire({
+            title: "Deseas eliminar el usuario?",
+            text: "Proceso no revertible..",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Se elimino usuario!",
+                text: "Se recargara la lista..",
+                icon: "success"
+              });
+                    $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+                        accion: 'eliminar_usuario',
+                        id:id
+                    }, success: function (data) { 
+                        //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+            }//confirmacion sweet-close
+          });//modal guardar sweet-close
+    });//eliminar-close
 
     $(this).on('click','#agregar_usuario', function(e){e.preventDefault();
         //llamo el modal y despliego las variables para almacenar los datos
@@ -274,7 +392,6 @@ $(document).ready(function (){
         var accion_data = "";
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardar").click(function () {
-
             var nombres = $('#txtnombres').val(),
                 apellidos = $('#txtapellidos').val(),
                 correo = $('#txtcorreo').val(),
@@ -289,8 +406,7 @@ $(document).ready(function (){
             datos.append('puesto', puesto);
             datos.append('usuario', usuario);
             datos.append('rol', rol);
-            datos.append('contrasenia', contrasenia);
-            datos.append('accion_data', accion_data)
+            datos.append('contrasenia', contrasenia)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -334,8 +450,7 @@ $(document).ready(function (){
                                     puesto: puesto,
                                     usuario: usuario,
                                     rol: rol,
-                                    contrasenia: contrasenia,
-                                    accion_data: accion_data
+                                    contrasenia: contrasenia
                                 }, success: function (data) { 
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {

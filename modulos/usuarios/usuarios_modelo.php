@@ -56,19 +56,98 @@ class usuarios_modelo{
             }
     }
 
-    function eliminacion($recibo){ //sale en contabilidad columna izquierda
+    function editar_usuario($id, $nombres, $apellidos, $correo, $puesto, $usuario, $rol, $id_personas, $contrasenia)
+    {
+        global $pdo;
+
+        try {
+            $pdo->beginTransaction();
+
+            // Actualizar la tabla de persona
+            $stmt_persona = $pdo->prepare("update persona SET nombres = ?, apellidos = ?, correo = ?, id_puesto = ? WHERE id = ?");
+            $stmt_persona->execute([$nombres, $apellidos, $correo, $puesto, $id_personas]);
+
+            // Actualizar la tabla login
+            $stmt_login = $pdo->prepare("update login SET usuario = ?, id_rol = ?, pass = ? WHERE id = ?");
+            $stmt_login->execute([$usuario, $rol, $contrasenia, $id]);
+
+            $pdo->commit();
+            return true;
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    // function editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia){
+    //     global $pdo;
+    //     $qry="
+    //     start transaction;
+        
+    //     -- actualizar la tabla de persona
+    //     update persona
+    //     set nombres = '$nombres',
+    //         apellidos = '$apellidos',
+    //         correo = '$correo',
+    //         id_puesto = '$puesto'
+    //     where id = $id_personas; -- id_persona en tabla login
+
+    //     -- actualiza la tabla login
+    //     update login
+    //     set usuario = '$usuario',
+    //         id_rol = '$rol',
+    //         id_personas = $id_personas,
+    //         pass = '$contrasenia'
+    //     where id = $id; -- id unico en tabla login
+
+    //     commit;
+    //     ";
+    //     $qqry=$pdo->query($qry);
+    //         if (!$qqry) {
+    //             echo "Error en la consulta: " . $pdo->errorInfo()[2];
+    //             exit;
+    //         }
+    // }
+
+    function capturar_personas($id){ //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
         $qry="
-        delete from vndoc where doc=440 and num= :recibo ;
-            ";
-        $stmt = $pdo->prepare($qry);
-
-        //evita inserciones por usuarios con conocimientos SQL
-        $stmt->bindParam(':recibo', $recibo); 
-
-        //fin ejecucion
-        $stmt->execute();
+        select id_personas from login where id = $id;";
+        $qqry=$pdo->query($qry);
+        return $qqry->fetchAll();
     }
+
+
+    function eliminar_usuario($id,$persona){ //eliminar usuario y persona asignada a usuario
+        global $pdo;
+        
+        // Eliminar en 'login'
+        $qryLogin = "delete from login where id = :id";
+        $stmtLogin = $pdo->prepare($qryLogin);
+        $stmtLogin->bindParam(':id', $id);  //evita inserciones por usuarios con conocimientos SQL
+        $stmtLogin->execute();              //fin ejecucion
+    
+        // Eliminar en 'persona'
+        $qryPersona = "delete from persona where id = :id";
+        $stmtPersona = $pdo->prepare($qryPersona);
+        $stmtPersona->bindParam(':id', $persona); 
+        $stmtPersona->execute();
+    }
+
+    // function eliminar_usuario($id){ //eliminar user
+    //     global $pdo;
+    //     $qry="
+    //     delete from login where id = :id ;
+    //         ";
+    //     $stmt = $pdo->prepare($qry);
+
+    //     //evita inserciones por usuarios con conocimientos SQL
+    //     $stmt->bindParam(':id', $id); 
+
+    //     //fin ejecucion
+    //     $stmt->execute();
+    // }
 
 
 }

@@ -37,15 +37,46 @@ if (isset($_POST['accion'])) {
                 $id_persona_mas_uno=$valor['id'];
             }
             $modelo->agregar_nuevo_usuario($nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_persona_mas_uno,$contrasenia);
-            // $respuesta = ["mensaje" => "Usuario guardado correctamente"];
-            // echo json_encode($respuesta);
-            break;
+        break;
+
+        case 'editar_usuario':
+            $id = $_POST['id'];
+            $nombres = $_POST['nombres'];
+            $apellidos = $_POST['apellidos'];
+            $correo = $_POST['correo'];
+            $puesto = $_POST['puesto'];
+            $usuario = $_POST['usuario'];
+            $rol = $_POST['rol'];
+            $contrasenia = $_POST['contrasenia'];
+
+            $id_per=$modelo->capturar_personas($id);
+            foreach ($id_per as $valor) {
+                $id_personas=$valor['id_personas'];
+            }
+
+            $resultado1=$modelo->editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia);
+            if ($resultado1) {
+                echo "Éxito";
+            } else {
+                echo "Error al editar usuario";
+            }
+        break;
+
+        case 'eliminar_usuario':
+            $id = $_POST['id'];
+
+            $person=$modelo->capturar_personas($id);
+            foreach ($person as $valor) {
+                $persona=$valor['id_personas'];
+            }
+            $modelo->eliminar_usuario($id,$persona);
+        break;
 
 
         default:
             $respuesta = [];
             $respuesta['estado'] = 0;
-            $respuesta['contenido'] = "Accion no registrada($cod_menu) en ui_vista_u";
+            $respuesta['contenido'] = "Accion no registrada($cod_menu), checkear controlador.";
             echo json_encode($respuesta);
     }
     unset($_POST);

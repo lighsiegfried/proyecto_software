@@ -83,7 +83,7 @@ class usuarios_vista
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="txtrol">Privilegios</label>
+                                            <label for="txtrol">Rol/Privilegios</label>
                                             <select name="rol" class="form-control" id="txtrol">
                                                 <option value="1">Administrador</option>
                                                 <option value="2">Profesor</option>
