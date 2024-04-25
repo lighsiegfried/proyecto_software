@@ -259,9 +259,18 @@ $(document).ready(function (){
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
     }
 
+    $(this).on('click','.btn-agregar-usuario', function(e){e.preventDefault();
+        accion_data="registrar";
+    });
+
+    $(this).on('click','.btnEditar', function(e){e.preventDefault();
+        var data = tablaOrigen.row($(this).parents('tr')).data();
+    });//
+
     $(this).on('click','#agregar_usuario', function(e){e.preventDefault();
         //llamo el modal y despliego las variables para almacenar los datos
         $("#modal-gestionar-usuario").modal('show'); 
+        var accion_data = "";
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardar").click(function () {
 
@@ -279,7 +288,8 @@ $(document).ready(function (){
             datos.append('puesto', puesto);
             datos.append('usuario', usuario);
             datos.append('rol', rol);
-            datos.append('contrasenia', contrasenia)
+            datos.append('contrasenia', contrasenia);
+            datos.append('accion_data', accion_data)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -297,7 +307,7 @@ $(document).ready(function (){
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Los campos no pueden ir vacios"
+                        text: "Llenar todos los campos, por favor.."
                       });
                 } else {
                     Swal.fire({
@@ -319,11 +329,12 @@ $(document).ready(function (){
                                     accion: 'guardar_usuario',
                                     nombres: nombres,
                                     apellidos: apellidos,
-                                    correo: correo,
+                                    correo: correo,     
                                     puesto: puesto,
                                     usuario: usuario,
                                     rol: rol,
-                                    contrasenia: contrasenia
+                                    contrasenia: contrasenia,
+                                    accion_data: accion_data
                                 }, success: function (data) { 
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {
