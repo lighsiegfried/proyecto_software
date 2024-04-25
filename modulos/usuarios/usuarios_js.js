@@ -265,6 +265,7 @@ $(document).ready(function (){
 
     $(this).on('click','.btnEditar', function(e){e.preventDefault();
         var data = tablaOrigen.row($(this).parents('tr')).data();
+        $('#')
     });//
 
     $(this).on('click','#agregar_usuario', function(e){e.preventDefault();

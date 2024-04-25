@@ -33,7 +33,7 @@ class usuarios_vista
                             <!-- modal header -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Agregar nuevo usuario</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
                             </div>
                             <!-- modal body -->
                             <div class="modal-body">
