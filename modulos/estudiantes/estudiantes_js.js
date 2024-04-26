@@ -69,12 +69,12 @@ $(document).ready(function (){
 
     function get_lista_usuarios(){
         $('#lista').html(set_spinner);
-        $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
             accion: 'get_lista_vista'
         }, success: function (data) {
             $('#lista').html(data);
             //estructura de la datatable
-            $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+            $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                 accion: 'get_lista_datos'
             }, success: function (data) {
                 var datos;
@@ -349,7 +349,7 @@ $(document).ready(function (){
                             text: "Se recargara la lista..",
                             icon: "success"
                           });
-                                $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+                                $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                                     accion: 'editar_usuario',
                                     id:id,
                                     nombres: nombres,
@@ -394,7 +394,7 @@ $(document).ready(function (){
                 text: "Se recargara la lista..",
                 icon: "success"
               });
-                    $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+                    $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                         accion: 'eliminar_usuario',
                         id:id
                     }, success: function (data) { 
@@ -463,7 +463,7 @@ $(document).ready(function (){
                             text: "Se recargara la lista..",
                             icon: "success"
                           });
-                                $.ajax({ async: true, type: 'post', url: 'usuarios_controlador.php', data: {
+                                $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                                     accion: 'guardar_usuario',
                                     nombres: nombres,
                                     apellidos: apellidos,
@@ -474,6 +474,69 @@ $(document).ready(function (){
                                     contrasenia: contrasenia
                                 }, success: function (data) { 
                                     $("#modal-gestionar-usuario").modal('hide');
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
+                                }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                        }//confirmacion sweet-close
+                      });//modal guardar sweet-close
+                } //fin else-close
+
+
+
+            
+        });//btnGuardar-close
+
+    });//formulario-close
+
+    $(this).on('click','#agregar_clase', function(e){e.preventDefault();
+        //llamo el modal y despliego las variables para almacenar los datos
+        $("#modal-gestionar-clase").modal('show'); 
+        //boton guardar, mando la inf al controlador y lueego al modelo
+        $("#btnGuardarClase").click(function () {
+            var grado = $('#txtgrado').val(),
+                seccion = $('#txtseccion').val()
+            var datos = new FormData();
+            datos.append('grado', grado);
+            datos.append('seccion', seccion);
+            var formDataArray = [];
+            for (var pair of datos.entries()) {
+                formDataArray.push(pair);
+            }
+            console.log("Datos del FormData:");
+            formDataArray.forEach(pair => {
+                console.log(pair[0] + ": " + pair[1]);
+            });
+                if(grado === null || grado === undefined || grado === '' || 
+                   seccion === null || seccion === undefined || seccion === ''
+                ){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Llenar todos los campos, por favor.."
+                      });
+                } else {
+                    Swal.fire({
+                        title: "Estas seguro?",
+                        text: "Se creara una nueva clase",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Si!"
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          Swal.fire({
+                            title: "Se creo la nueva clase",
+                            text: "Se recargara la lista..",
+                            icon: "success"
+                          });
+                                $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                                    accion: 'guardar_alumno',
+                                    grado: grado,
+                                    seccion: seccion
+                                }, success: function (data) { 
+                                    $("#modal-gestionar-clase").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
                                     }, 2000);

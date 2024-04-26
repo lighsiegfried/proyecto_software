@@ -4,15 +4,22 @@
     get_pdo();
     
     //especial para este modulo
-    require_once('usuarios_modelo.php');
-    $modelo= new usuarios_modelo();      
-    require_once('usuarios_vista.php');
-    $vista= new usuarios_vista();       
+    require_once('estudiantes_modelo.php');
+    $modelo= new estudiantes_modelo();      
+    require_once('estudiantes_vista.php');
+    $vista= new estudiantes_vista();       
 
 // ESTRUCTURA DE CONTROL
 if (isset($_POST['accion'])) {
     $cod_menu = $_POST['accion'];
     switch ($cod_menu) { 
+
+        case 'guardar_alumno':
+            $grado = $_POST['grado'];
+            $seccion = $_POST['seccion'];
+
+            $modelo->add_class($grado,$seccion);
+        break;
 
         case 'get_lista_vista':
             $vista->get_lista_vista();

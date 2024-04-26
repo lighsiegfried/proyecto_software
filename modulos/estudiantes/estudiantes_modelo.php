@@ -1,7 +1,7 @@
 <?php
 
 //Data
-class usuarios_modelo{
+class estudiantes_modelo{
     private $pdo;
     public function __construct()
     {
@@ -55,6 +55,32 @@ class usuarios_modelo{
                 exit;
             }
     }
+
+    // function add_class($grado,$seccion){
+    //     global $pdo;
+    //     $qry="
+    //     select grado,seccion from clase where grado='$grado' and seccion='$seccion';
+    //     ";
+    //     $qqry=$pdo->query($qry);
+    //         if (!$qqry) {
+    //             echo "Error en la consulta: " . $pdo->errorInfo()[2];
+    //             exit;
+    //         }
+    // }
+
+    function add_class($grado,$seccion){
+        global $pdo;
+        $qry="
+        insert into clase (grado,seccion,fecha)
+        values ('$grado', '$seccion', now());
+        ";
+        $qqry=$pdo->query($qry);
+            if (!$qqry) {
+                echo "Error en la consulta: " . $pdo->errorInfo()[2];
+                exit;
+            }
+    }
+
 
     function editar_usuario($id, $nombres, $apellidos, $correo, $puesto, $usuario, $rol, $id_personas, $contrasenia)
     {

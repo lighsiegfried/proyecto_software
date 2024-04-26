@@ -1,6 +1,6 @@
 <?php
 //variables globales encod base64 para pdf
-class usuarios_vista
+class estudiantes_vista
 {
     //funciones de vista
 
@@ -24,7 +24,7 @@ class usuarios_vista
                     <button id="agregar_usuario" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
                         data-target="#modal-gestionar-usuario" data-dismiss="modal">
                         <i class="material-icons">group_add</i>
-                        Agregar usuario
+                        Agregar estudiante
                     </button>
                 </div>
                 <div class="modal fade" id="modal-gestionar-usuario">
@@ -32,7 +32,7 @@ class usuarios_vista
                         <div class="modal-content">
                             <!-- modal header -->
                             <div class="modal-header">
-                                <h4 class="modal-title">Agregar nuevo usuario</h4>
+                                <h4 class="modal-title">Agregar nuevo estudiante</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
                             </div>
                             <!-- modal body -->
@@ -112,10 +112,55 @@ class usuarios_vista
                     </div>
                 </div>
             </form>
+            <form id="lista_general_from2" method="post" class="mt-4">
+                <div class="btn-agregar-clase btnAgregarclase">
+                    <button id="agregar_clase" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
+                        data-target="#modal-gestionar-clase" data-dismiss="modal">
+                        <i class="material-icons">group_add</i>
+                        Agregar clase
+                    </button>
+                </div>
+                <div class="modal fade" id="modal-gestionar-clase"> 
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Agregar nueva clase</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtgrado">Grado</label>
+                                            <input type="text" class="form-control no-uppercase" name="grado" id="txtgrado"
+                                                placeholder="Ingrese Grado" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtaseccion">Seccion</label>
+                                            <input type="text" class="form-control no-uppercase" name="seccion"
+                                                id="txtseccion" placeholder="Ingrese Seccion" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- modal footer  -->
+                            <div class="modal-footer justify-content-end">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" id="btnGuardarClase" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="col-11">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h5> Listado de usuarios registrados</h5>
+                        <h5> Listado de alumnos registrados</h5>
                     </div>
                     <div class="card-body">
                         <div class="dataTables_wrapper dt-bootstrap4">

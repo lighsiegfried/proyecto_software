@@ -202,15 +202,12 @@ select * from login where id = 7
 delete from login where id = 7 
 delete from persona where id = 5
 -----------------------------------------------------------------------------------------------------------------
-
-
 select id_personas from login where id=1
-
 select * from persona
 
 start transaction;
 -- Actualizar la tabla de persona
-update persona
+   update persona
 set nombres = 'Pepito',
     apellidos = 'Lopez',
     correo = 'xlive123x@gmail.com',
@@ -224,9 +221,64 @@ set usuario = 'Pepitoo',
     id_personas = 2,
     pass = '2'
 where id = 2; -- id unico en tabla login
-
 commit;
-
 
 select * from persona
 select * from login where id=2 
+--------------------------------------------
+-- agregar clase primero
+select id,grado,seccion,fecha  from clase
+ 
+select grado,seccion from clase where grado='fdsa' and seccion='A'   -- que lo lea en minuscula todo y que lo guarde en minuscula tambien
+
+-- persona, asocia el id_persona en  tabla-estudiante
+select id,nombres,apellidos,correo,id_puesto from persona
+
+-- estudiante id_clase amarra al id > clase
+select id,clave,total_nota,id_persona,id_clase from estudiante
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+-- se crea una etapa nueva
+select id,nombre_etapa from etapa
+
+-- examen 1 nombre examen y puntos de cuanto vale
+select id,nombre_examen,descripcion, total_examen from examen
+
+-- examen 2 referencia al 1 y agrega nota adquirida en el examen, amarra id_estudiante y id_examen
+select id,nota_examen,id_estudiante,id_examen from examen2
+
+-- actividad
+select id,nombre_actividad,descripcion,punteo,id_etapa from actividad
+
+-- relacion  id_estudiante y id_actividad
+select id,nota_actividad,id_estudiantes,id_actividad from actividad2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
