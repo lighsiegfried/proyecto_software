@@ -13,9 +13,9 @@ if (isset($_SESSION['rol'])):
   $rol = $_SESSION['rol'];
   if ($rol === 'Admin' || $rol === 'Profesor'):
     ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,20 +30,21 @@ if (isset($_SESSION['rol'])):
       <link rel="stylesheet" href="../../librerias/DataTables/datatables.min.css">
       <script src="../../librerias/DataTables/datatables.js"> </script>
       <script src="../../librerias/DataTables/datatables.min.js"> </script>
-</head> 
-<body>
-<div style="margin: 100px 0 0 10px;"><?php include('../../menu/menu.php'); ?></div>
+      <script src="../../librerias/sweetalert2@11.js"></script>
+      <!-- <script src="../../librerias/fontawesome-free-6.5.2/css/all.min.css"> </script> -->
+      <script src="usuarios_js.js"> </script>
+    </head>
 
+    <body>
+      <div style="margin: 100px 0 0 10px;"><?php include ('../../menu/menu.php'); ?></div>
 
-  <div class="containeer">
-    <div class="row">
-      <div class="col-12">
-        <h1 Style="font-size: 45px; font-weight: bold;" >Estudiantes </h1>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+      <h1 class="mt-4" Style="font-size: 45px; font-weight: bold;" class="text-light">Estudiantes </h1>
+
+      <div id="lista" class="mt-4"></div>
+
+    </body>
+
+    </html>
 <?php elseif ($rol === 'Consultor'): ?>
     <div style="margin: 100px 0 0 10px;"> <?php include ('../SinPermisos/NoAcceso.php'); ?> </div>
   <?php
