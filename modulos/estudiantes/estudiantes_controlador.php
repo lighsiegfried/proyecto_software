@@ -22,50 +22,53 @@ if (isset($_POST['accion'])) {
         break;
 
         case 'guardar_alumno':
-            
-        break;
-
-        case 'get_lista_vista':
-            $vista->get_lista_vista();
-        break;
-
-        case 'get_lista_datos':
-            $lista_de_usuarios=$modelo->get_usuarios();
-            echo json_encode($lista_de_usuarios,true);
-        break;
-
-        case 'guardar_usuario':
             $nombres = $_POST['nombres'];
             $apellidos = $_POST['apellidos'];
             $correo = $_POST['correo'];
             $puesto = $_POST['puesto'];
-            $usuario = $_POST['usuario'];
-            $rol = $_POST['rol'];
-            $contrasenia = $_POST['contrasenia'];
-
+            $clave = $_POST['clave'];
+            $id_clase = $_POST['clase'];
             $id_persona_mas=$modelo->id_up_personas();
             foreach ($id_persona_mas as $valor) {
                 $id_persona_mas_uno=$valor['id'];
             }
-            $modelo->agregar_nuevo_usuario($nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_persona_mas_uno,$contrasenia);
+            $id_clav=$modelo->existe_clase_asignacion($id_clase);
+            if($id_clav === null)
+            {
+                $id_clave = 1;
+            } else {
+                foreach ($id_clav as $valor1) {
+                    $id_clave=$valor1['clave'];
+                }
+            }
+            $modelo->agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase);
         break;
 
-        case 'editar_usuario':
+        case 'get_lista_vista':
+            $lista_class=$modelo->show_class();
+            $vista->get_lista_vista($lista_class);
+        break;
+
+        case 'get_lista_datos':
+            $lista_de_alumnos=$modelo->get_alumnos();
+            echo json_encode($lista_de_alumnos,true);
+        break;
+
+        case 'editar_alumno':
             $id = $_POST['id'];
             $nombres = $_POST['nombres'];
             $apellidos = $_POST['apellidos'];
             $correo = $_POST['correo'];
             $puesto = $_POST['puesto'];
-            $usuario = $_POST['usuario'];
-            $rol = $_POST['rol'];
-            $contrasenia = $_POST['contrasenia'];
+            $clave = $_POST['clave'];
+            $clase = $_POST['clase'];
 
-            $id_per=$modelo->capturar_personas($id);
-            foreach ($id_per as $valor) {
-                $id_personas=$valor['id_personas'];
-            }
+            // $id_per=$modelo->capturar_personas($id);
+            // foreach ($id_per as $valor) {
+            //     $id_personas=$valor['id_personas'];
+            // }
 
-            $resultado1=$modelo->editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia);
+            // $resultado1=$modelo->editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia);
         break;
 
         case 'eliminar_usuario':

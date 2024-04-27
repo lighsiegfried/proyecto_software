@@ -239,8 +239,34 @@ select id,nombres,apellidos,correo,id_puesto from persona
 -- estudiante id_clase amarra al id > clase   , id_persona enlaza a id en tabla persona
 select id,clave,total_nota,id_persona,id_clase from estudiante
 
+la clave es automatica, se asigna automaticamente , busca en tabla estudiante si no hay asignada una clase, 
+de lo contrario inicializa con la clave 1
 
 
+select t1.clave+1 as clave
+from 
+(/*tabla estudiantes*/
+	select id,clave,total_nota,id_persona,id_clase from estudiante) t1 left join 
+(/*tabla clase*/
+	select id,grado,seccion,fecha  from clase) t2 on t2.id=t1.id_clase
+where id_clase = 2 order by t1.clave desc limit 1
+
+
+/*consulta de alumnos*/
+select 
+    t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+from 
+(/*tabla persona*/
+	select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+(/*tabla estudiantes*/
+	select id,clave,total_nota,id_persona,id_clase from estudiante) t2 on t1.id = t2.id_persona left join
+(/*tabla clase*/
+	select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id
+where t2.id is not null
+
+
+insert into estudiante (clave,total_nota,id_persona,id_clase)
+values (2,null,8,2)
 
 --------------------------------------------------------------------------------------------------------
 -- se crea una etapa nueva
@@ -257,22 +283,6 @@ select id,nombre_actividad,descripcion,punteo,id_etapa from actividad
 
 -- relacion  id_estudiante y id_actividad
 select id,nota_actividad,id_estudiantes,id_actividad from actividad2
-
-
-<select id="select_fecha" class="form-control" required>
-   <option value="<?php if (!isset($_POST['fecha_mes'])) echo 'null'; ?>" <?php if (!isset($_POST['fecha_mes'])) echo 'selected'; ?>>Seleccione Fecha</option>
-<?php
-   foreach ($lista_fecha as $fechaa) {
-?>
-    <option value="<?php echo $fechaa['fecha_mes']; ?>" <?php if (isset($_POST['fecha_mes']) and $fechaa['fecha_mes'] == $_POST['fecha_mes']) echo "selected"; ?> >
-       <?php echo $fechaa['anio'] . ' - ' . $fechaa['meses'] ; ?>
-     </option>
-   <?php
- } 
-?>
-</select>
-
-
 
 
 

@@ -8,19 +8,18 @@ class estudiantes_modelo{
         global $pdo;
         $this->pdo=$pdo;
     }
-    function get_usuarios(){
+    function get_alumnos(){
         $qry="
         select 
-            t1.id,t1.usuario,t2.nombre as rol,t3.nombres,t3.apellidos,t3.correo,t4.descripcion, 'X' as acciones
-        FROM 
-            ( /*tabla login*/ 
-                select id,usuario,id_rol,id_personas,pass from login ) t1 left join 
-            (/*tabla roles*/ 
-                select id,nombre,descripcion from roles ) t2 on t1.id_rol = t2.id left join 
-            (/*tabla persona*/ 
-                select id,nombres,apellidos,correo,id_puesto from persona ) t3 on t1.id_personas = t3.id left join 
-            (/*tabla puesto*/ 
-                select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota,'X' as acciones
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id
+        where t2.id is not null
         ";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
@@ -33,6 +32,26 @@ class estudiantes_modelo{
         $qqry=$pdo->query($qry);
         return $qqry->fetchAll();
     }
+
+    function existe_clase_asignacion($id_clase){ //captura clave futura de alumno, si es null o vacia, sera igual a 1
+        global $pdo;
+        $qry="
+        select 
+            t1.clave+1 as clave
+        from 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase from estudiante) t1 left join 
+        (/*tabla clase*/
+            select id,grado,seccion,fecha  from clase) t2 on t2.id=t1.id_clase
+        where id_clase = $id_clase order by t1.clave desc limit 1
+        ;";
+        $qqry=$pdo->query($qry);
+        $resultados = $qqry->fetchAll();
+    if (empty($resultados)) {
+        return null;
+    }
+    return $resultados;
+}
 
     function agregar_nuevo_usuario($nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_persona_mas_uno,$contrasenia){
         global $pdo;
@@ -56,19 +75,29 @@ class estudiantes_modelo{
             }
     }
 
-    // function add_class($grado,$seccion){
-    //     global $pdo;
-    //     $qry="
-    //     select grado,seccion from clase where grado='$grado' and seccion='$seccion';
-    //     ";
-    //     $qqry=$pdo->query($qry);
-    //         if (!$qqry) {
-    //             echo "Error en la consulta: " . $pdo->errorInfo()[2];
-    //             exit;
-    //         }
-    // }
+    function agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase){
+        global $pdo;
+        $qry="
+        start transaction;
 
-    function add_class($grado,$seccion){
+        -- Insertar en la tabla de persona
+        insert into persona (nombres, apellidos, correo, id_puesto)
+        values ('$nombres', '$apellidos', '$correo', $puesto);
+
+        -- Insertar en la tabla estudiante
+        insert into estudiante (clave,total_nota,id_persona,id_clase)
+        values ($id_clave,null,$id_persona_mas_uno,$id_clase);
+
+        commit;
+        ";
+        $qqry=$pdo->query($qry);
+            if (!$qqry) {
+                echo "Error en la consulta: " . $pdo->errorInfo()[2];
+                exit;
+            }
+    }
+
+    function add_class($grado,$seccion){ //agrega nueva clase
         global $pdo;
         $qry="
         insert into clase (grado,seccion,fecha)
@@ -80,6 +109,17 @@ class estudiantes_modelo{
                 exit;
             }
     }
+
+    function show_class(){//muestra las clases existentes cuando se crea/actualiza un alumno
+        global $pdo;
+        $qry="
+        select id,grado,seccion,fecha from clase;
+        ";
+        $qqry=$pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
+
 
 
     function editar_usuario($id, $nombres, $apellidos, $correo, $puesto, $usuario, $rol, $id_personas, $contrasenia)
@@ -106,36 +146,6 @@ class estudiantes_modelo{
         }
     }
 
-    // function editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia){
-    //     global $pdo;
-    //     $qry="
-    //     start transaction;
-        
-    //     -- actualizar la tabla de persona
-    //     update persona
-    //     set nombres = '$nombres',
-    //         apellidos = '$apellidos',
-    //         correo = '$correo',
-    //         id_puesto = '$puesto'
-    //     where id = $id_personas; -- id_persona en tabla login
-
-    //     -- actualiza la tabla login
-    //     update login
-    //     set usuario = '$usuario',
-    //         id_rol = '$rol',
-    //         id_personas = $id_personas,
-    //         pass = '$contrasenia'
-    //     where id = $id; -- id unico en tabla login
-
-    //     commit;
-    //     ";
-    //     $qqry=$pdo->query($qry);
-    //         if (!$qqry) {
-    //             echo "Error en la consulta: " . $pdo->errorInfo()[2];
-    //             exit;
-    //         }
-    // }
-
     function capturar_personas($id){ //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
         $qry="
@@ -160,20 +170,6 @@ class estudiantes_modelo{
         $stmtPersona->bindParam(':id', $persona); 
         $stmtPersona->execute();
     }
-
-    // function eliminar_usuario($id){ //eliminar user
-    //     global $pdo;
-    //     $qry="
-    //     delete from login where id = :id ;
-    //         ";
-    //     $stmt = $pdo->prepare($qry);
-
-    //     //evita inserciones por usuarios con conocimientos SQL
-    //     $stmt->bindParam(':id', $id); 
-
-    //     //fin ejecucion
-    //     $stmt->execute();
-    // }
 
 
 }

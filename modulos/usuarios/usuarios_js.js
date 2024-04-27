@@ -216,7 +216,7 @@ $(document).ready(function (){
                             {
                                 extend:    'colvis',
                                 text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
-                                title:'Kardex - Inventario de Movimientos  ',
+                                title:'Usuarios registrados',
                                 titleAttr: 'Copiar',
                                 className: 'btn btn-app export barras',
                                 exportOptions: {

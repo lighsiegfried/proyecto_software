@@ -4,12 +4,11 @@ class estudiantes_vista
 {
     //funciones de vista
 
-    function get_lista_vista()
+    function get_lista_vista($lista_class)
     {
         ?>
         <style>
             input[type="text"],
-            input[type="password"],
             select {
                 text-transform: none !important;
             }
@@ -20,7 +19,7 @@ class estudiantes_vista
         </style>
         <div class="row justify-content-center ">
             <form id="lista_general_from1" method="post" class="mt-4">
-                <div class="btn-agregar-alumno btnAgregar">
+                <div class="btn-agregar-alumno">
                     <button id="agregar_alumno" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
                         data-target="#modal-gestionar-alumno" data-dismiss="modal">
                         <i class="material-icons">group_add</i>
@@ -72,25 +71,115 @@ class estudiantes_vista
                                         <div class="form-group">
                                             <label for="txtclave">Clave alumno</label>
                                             <input type="text" class="form-control no-uppercase" name="clave" id="txtclave"
-                                                placeholder="Ingrese clave de alumno" autocomplete="off" required>
+                                                placeholder="Clave auto asignada" autocomplete="off" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="txtclase">Clase</label>
-                                            <select name="clase" class="form-control" id="txtrol">
-                                                <option value="1">Administrador</option>
-                                                <option value="2">Profesor</option>
-                                                <option value="3">Consultor</option>
+                                            <select name="clase" class="form-control" id="txtclase" required>
+                                                <option value="<?php if (!isset($_POST['id']))
+                                                    echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                                          echo 'selected'; ?>>Asignar clase</option>
+                                                <?php
+                                                foreach ($lista_class as $valor) {
+                                                    ?>
+                                                    <option value="<?php echo $valor['id']; ?>" <?php if (isset($_POST['id']) and $valor['id'] == $_POST['id'])
+                                                           echo "selected"; ?>>
+                                                        <?php echo $valor['grado'] . ' - ' . $valor['seccion']; ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="id" id="txtid">
+                                </div>
+                            </div>
+
+                            <!-- modal footer  -->
+                            <div class="modal-footer justify-content-end">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" id="btnGuardarAlumno" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -------------------------------------------------------------------------------------------------------------------- -->
+                <div class="modal fade" id="modal-gestionar-alumno-update">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Actualizar estudiante</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtnombres">Nombres</label>
+                                            <input type="text" class="form-control no-uppercase" name="nombres" id="txtnombres"
+                                                placeholder="Ingrese Nombres" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtapellidos">Apellidos</label>
+                                            <input type="text" class="form-control no-uppercase" name="apellidos"
+                                                id="txtapellidos" placeholder="Ingrese Apellidos" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtcorreo">Correo(opcional)</label>
+                                            <input type="text" class="form-control no-uppercase" name="correo" id="txtcorreo"
+                                                placeholder="Ingrese Correo" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtpuesto">Puesto</label>
+                                            <select name="puesto" class="form-control" id="txtpuesto">
+                                                <option value="6">Alumno</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="txtcontrasenia">Contraseña</label>
-                                            <input type="text" class="form-control no-uppercase" name="contrasenia"
-                                                id="txtcontrasenia" placeholder="Ingrese Contraseña" autocomplete="off"
-                                                required>
+                                            <label for="txtclave">Clave alumno</label>
+                                            <input type="text" class="form-control no-uppercase" name="clave" id="txtclave"
+                                                placeholder="Clave auto asignada" autocomplete="off" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtclase">Clase</label>
+                                            <select name="clase" class="form-control" id="txtclase" required>
+                                                <option value="<?php if (!isset($_POST['id']))
+                                                    echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                                          echo 'selected'; ?>>Asignar clase</option>
+                                                <?php
+                                                foreach ($lista_class as $valor) {
+                                                    ?>
+                                                    <option value="<?php echo $valor['id']; ?>" <?php if (isset($_POST['id']) and $valor['id'] == $_POST['id'])
+                                                           echo "selected"; ?>>
+                                                        <?php echo $valor['grado'] . ' - ' . $valor['seccion']; ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txttotal_nota">Nota Total</label>
+                                            <input type="text" class="form-control no-uppercase" name="total_nota" id="txttotal_nota"
+                                                placeholder="Asignar nueva nota" autocomplete="off">
                                         </div>
                                     </div>
                                     <input type="hidden" name="id" id="txtid">
@@ -114,7 +203,7 @@ class estudiantes_vista
                         Agregar clase
                     </button>
                 </div>
-                <div class="modal fade" id="modal-gestionar-clase"> 
+                <div class="modal fade" id="modal-gestionar-clase">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <!-- modal header -->
@@ -136,8 +225,8 @@ class estudiantes_vista
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="txtaseccion">Seccion</label>
-                                            <input type="text" class="form-control no-uppercase" name="seccion"
-                                                id="txtseccion" placeholder="Ingrese Seccion" autocomplete="off" required>
+                                            <input type="text" class="form-control no-uppercase" name="seccion" id="txtseccion"
+                                                placeholder="Ingrese Seccion" autocomplete="off" required>
                                         </div>
                                     </div>
                                 </div>
@@ -164,12 +253,12 @@ class estudiantes_vista
                                     <thead class="table-active ">
                                         <tr>
                                             <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
-                                            <th scope="col" class="text-center">Rol</th>
+                                            <th scope="col" class="text-center">Clave</th> <!--codigos quemados -->
                                             <th scope="col" class="text-center">Nombres</th>
                                             <th scope="col" class="text-center">Apellidos</th>
-                                            <th scope="col" class="text-center">Correo</th>
-                                            <th scope="col" class="text-center">Descripcion de Rol</th>
+                                            <th scope="col" class="text-center">Grado</th>
+                                            <th scope="col" class="text-center">Seccion</th>
+                                            <th scope="col" class="text-center">Nota Total</th>
                                             <th scope="col" class="text-center">Opciones</th>
                                         </tr>
                                     </thead>
@@ -179,12 +268,12 @@ class estudiantes_vista
                                     <tfoot class="table-active">
                                         <tr>
                                             <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Usuario</th> <!--codigos quemados -->
-                                            <th scope="col" class="text-center">Rol</th>
+                                            <th scope="col" class="text-center">Clave</th> <!--codigos quemados -->
                                             <th scope="col" class="text-center">Nombres</th>
                                             <th scope="col" class="text-center">Apellidos</th>
-                                            <th scope="col" class="text-center">Correo</th>
-                                            <th scope="col" class="text-center">Descripcion de Rol</th>
+                                            <th scope="col" class="text-center">Grado</th>
+                                            <th scope="col" class="text-center">Seccion</th>
+                                            <th scope="col" class="text-center">Nota Total</th>
                                             <th scope="col" class="text-center">Opciones</th>
                                     </tfoot>
                                 </table>

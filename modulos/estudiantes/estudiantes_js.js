@@ -62,12 +62,12 @@ $(document).ready(function (){
     //---------------------------------------------------------------------------------------------------------------------------------------
 
     function get_contenido(){
-        get_lista_usuarios();
+        get_lista_alumnos();
     }
 
     get_contenido();
 
-    function get_lista_usuarios(){
+    function get_lista_alumnos(){
         $('#lista').html(set_spinner);
         $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
             accion: 'get_lista_vista'
@@ -92,13 +92,13 @@ $(document).ready(function (){
                       select: 'single',
                     columns:[
                         { data: 'id'},
-                        { data: 'usuario'},
-                        { data: 'rol'},
+                        { data: 'clave'},
                         { data: 'nombres'},
                         { data: 'apellidos'},
-                        { data: 'correo',"bSortable": false,},
-                        { data: 'descripcion'},
-                        { data: 'acciones'}
+                        { data: 'grado'},
+                        { data: 'seccion'},
+                        { data: 'total_nota'},
+                        { data: 'acciones',"bSortable": false,}
                     ],
                     order:[
                        [0, 'asc']
@@ -133,10 +133,10 @@ $(document).ready(function (){
                                 orientation: 'letter',
                                 pageSize: 'LEGAL',
                                 text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
-                                title:'Usuarios registrados',
+                                title:'Listado de Alumnos',
                                 titleAttr: 'PDF',
                                 className: 'btn btn-app export pdf',
-                                filename: `Usuarios registrados - ${fecha.toString()}`,
+                                filename: `Alumnos registrados - ${fecha.toString()}`,
                                 exportOptions: {
                                     // columns: [ 0, 1,2,3,4,5,6 ]
                                     columnsDefs:[{
@@ -196,7 +196,7 @@ $(document).ready(function (){
                             {
                                 extend:    'excelHtml5',
                                 text:      '<i class="material-icons">content_copy</i><br>Excel',
-                                title:'Usuarios registrados',
+                                title:'Alumnos registrados',
                                 titleAttr: 'Excel',
                                 className: 'btn btn-app export excel',
                                 exportOptions: {
@@ -206,7 +206,7 @@ $(document).ready(function (){
                             {
                                 extend:    'csvHtml5',
                                 text:      '<i class="material-icons">open_in_browser</i><br>CSV',
-                                title:'Usuarios registrados CSV',
+                                title:'Alumnos registrados CSV',
                                 titleAttr: 'CSV',
                                 className: 'btn btn-app export csv',
                                 exportOptions: {
@@ -216,7 +216,7 @@ $(document).ready(function (){
                             {
                                 extend:    'colvis',
                                 text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
-                                title:'Kardex - Inventario de Movimientos  ',
+                                title:'Alumnos',
                                 titleAttr: 'Copiar',
                                 className: 'btn btn-app export barras',
                                 exportOptions: {
@@ -238,7 +238,7 @@ $(document).ready(function (){
                         sortable: false,
                         render: function(data, type, full, meta) {
                             return "<center>" +
-                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-actualizar-categoria'> " +
+                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno-update'> " +
                                         "<i class='material-icons'>edit</i></i>" +
                                         "</button>" + "&ensp; "+
                                         "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
@@ -259,73 +259,52 @@ $(document).ready(function (){
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
     }
 
-    $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar
+    $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar estudiantes
         var datos = tablaOrigen.row($(this).parents('tr')).data();
         console.log(datos);
         var id = datos["id"];
-        var usuario = datos["usuario"];
-        var rol = datos["rol"];
+        var clave = datos["clave"];
         var nombres = datos["nombres"];
         var apellidos = datos["apellidos"];
-        var correo = datos["correo"];
-        var descripcion = datos["descripcion"]; //puesto
-        if(rol === "Admin"){
-            rol = 1
-        } else if ( rol === "Profesor"){
-            rol = 2
-        } else if ( rol === "Consultor"){
-            rol = 3
-        }
-        if (descripcion === "Gestor del Sistema"){
-            descripcion = 1
-        } else if (descripcion === "Director"){
-            descripcion = 2
-        } else if (descripcion === "Subdirector"){
-            descripcion = 3
-        } else if (descripcion === "Profesor"){
-            descripcion = 4
-        } else if (descripcion === "Presidente de clase"){
-            descripcion = 5
-        } else if (descripcion === "Alumno"){
-            descripcion = 6
-        } else if (descripcion === "Padres"){
-            descripcion = 7
-        }
+        var grado = datos["grado"];
+        var seccion = datos["seccion"];
+        var total_nota = datos["total_nota"]; 
+
         $("#txtid").val(id);
-        $("#txtusuario").val(usuario);
-        $("#txtrol").val(rol);
+        $("#txtclave").val(clave);
         $("#txtnombres").val(nombres);
         $("#txtapellidos").val(apellidos);
-        $("#txtcorreo").val(correo);
-        $("#txtpuesto").val(descripcion);
-        $("#modal-gestionar-usuario").modal('show');
+        $("#txtgrado").val(grado);
+        $("#txtseccion").val(seccion);
+        $("#txttotal_nota").val(total_nota);
+        
+        $("#modal-gestionar-alumno-update").modal('show');
         $("#btnGuardar").click(function () {
             id = $('#txtid').val()
             nombres = $('#txtnombres').val(),
             apellidos = $('#txtapellidos').val(),
             correo = $('#txtcorreo').val(),
-            descripcion = $('#txtpuesto').val(), //puesto
-            usuario = $('#txtusuario').val(),
-            rol = $('#txtrol').val(),
-            contrasenia = $('#txtcontrasenia').val() //captura nueva contrasenia
+            puesto = $('#txtpuesto').val(),
+            clave = $('#txtclave').val(),
+            clase = $('#txtclase').val()
+
             var datos = new FormData();
             datos.append('id', id);
             datos.append('nombres', nombres);
             datos.append('apellidos', apellidos);
             datos.append('correo', correo);
-            datos.append('puesto', descripcion);
-            datos.append('usuario', usuario);
-            datos.append('rol', rol);
-            datos.append('contrasenia', contrasenia)
+            datos.append('puesto', puesto);
+            datos.append('clave', clave);
+            datos.append('clase', clase)  //id de clase
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
             }
                 if(nombres === null || nombres === undefined || nombres === '' || 
                    apellidos === null || apellidos === undefined || apellidos === '' ||
-                   correo === null || correo === undefined || correo === '' || 
                    usuario === null || usuario === undefined || usuario === '' || 
-                   contrasenia === null || contrasenia === undefined || contrasenia === '' 
+                   contrasenia === null || contrasenia === undefined || contrasenia === '' ||
+                   clave === null || clave === undefined || clave === ''
                 ){
                     Swal.fire({
                         icon: "error",
@@ -334,6 +313,9 @@ $(document).ready(function (){
                       });
                       
                 } else {
+                    if (correo === undefined || correo === ''){
+                        correo === null;
+                    }
                     Swal.fire({
                         title: "Estas seguro?",
                         text: "Los datos se actualizarán",
@@ -350,18 +332,17 @@ $(document).ready(function (){
                             icon: "success"
                           });
                                 $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                    accion: 'editar_usuario',
+                                    accion: 'editar_alumno',
                                     id:id,
                                     nombres: nombres,
                                     apellidos: apellidos,
                                     correo: correo,     
-                                    puesto: descripcion,
-                                    usuario: usuario,
-                                    rol: rol,
-                                    contrasenia: contrasenia
+                                    puesto: puesto,
+                                    clave: clave,
+                                    clase: id_clase
                                 }, success: function (data) { 
                                     console.log(data);
-                                    $("#modal-gestionar-usuario").modal('hide');
+                                    $("#modal-gestionar-alumno-update").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
                                     }, 2000);
@@ -374,7 +355,7 @@ $(document).ready(function (){
 
     });
 
-    $(this).on('click','.btnEliminar', function(e){e.preventDefault(); //eliminar
+    $(this).on('click','.btnEliminar', function(e){e.preventDefault(); //eliminar estudiante
         var data = tablaOrigen.row($(this).parents('tr')).data();
         var id = data["id"];
         var datos = new FormData();
@@ -407,40 +388,36 @@ $(document).ready(function (){
           });//modal guardar sweet-close
     });//eliminar-close
 
-    $(this).on('click','#agregar_alumno', function(e){e.preventDefault();
+    $(this).on('click','#agregar_alumno', function(e){e.preventDefault(); //agregar estudiante
         //llamo el modal y despliego las variables para almacenar los datos
         $("#modal-gestionar-alumno").modal('show'); 
         var accion_data = "";
-        //boton guardar, mando la inf al controlador y lueego al modelo
+        //boton guardar, mando la inf al controlador y lueeeeego al modelo
         $("#btnGuardarAlumno").click(function () {
             var nombres = $('#txtnombres').val(),
                 apellidos = $('#txtapellidos').val(),
                 correo = $('#txtcorreo').val(),
                 puesto = $('#txtpuesto').val(),
-                usuario = $('#txtusuario').val(),
-                rol = $('#txtrol').val(),
-                contrasenia = $('#txtcontrasenia').val()
+                clave = $('#txtclave').val(),
+                clase = $('#txtclase').val()
             var datos = new FormData();
             datos.append('nombres', nombres);
             datos.append('apellidos', apellidos);
             datos.append('correo', correo);
             datos.append('puesto', puesto);
-            datos.append('usuario', usuario);
-            datos.append('rol', rol);
-            datos.append('contrasenia', contrasenia)
+            datos.append('clave', clave);
+            datos.append('clase', clase)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
             }
-            console.log("Datos del FormData:");
+            console.log("Datos: ");
             formDataArray.forEach(pair => {
                 console.log(pair[0] + ": " + pair[1]);
             });
                 if(nombres === null || nombres === undefined || nombres === '' || 
                    apellidos === null || apellidos === undefined || apellidos === '' ||
-                   correo === null || correo === undefined || correo === '' || 
-                   usuario === null || usuario === undefined || usuario === '' || 
-                   contrasenia === null || contrasenia === undefined || contrasenia === '' 
+                   clase === null || clase === undefined || clase === '' || clase === 'Asignar clase'
                 ){
                     Swal.fire({
                         icon: "error",
@@ -448,6 +425,10 @@ $(document).ready(function (){
                         text: "Llenar todos los campos, por favor.."
                       });
                 } else {
+                    if (correo === undefined || correo === '' && clave === undefined || clave === ''){
+                        correo === null;
+                        clave === null;
+                    }
                     Swal.fire({
                         title: "Estas seguro?",
                         text: "Se creara un nuevo usuario",
@@ -469,9 +450,8 @@ $(document).ready(function (){
                                     apellidos: apellidos,
                                     correo: correo,     
                                     puesto: puesto,
-                                    usuario: usuario,
-                                    rol: rol,
-                                    contrasenia: contrasenia
+                                    clave: clave,
+                                    clase: clase
                                 }, success: function (data) { 
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {
@@ -489,7 +469,7 @@ $(document).ready(function (){
 
     });//formulario-close
 
-    $(this).on('click','#agregar_clase', function(e){e.preventDefault();
+    $(this).on('click','#agregar_clase', function(e){e.preventDefault(); //agregar una clase raiz
         //llamo el modal y despliego las variables para almacenar los datos
         $("#modal-gestionar-clase").modal('show'); 
         //boton guardar, mando la inf al controlador y lueego al modelo
@@ -552,7 +532,7 @@ $(document).ready(function (){
 
     });//formulario-close
 
-    function get_example(){
+    function get_example(){ //plantilla ajax
         $('#grafo').html(set_spinner);
         $.ajax({ async: true, type: 'post', url: 'bulto_controlador.php', data: {
             accion: 'get_grafo_bodega_ubicaciones'
