@@ -14,11 +14,15 @@ if (isset($_POST['accion'])) {
     $cod_menu = $_POST['accion'];
     switch ($cod_menu) { 
 
-        case 'guardar_alumno':
+        case 'guardar_clase':
             $grado = $_POST['grado'];
             $seccion = $_POST['seccion'];
 
             $modelo->add_class($grado,$seccion);
+        break;
+
+        case 'guardar_alumno':
+            
         break;
 
         case 'get_lista_vista':

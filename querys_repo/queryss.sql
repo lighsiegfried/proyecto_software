@@ -231,10 +231,12 @@ select id,grado,seccion,fecha  from clase
  
 select grado,seccion from clase where grado='fdsa' and seccion='A'   -- que lo lea en minuscula todo y que lo guarde en minuscula tambien
 
+
+
 -- persona, asocia el id_persona en  tabla-estudiante
 select id,nombres,apellidos,correo,id_puesto from persona
 
--- estudiante id_clase amarra al id > clase
+-- estudiante id_clase amarra al id > clase   , id_persona enlaza a id en tabla persona
 select id,clave,total_nota,id_persona,id_clase from estudiante
 
 
@@ -257,7 +259,18 @@ select id,nombre_actividad,descripcion,punteo,id_etapa from actividad
 select id,nota_actividad,id_estudiantes,id_actividad from actividad2
 
 
-
+<select id="select_fecha" class="form-control" required>
+   <option value="<?php if (!isset($_POST['fecha_mes'])) echo 'null'; ?>" <?php if (!isset($_POST['fecha_mes'])) echo 'selected'; ?>>Seleccione Fecha</option>
+<?php
+   foreach ($lista_fecha as $fechaa) {
+?>
+    <option value="<?php echo $fechaa['fecha_mes']; ?>" <?php if (isset($_POST['fecha_mes']) and $fechaa['fecha_mes'] == $_POST['fecha_mes']) echo "selected"; ?> >
+       <?php echo $fechaa['anio'] . ' - ' . $fechaa['meses'] ; ?>
+     </option>
+   <?php
+ } 
+?>
+</select>
 
 
 

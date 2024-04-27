@@ -20,14 +20,14 @@ class estudiantes_vista
         </style>
         <div class="row justify-content-center ">
             <form id="lista_general_from1" method="post" class="mt-4">
-                <div class="btn-agregar-usuario btnAgregar">
-                    <button id="agregar_usuario" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-gestionar-usuario" data-dismiss="modal">
+                <div class="btn-agregar-alumno btnAgregar">
+                    <button id="agregar_alumno" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
+                        data-target="#modal-gestionar-alumno" data-dismiss="modal">
                         <i class="material-icons">group_add</i>
                         Agregar estudiante
                     </button>
                 </div>
-                <div class="modal fade" id="modal-gestionar-usuario">
+                <div class="modal fade" id="modal-gestionar-alumno">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <!-- modal header -->
@@ -55,7 +55,7 @@ class estudiantes_vista
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="txtcorreo">Correo</label>
+                                            <label for="txtcorreo">Correo(opcional)</label>
                                             <input type="text" class="form-control no-uppercase" name="correo" id="txtcorreo"
                                                 placeholder="Ingrese Correo" autocomplete="off" required>
                                         </div>
@@ -64,27 +64,21 @@ class estudiantes_vista
                                         <div class="form-group">
                                             <label for="txtpuesto">Puesto</label>
                                             <select name="puesto" class="form-control" id="txtpuesto">
-                                                <option value="1">Gestor del Sistema</option>
-                                                <option value="2">Director</option>
-                                                <option value="3">Subdirector</option>
-                                                <option value="4">Profesor</option>
-                                                <option value="5">Presidente de clase</option>
                                                 <option value="6">Alumno</option>
-                                                <option value="7">Padres</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="txtusuario">Usuario</label>
-                                            <input type="text" class="form-control no-uppercase" name="usuario" id="txtusuario"
-                                                placeholder="Ingrese Usuario" autocomplete="off" required>
+                                            <label for="txtclave">Clave alumno</label>
+                                            <input type="text" class="form-control no-uppercase" name="clave" id="txtclave"
+                                                placeholder="Ingrese clave de alumno" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="txtrol">Rol/Privilegios</label>
-                                            <select name="rol" class="form-control" id="txtrol">
+                                            <label for="txtclase">Clase</label>
+                                            <select name="clase" class="form-control" id="txtrol">
                                                 <option value="1">Administrador</option>
                                                 <option value="2">Profesor</option>
                                                 <option value="3">Consultor</option>
@@ -106,7 +100,7 @@ class estudiantes_vista
                             <!-- modal footer  -->
                             <div class="modal-footer justify-content-end">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
+                                <button type="button" id="btnGuardarAlumno" class="btn btn-primary">Guardar</button>
                             </div>
                         </div>
                     </div>

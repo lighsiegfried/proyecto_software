@@ -407,12 +407,12 @@ $(document).ready(function (){
           });//modal guardar sweet-close
     });//eliminar-close
 
-    $(this).on('click','#agregar_usuario', function(e){e.preventDefault();
+    $(this).on('click','#agregar_alumno', function(e){e.preventDefault();
         //llamo el modal y despliego las variables para almacenar los datos
-        $("#modal-gestionar-usuario").modal('show'); 
+        $("#modal-gestionar-alumno").modal('show'); 
         var accion_data = "";
         //boton guardar, mando la inf al controlador y lueego al modelo
-        $("#btnGuardar").click(function () {
+        $("#btnGuardarAlumno").click(function () {
             var nombres = $('#txtnombres').val(),
                 apellidos = $('#txtapellidos').val(),
                 correo = $('#txtcorreo').val(),
@@ -464,7 +464,7 @@ $(document).ready(function (){
                             icon: "success"
                           });
                                 $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                    accion: 'guardar_usuario',
+                                    accion: 'guardar_alumno',
                                     nombres: nombres,
                                     apellidos: apellidos,
                                     correo: correo,     
@@ -532,7 +532,7 @@ $(document).ready(function (){
                             icon: "success"
                           });
                                 $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                    accion: 'guardar_alumno',
+                                    accion: 'guardar_clase',
                                     grado: grado,
                                     seccion: seccion
                                 }, success: function (data) { 
