@@ -122,7 +122,7 @@ class estudiantes_modelo{
 
 
 
-    function editar_usuario($id, $nombres, $apellidos, $correo, $puesto, $usuario, $rol, $id_personas, $contrasenia)
+    function editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$id_personas,$clave,$clase, $total_nota)
     {
         global $pdo;
 
@@ -133,9 +133,10 @@ class estudiantes_modelo{
             $stmt_persona = $pdo->prepare("update persona SET nombres = ?, apellidos = ?, correo = ?, id_puesto = ? WHERE id = ?");
             $stmt_persona->execute([$nombres, $apellidos, $correo, $puesto, $id_personas]);
 
-            // Actualizar la tabla login
-            $stmt_login = $pdo->prepare("update login SET usuario = ?, id_rol = ?, pass = ? WHERE id = ?");
-            $stmt_login->execute([$usuario, $rol, $contrasenia, $id]);
+            // Actualizar la tabla estudiante
+            $stmt_estudiante = $pdo->prepare("update estudiante SET clave = ?, total_nota = ?, id_persona = ?, id_clase = ? WHERE id = ?");
+            $stmt_estudiante->execute([$clave,$total_nota,$id_personas, $clase, $id]);
+    
 
             $pdo->commit();
             return true;
@@ -145,21 +146,20 @@ class estudiantes_modelo{
             return false;
         }
     }
-
-    function capturar_personas($id){ //captura id personas para actualizar/editar/eliminar data.
+    
+    function capturar_personas_estudiante($id){ //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
         $qry="
-        select id_personas from login where id = $id;";
+        select id_persona from estudiante where id = $id;";
         $qqry=$pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-
-    function eliminar_usuario($id,$persona){ //eliminar usuario y persona asignada a usuario
+    function eliminar_alumno($id,$persona){ //eliminar alumno y persona asignada a alumno
         global $pdo;
         
         // Eliminar en 'login'
-        $qryLogin = "delete from login where id = :id";
+        $qryLogin = "delete from estudiante where id = :id";
         $stmtLogin = $pdo->prepare($qryLogin);
         $stmtLogin->bindParam(':id', $id);  //evita inserciones por usuarios con conocimientos SQL
         $stmtLogin->execute();              //fin ejecucion

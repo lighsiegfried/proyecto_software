@@ -238,7 +238,7 @@ $(document).ready(function (){
                         sortable: false,
                         render: function(data, type, full, meta) {
                             return "<center>" +
-                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno-update'> " +
+                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
                                         "<i class='material-icons'>edit</i></i>" +
                                         "</button>" + "&ensp; "+
                                         "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
@@ -278,15 +278,16 @@ $(document).ready(function (){
         $("#txtseccion").val(seccion);
         $("#txttotal_nota").val(total_nota);
         
-        $("#modal-gestionar-alumno-update").modal('show');
-        $("#btnGuardar").click(function () {
+        $("#modal-gestionar-alumno").modal('show');
+        $("#btnGuardarAlumno").click(function () {
             id = $('#txtid').val()
             nombres = $('#txtnombres').val(),
             apellidos = $('#txtapellidos').val(),
             correo = $('#txtcorreo').val(),
             puesto = $('#txtpuesto').val(),
             clave = $('#txtclave').val(),
-            clase = $('#txtclase').val()
+            clase = $('#txtclase').val(),
+            total_nota = $('#txttotal_nota').val()
 
             var datos = new FormData();
             datos.append('id', id);
@@ -295,16 +296,14 @@ $(document).ready(function (){
             datos.append('correo', correo);
             datos.append('puesto', puesto);
             datos.append('clave', clave);
-            datos.append('clase', clase)  //id de clase
+            datos.append('clase', clase); //id de clase
+            datos.append('total_nota', total_nota);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
             }
                 if(nombres === null || nombres === undefined || nombres === '' || 
-                   apellidos === null || apellidos === undefined || apellidos === '' ||
-                   usuario === null || usuario === undefined || usuario === '' || 
-                   contrasenia === null || contrasenia === undefined || contrasenia === '' ||
-                   clave === null || clave === undefined || clave === ''
+                   apellidos === null || apellidos === undefined || apellidos === '' 
                 ){
                     Swal.fire({
                         icon: "error",
@@ -313,8 +312,8 @@ $(document).ready(function (){
                       });
                       
                 } else {
-                    if (correo === undefined || correo === ''){
-                        correo === null;
+                    if (correo === undefined || correo === '' || total_nota === undefined || total_nota === ''){
+                        correo === null; total_nota === null;
                     }
                     Swal.fire({
                         title: "Estas seguro?",
@@ -339,10 +338,11 @@ $(document).ready(function (){
                                     correo: correo,     
                                     puesto: puesto,
                                     clave: clave,
-                                    clase: id_clase
+                                    clase: clase,
+                                    total_nota: total_nota
                                 }, success: function (data) { 
                                     console.log(data);
-                                    $("#modal-gestionar-alumno-update").modal('hide');
+                                    $("#modal-gestionar-alumno").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
                                     }, 2000);
@@ -361,7 +361,7 @@ $(document).ready(function (){
         var datos = new FormData();
         datos.append('id', id);
         Swal.fire({
-            title: "Deseas eliminar el usuario?",
+            title: "Deseas eliminar el alumno?",
             text: "Proceso no revertible..",
             icon: "question",
             showCancelButton: true,
@@ -371,12 +371,12 @@ $(document).ready(function (){
           }).then((result) => {
             if (result.isConfirmed) {
               Swal.fire({
-                title: "Se elimino usuario!",
+                title: "Se elimino alumno!",
                 text: "Se recargara la lista..",
                 icon: "success"
               });
                     $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                        accion: 'eliminar_usuario',
+                        accion: 'eliminar_alumno',
                         id:id
                     }, success: function (data) { 
                         //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
@@ -474,8 +474,8 @@ $(document).ready(function (){
         $("#modal-gestionar-clase").modal('show'); 
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardarClase").click(function () {
-            var grado = $('#txtgrado').val(),
-                seccion = $('#txtseccion').val()
+            var grado = $('#txtgrado').val().toLowerCase(), //captura siempre en minuscula
+                seccion = $('#txtseccion').val().toUpperCase(); //captura siempre en mayuscula
             var datos = new FormData();
             datos.append('grado', grado);
             datos.append('seccion', seccion);

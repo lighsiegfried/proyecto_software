@@ -62,23 +62,25 @@ if (isset($_POST['accion'])) {
             $puesto = $_POST['puesto'];
             $clave = $_POST['clave'];
             $clase = $_POST['clase'];
+            $total_nota = $_POST['total_nota'];
+            
 
-            // $id_per=$modelo->capturar_personas($id);
-            // foreach ($id_per as $valor) {
-            //     $id_personas=$valor['id_personas'];
-            // }
+            $id_per=$modelo->capturar_personas_estudiante($id);
+            foreach ($id_per as $valor) {
+                $id_personas=$valor['id_persona'];
+            }
 
-            // $resultado1=$modelo->editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia);
+            $modelo->editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$id_personas,$clave,$clase, $total_nota);
         break;
 
-        case 'eliminar_usuario':
+        case 'eliminar_alumno':
             $id = $_POST['id'];
 
-            $person=$modelo->capturar_personas($id);
+            $person=$modelo->capturar_personas_estudiante($id);
             foreach ($person as $valor) {
-                $persona=$valor['id_personas'];
+                $persona=$valor['id_persona'];
             }
-            $modelo->eliminar_usuario($id,$persona);
+            $modelo->eliminar_alumno($id,$persona);
         break;
 
 
