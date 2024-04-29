@@ -12,6 +12,7 @@ Resuelto **compatibilidad DataTable
 Resuelto **clave de alumno, conflicto al ingresar, se realizara AUTOINCREMENTAL dependiendo de la clase que sea asignado, si esta vacia, por default sera 1, dato no editable--
 
 
+quitar el link C:\xampp\htdocs\proyecto_software\menu\assets\css\styles.css
 
 --modulo usuarios/ CRUD - (Create, Read, Update, Delete)
 --seguir con el modulo de estudiantes

@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="librerias/bootstrap-5.3.3/css/bootstrap.min.css" rel="stylesheet">
   <script type="text/javascript" src="./librerias/jquery-3.7.1.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="librerias/remixicon-3.2.0/fonts/remixicon.css">
   <link rel="stylesheet" href="menu/assets/css/styles.css">
 </head> 
 <body>
