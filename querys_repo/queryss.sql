@@ -269,20 +269,20 @@ insert into estudiante (clave,total_nota,id_persona,id_clase)
 values (2,null,8,2)
 
 --------------------------------------------------------------------------------------------------------
--- se crea una etapa nueva
+-- se crea una etapa nueva - Es el bimestre
 select id,nombre_etapa from etapa
-
--- examen 1 nombre examen y puntos de cuanto vale
-select id,nombre_examen,descripcion, total_examen from examen
-
--- examen 2 referencia al 1 y agrega nota adquirida en el examen, amarra id_estudiante y id_examen
-select id,nota_examen,id_estudiante,id_examen from examen2
 
 -- actividad
 select id,nombre_actividad,descripcion,punteo,id_etapa from actividad
 
 -- relacion  id_estudiante y id_actividad
 select id,nota_actividad,id_estudiantes,id_actividad from actividad2
+
+-- examen 1 nombre examen y puntos de cuanto vale
+select id,nombre_examen,descripcion, total_examen from examen
+
+-- examen 2 referencia al 1 y agrega nota adquirida en el examen, amarra id_estudiante y id_examen
+select id,nota_examen,id_estudiante,id_examen from examen2
 
 
 
