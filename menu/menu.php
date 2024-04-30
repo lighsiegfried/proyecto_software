@@ -39,20 +39,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                   <!--=============== dropdown usuarios ===============-->
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <a href="<?php echo $server_schema . $division . $server_host . $usuariosver ?>" class="nav__link" title="Listado de usuarios">Usuarios</a><i
+                        <a href="#" class="nav__link" title="Listado de usuarios">Usuarios</a><i
                            class="ri-arrow-down-s-line dropdown__arrow"></i>
                      </div>
 
                      <ul class="dropdown__menu">
                         <li>
-                           <a href="<?php $server_schema . $division . $server_host . $usuariosver ?>" class="dropdown__link">
-                              <i class="ri-user-line" title="Gestion de perfiles"></i> Perfiles
-                           </a>
-                        </li>
-
-                        <li>
-                           <a href="#" class="dropdown__link">
-                              <i class="ri-lock-line" title="Permisos de usuarios"></i> Permisos
+                           <a href="<?php echo $server_schema . $division . $server_host . $usuariosver ?>" class="dropdown__link">
+                              <i class="ri-user-line" title="Gestion de perfiles"></i> Perfiles y permisos <i class="ri-lock-line" title="Permisos de usuarios"></i>
                            </a>
                         </li>
                      </ul>
@@ -64,18 +58,20 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                         <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="nav__link" title="Listado de estudiantes">Estudiantes
                         </a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
                      </div>
-
-                     <ul class="dropdown__menu">
-                        <li>
-                           <a href="#" class="dropdown__link">
-                              <i class="ri-arrow-up-down-line"></i> -Modulo en construccion
-                           </a>
-                           <!-- class="ri-pie-chart-line"                         -->
-                        </li>
-                     </ul>
                   </li>
-                  <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="nav__link" title="Actividades de alumnos">Actividades<i
-                           class="ri-arrow-down-s-line dropdown__arrow"></i></a></li>
+                  <li class="dropdown__item">
+                        <a href="#" class="nav__link" title="Actividades de alumnos">
+                        Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </a>
+                        <ul class="dropdown__menu">
+                           <li>
+                              <a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="dropdown__link">
+                                 <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
+                              </a>
+                              <!-- class="ri-pie-chart-line" -->
+                           </li>
+                        </ul>
+                     </li>
                <?php elseif ($rol === 'Profesor'): ?>
 
                   <li class="dropdown__item">
@@ -100,8 +96,19 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                         </li>
                      </ul>
                   </li>
-                  <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host . $actividades ?>" class="nav__link" title="Actividades de alumnos">Actividades<i
-                           class="ri-arrow-down-s-line dropdown__arrow"></i></a></li>
+                  <li class="dropdown__item">
+                        <a href="#" class="nav__link" title="Actividades de alumnos">
+                        Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </a>
+                        <ul class="dropdown__menu">
+                           <li>
+                              <a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="dropdown__link">
+                                 <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
+                              </a>
+                              <!-- class="ri-pie-chart-line" -->
+                           </li>
+                        </ul>
+                  </li>
                <?php elseif ($rol === 'Consultor'): ?>
                   <li class="dropdown__item">
                      <div class="nav__link">

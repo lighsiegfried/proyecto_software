@@ -10,14 +10,18 @@ Resuelto **consulta ** verificar compatibilidad remixicon
 Resuelto **vulnerabilidad de librerias - general*
 Resuelto **compatibilidad DataTable
 Resuelto **clave de alumno, conflicto al ingresar, se realizara AUTOINCREMENTAL dependiendo de la clase que sea asignado, si esta vacia, por default sera 1, dato no editable--
+Resuelto **agregar las librerias completas en LOCAL
+Resuelto **modulo usuarios/ CRUD - (Create, Read, Update, Delete)
+Resuelto **modulo de estudiantes/ CRUD - (Create, Read, Update, Delete)
+Resuelto **relacion ruta raiz>menu>menu.php Usuarios 
 
 
-quitar el link C:\xampp\htdocs\proyecto_software\menu\assets\css\styles.css
 
---modulo usuarios/ CRUD - (Create, Read, Update, Delete)
---seguir con el modulo de estudiantes
+********* -- PENDIENTES -- *********
+--modulo actividades
 --seguir con el modulo de reportes
 
 
 
-**pendiente relacion ruta raiz>menu>menu.php > line 9 
+
+

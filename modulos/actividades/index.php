@@ -33,7 +33,7 @@ if (isset($_SESSION['rol'])):
       <script src="../../librerias/DataTables/datatables.js"> </script>
       <script src="../../librerias/DataTables/datatables.min.js"> </script>
       <!-- <script src="../../librerias/fontawesome-free-6.5.2/css/all.min.css"> </script> -->
-      <!-- <script src="usuarios_js.js"> </script> -->
+      <script src="actividades_js.js"> </script>
     </head>
 
     <body>
