@@ -5,84 +5,57 @@
     
     //especial para este modulo
     require_once('actividades_modelo.php');
-    $modelo= new estudiantes_modelo();      
+    $modelo= new actividades_modelo();      
     require_once('actividades_vista.php');
-    $vista= new estudiantes_vista();       
+    $vista= new actividades_vista();       
 
 // ESTRUCTURA DE CONTROL
 if (isset($_POST['accion'])) {
     $cod_menu = $_POST['accion'];
     switch ($cod_menu) { 
 
-        case 'guardar_clase':
-            $grado = $_POST['grado'];
-            $seccion = $_POST['seccion'];
-
-            $modelo->add_class($grado,$seccion);
+        case 'guardar_etapa':
+            $nombre_etapa = $_POST['nombre_etapa'];
+            $modelo->add_etapa($nombre_etapa);
         break;
 
-        case 'guardar_alumno':
-            $nombres = $_POST['nombres'];
-            $apellidos = $_POST['apellidos'];
-            $correo = $_POST['correo'];
-            $puesto = $_POST['puesto'];
-            $clave = $_POST['clave'];
-            $id_clase = $_POST['clase'];
-            $id_persona_mas=$modelo->id_up_personas();
-            foreach ($id_persona_mas as $valor) {
-                $id_persona_mas_uno=$valor['id'];
-            }
-            $id_clav=$modelo->existe_clase_asignacion($id_clase);
-            if($id_clav === null)
-            {
-                $id_clave = 1;
-            } else {
-                foreach ($id_clav as $valor1) {
-                    $id_clave=$valor1['clave'];
-                }
-            }
-            $modelo->agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase);
+        case 'guardar_actividad':
+            $nombre_actividad = $_POST['nombre_actividad'];
+            $descripcion = $_POST['descripcion'];
+            $punteo = $_POST['punteo'];
+            $etapa = $_POST['etapa'];
+            $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa);
         break;
 
         case 'get_lista_vista':
-            $lista_class=$modelo->show_class();
-            $vista->get_lista_vista($lista_class);
+            $lista=$modelo->show();
+            $vista->get_lista_vista($lista);
         break;
 
         case 'get_lista_datos':
-            $lista_de_alumnos=$modelo->get_alumnos();
-            echo json_encode($lista_de_alumnos,true);
+            $lista_actividades=$modelo->get_actividades();
+            echo json_encode($lista_actividades,true);
         break;
 
-        case 'editar_alumno':
+        case 'editar_actividad':
             $id = $_POST['id'];
-            $nombres = $_POST['nombres'];
-            $apellidos = $_POST['apellidos'];
-            $correo = $_POST['correo'];
-            $puesto = $_POST['puesto'];
-            $clave = $_POST['clave'];
-            $clase = $_POST['clase'];
-            $total_nota = $_POST['total_nota'];
-            
+            $nombre_actividad = $_POST['nombre_actividad'];
+            $descripcion = $_POST['descripcion'];
+            $punteo = $_POST['punteo'];
+            $etapa = $_POST['etapa'];
 
-            $id_per=$modelo->capturar_personas_estudiante($id);
-            foreach ($id_per as $valor) {
-                $id_personas=$valor['id_persona'];
-            }
-
-            $modelo->editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$id_personas,$clave,$clase, $total_nota);
+            $modelo->editar_actividad1($id,$nombre_actividad,$descripcion,$punteo,$etapa);
         break;
 
-        case 'eliminar_alumno':
+        case 'eliminar_actividad':
             $id = $_POST['id'];
-
-            $person=$modelo->capturar_personas_estudiante($id);
-            foreach ($person as $valor) {
-                $persona=$valor['id_persona'];
-            }
-            $modelo->eliminar_alumno($id,$persona);
+            $modelo->eliminar_actividad($id);
         break;
 
+        case 'eliminar_etapa':
+            $id = $_POST['id'];
+            $modelo->eliminar_etapa($id);
+        break;
 
         default:
             $respuesta = [];

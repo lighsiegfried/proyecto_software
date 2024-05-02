@@ -532,14 +532,45 @@ $(document).ready(function (){
 
     });//formulario-close
 
-    function get_example(){ //plantilla ajax
-        $('#grafo').html(set_spinner);
-        $.ajax({ async: true, type: 'post', url: 'bulto_controlador.php', data: {
-            accion: 'get_grafo_bodega_ubicaciones'
-        }, success: function (data) {   
-            $('#grafo').html(data);
-        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
-    }
+    $(this).on('click', '#eliminar_clase', function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+        // muestra el primer modal y oculta el segundo
+        $("#modal-gestionar-clase").modal('hide');
+        $("#modal-gestionar-clase_eliminar").modal('show');
+    });
+
+    // evento click para el botón de eliminar dentro del segundo modal
+    $(this).on('click', '#btnclaseeliminar', function() {
+        // obtiene el valor del campo de selección dentro del segundo modal
+        var id = $('#txtclase2').val();
+        Swal.fire({
+            title: "Deseas eliminar la clase?",
+            text: "Proceso no revertible..",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Se elimino la clase!",
+                    text: "Se recargara la lista..",
+                    icon: "success"
+                });
+                   $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                        accion: 'eliminar_clase',
+                        id:id
+                        }, success: function (data) { 
+                        //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+            }
+        });
+    });
+
    
     
 });

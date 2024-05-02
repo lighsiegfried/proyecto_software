@@ -9,14 +9,12 @@ get_pdo();
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
-//valida Rol aunque peguen el link directo,si no tiene permiso no podra acceder.
-if (isset($_SESSION['rol'])):
+if (isset($_SESSION['rol'])): //valida Rol aunque peguen el link directo,si no tiene permiso no podra acceder.
   $rol = $_SESSION['rol'];
   if ($rol === 'Admin' || $rol === 'Profesor'):
     ?>
     <!DOCTYPE html>
     <html lang="en">
-
     <head>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,6 +30,7 @@ if (isset($_SESSION['rol'])):
       <link rel="stylesheet" href="../../librerias/DataTables/datatables.min.css">
       <script src="../../librerias/DataTables/datatables.js"> </script>
       <script src="../../librerias/DataTables/datatables.min.js"> </script>
+      <script src="../../librerias/sweetalert2@11.js"></script>
       <!-- <script src="../../librerias/fontawesome-free-6.5.2/css/all.min.css"> </script> -->
       <script src="actividades_js.js"> </script>
     </head>

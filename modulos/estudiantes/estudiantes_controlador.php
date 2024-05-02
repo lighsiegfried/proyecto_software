@@ -83,6 +83,10 @@ if (isset($_POST['accion'])) {
             $modelo->eliminar_alumno($id,$persona);
         break;
 
+        case 'eliminar_clase':
+            $id = $_POST['id'];
+            $modelo->eliminar_clase($id);
+        break;
 
         default:
             $respuesta = [];

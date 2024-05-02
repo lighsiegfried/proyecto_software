@@ -125,7 +125,7 @@ class estudiantes_vista
 
                 </div>
                 <div class="modal fade" id="modal-gestionar-clase">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
                             <!-- modal header -->
                             <div class="modal-header">
@@ -136,30 +136,77 @@ class estudiantes_vista
                             <div class="modal-body">
                                 <!-- çategoria ruta y estado -->
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    
                                         <div class="form-group">
                                             <label for="txtgrado">Grado</label>
                                             <input type="text" class="form-control no-uppercase" name="grado" id="txtgrado"
                                                 placeholder="Ingrese Grado" autocomplete="off" required>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
+                                    
+                                    
+                                        <div class="form-group mt-2">
                                             <label for="txtaseccion">Seccion</label>
                                             <input type="text" class="form-control no-uppercase" name="seccion" id="txtseccion"
                                                 placeholder="Ingrese Seccion" autocomplete="off" required>
                                         </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <!-- modal footer  -->
                             <div class="modal-footer justify-content-end">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" id="btnGuardarClase" class="btn btn-primary">Guardar</button>
+                                <div class="row">
+                                    <button id="eliminar_clase" type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Eliminar clase y seccion</button>
+                                    <button type="button" class="btn btn-dark mt-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" id="btnGuardarClase" class="btn btn-primary mt-2">Guardar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="modal-gestionar-clase_eliminar">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Eliminar clase</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                <div class="row">
+                                        <div class="form-group">
+                                            <label for="txtclase2">Clase</label>
+                                            <select name="clase2" class="form-control" id="txtclase2" required>
+                                                <option value="<?php if (!isset($_POST['id']))
+                                                    echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                                          echo 'selected'; ?>>Seleccionar clase a eliminar</option>
+                                                <?php
+                                                foreach ($lista_class as $valor2) {
+                                                    ?>
+                                                    <option value="<?php echo $valor2['id']; ?>" <?php if (isset($_POST['id']) and $valor2['id'] == $_POST['id'])
+                                                           echo "selected"; ?>>
+                                                        <?php echo $valor2['grado'] . ' - ' . $valor2['seccion']; ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                </div>
+                            </div>
+                            <!-- modal footer  -->
+                            <div class="modal-footer d-flex justify-content-center">
+                                <div class="">
+                                    <button type="button" class="btn btn-dark mt-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" id="btnclaseeliminar" class="btn btn-danger mt-2">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </form>
             <div class="col-11">
                 <div class="card shadow">

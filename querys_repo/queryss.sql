@@ -272,6 +272,7 @@ values (2,null,8,2)
 -- se crea una etapa nueva - Es el bimestre
 select id,nombre_etapa from etapa
 
+
 -- actividad
 select id,nombre_actividad,descripcion,punteo,id_etapa from actividad
 
@@ -285,23 +286,21 @@ select id,nombre_examen,descripcion, total_examen from examen
 select id,nota_examen,id_estudiante,id_examen from examen2
 
 
+/*consulta de actividades*/
+select 
+		t2.id,
+		t1.id as id_etapa,
+		t2.nombre_actividad,
+		t2.descripcion,
+		t2.punteo,
+		t1.nombre_etapa,
+		'X' as acciones
+from 
+(/*tabla etapa*/
+		select id,nombre_etapa from etapa) t1 left join 
+(/*tabla actividades*/
+		select id,nombre_actividad,descripcion,punteo,id_etapa from actividad) t2 on t1.id = t2.id_etapa
+where t2.id is not null;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+--------------------------------------------------------------------------------------------------------------
 

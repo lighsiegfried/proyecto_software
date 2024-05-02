@@ -171,6 +171,15 @@ class estudiantes_modelo{
         $stmtPersona->execute();
     }
 
+    function eliminar_clase($id){ //eliminar alumno y persona asignada a alumno
+        global $pdo;
+        
+        // Eliminar 
+        $qry = "delete from clase where id = :id";
+        $stmt = $pdo->prepare($qry);
+        $stmt->bindParam(':id', $id);  //evita inserciones por usuarios con conocimientos SQL
+        $stmt->execute();              //fin ejecucion
+    }
 
 }
 

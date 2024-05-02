@@ -62,12 +62,12 @@ $(document).ready(function (){
     //---------------------------------------------------------------------------------------------------------------------------------------
 
     function get_contenido(){
-        get_lista_alumnos();
+        get_lista_Actividades();
     }
 
     get_contenido();
 
-    function get_lista_alumnos(){
+    function get_lista_Actividades(){
         $('#lista').html(set_spinner);
         $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
             accion: 'get_lista_vista'
@@ -92,12 +92,11 @@ $(document).ready(function (){
                       select: 'single',
                     columns:[
                         { data: 'id'},
-                        { data: 'clave'},
-                        { data: 'nombres'},
-                        { data: 'apellidos'},
-                        { data: 'grado'},
-                        { data: 'seccion'},
-                        { data: 'total_nota'},
+                        { data: 'id_etapa'},
+                        { data: 'nombre_actividad'},
+                        { data: 'descripcion'},
+                        { data: 'punteo'},
+                        { data: 'nombre_etapa'},
                         { data: 'acciones',"bSortable": false,}
                     ],
                     order:[
@@ -121,7 +120,7 @@ $(document).ready(function (){
                             {
                                 extend:    'copyHtml5',
                                 text:      '<i class="material-icons">content_copy</i><br>Copiar',
-                                title:'Usuarios registrados',
+                                title:'Actividades registrados',
                                 titleAttr: 'Copiar',
                                 className: 'btn btn-app export barras',
                                 exportOptions: {
@@ -133,10 +132,10 @@ $(document).ready(function (){
                                 orientation: 'letter',
                                 pageSize: 'LEGAL',
                                 text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
-                                title:'Listado de Alumnos',
+                                title:'Listado de Actividades',
                                 titleAttr: 'PDF',
                                 className: 'btn btn-app export pdf',
-                                filename: `Alumnos registrados - ${fecha.toString()}`,
+                                filename: `Actividades registrados - ${fecha.toString()}`,
                                 exportOptions: {
                                     // columns: [ 0, 1,2,3,4,5,6 ]
                                     columnsDefs:[{
@@ -196,7 +195,7 @@ $(document).ready(function (){
                             {
                                 extend:    'excelHtml5',
                                 text:      '<i class="material-icons">content_copy</i><br>Excel',
-                                title:'Alumnos registrados',
+                                title:'Actividades registrados',
                                 titleAttr: 'Excel',
                                 className: 'btn btn-app export excel',
                                 exportOptions: {
@@ -206,7 +205,7 @@ $(document).ready(function (){
                             {
                                 extend:    'csvHtml5',
                                 text:      '<i class="material-icons">open_in_browser</i><br>CSV',
-                                title:'Alumnos registrados CSV',
+                                title:'Actividades registrados CSV',
                                 titleAttr: 'CSV',
                                 className: 'btn btn-app export csv',
                                 exportOptions: {
@@ -216,7 +215,7 @@ $(document).ready(function (){
                             {
                                 extend:    'colvis',
                                 text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
-                                title:'Alumnos',
+                                title:'Actividades',
                                 titleAttr: 'Copiar',
                                 className: 'btn btn-app export barras',
                                 exportOptions: {
@@ -234,7 +233,7 @@ $(document).ready(function (){
                         ]
                     }, 
                     columnDefs: [{
-                        targets: 7,
+                        targets: 6,
                         sortable: false,
                         render: function(data, type, full, meta) {
                             return "<center>" +
@@ -259,51 +258,42 @@ $(document).ready(function (){
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
     }
 
-    $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar estudiantes
+    $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar actividades
         var datos = tablaOrigen.row($(this).parents('tr')).data();
         console.log(datos);
         var id = datos["id"];
-        var clave = datos["clave"];
-        var nombres = datos["nombres"];
-        var apellidos = datos["apellidos"];
-        var grado = datos["grado"];
-        var seccion = datos["seccion"];
-        var total_nota = datos["total_nota"]; 
+        var nombre_actividad = datos["nombre_actividad"];
+        var descripcion = datos["descripcion"];
+        var punteo = datos["punteo"];
+        var etapa = datos["id_etapa"];
 
         $("#txtid").val(id);
-        $("#txtclave").val(clave);
-        $("#txtnombres").val(nombres);
-        $("#txtapellidos").val(apellidos);
-        $("#txtgrado").val(grado);
-        $("#txtseccion").val(seccion);
-        $("#txttotal_nota").val(total_nota);
+        $("#txtnombre_actividad").val(nombre_actividad);
+        $("#txtdescripcion").val(descripcion);
+        $("#txtpunteo").val(punteo);
+        $("#txtetapa").val(etapa);
         
-        $("#modal-gestionar-alumno").modal('show');
-        $("#btnGuardarAlumno").click(function () {
-            id = $('#txtid').val()
-            nombres = $('#txtnombres').val(),
-            apellidos = $('#txtapellidos').val(),
-            correo = $('#txtcorreo').val(),
-            puesto = $('#txtpuesto').val(),
-            clave = $('#txtclave').val(),
-            clase = $('#txtclase').val(),
-            total_nota = $('#txttotal_nota').val()
-
+        $("#modal-gestionar-actividad").modal('show');
+        $("#btnGuardaractividad").click(function () {
+            id = $('#txtid').val(),
+            nombre_actividad = $('#txtnombre_actividad').val(),
+            descripcion = $('#txtdescripcion').val(),
+            punteo = $('#txtpunteo').val(),
+            etapa = $('#txtetapa').val()
+            console.log(id,nombre_actividad,descripcion,punteo,etapa)
             var datos = new FormData();
             datos.append('id', id);
-            datos.append('nombres', nombres);
-            datos.append('apellidos', apellidos);
-            datos.append('correo', correo);
-            datos.append('puesto', puesto);
-            datos.append('clave', clave);
-            datos.append('clase', clase); //id de clase
-            datos.append('total_nota', total_nota);
+            datos.append('nombre_actividad', nombre_actividad);
+            datos.append('descripcion', descripcion);
+            datos.append('punteo', punteo);
+            datos.append('etapa', etapa)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
-            }
-                if(nombres === null || nombres === undefined || nombres === '' || 
-                   apellidos === null || apellidos === undefined || apellidos === '' 
+            } 
+                if(nombre_actividad === null || nombre_actividad === undefined || nombre_actividad === '' || 
+                   punteo === null || punteo === undefined || punteo === '' ||
+                   etapa === null || etapa === undefined || etapa === ''
                 ){
                     Swal.fire({
                         icon: "error",
@@ -312,8 +302,8 @@ $(document).ready(function (){
                       });
                       
                 } else {
-                    if (correo === undefined || correo === '' || total_nota === undefined || total_nota === ''){
-                        correo === null; total_nota === null;
+                    if (descripcion === undefined || descripcion === ''){
+                        descripcion === null;
                     }
                     Swal.fire({
                         title: "Estas seguro?",
@@ -331,18 +321,15 @@ $(document).ready(function (){
                             icon: "success"
                           });
                                 $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                                    accion: 'editar_alumno',
+                                    accion: 'editar_actividad',
                                     id:id,
-                                    nombres: nombres,
-                                    apellidos: apellidos,
-                                    correo: correo,     
-                                    puesto: puesto,
-                                    clave: clave,
-                                    clase: clase,
-                                    total_nota: total_nota
+                                    nombre_actividad: nombre_actividad,
+                                    descripcion: descripcion,
+                                    punteo: punteo,     
+                                    etapa: etapa
                                 }, success: function (data) { 
                                     console.log(data);
-                                    $("#modal-gestionar-alumno").modal('hide');
+                                    $("#modal-gestionar-actividad").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
                                     }, 2000);
@@ -352,16 +339,15 @@ $(document).ready(function (){
                 } //fin else-close
         });//btnGuardar-close
 
-
     });
 
-    $(this).on('click','.btnEliminar', function(e){e.preventDefault(); //eliminar estudiante
+    $(this).on('click','.btnEliminar', function(e){e.preventDefault(); //eliminar etapa
         var data = tablaOrigen.row($(this).parents('tr')).data();
         var id = data["id"];
         var datos = new FormData();
         datos.append('id', id);
         Swal.fire({
-            title: "Deseas eliminar el alumno?",
+            title: "Deseas eliminar la actividad?",
             text: "Proceso no revertible..",
             icon: "question",
             showCancelButton: true,
@@ -371,12 +357,12 @@ $(document).ready(function (){
           }).then((result) => {
             if (result.isConfirmed) {
               Swal.fire({
-                title: "Se elimino alumno!",
+                title: "Se elimino actividad!",
                 text: "Se recargara la lista..",
                 icon: "success"
               });
                     $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                        accion: 'eliminar_alumno',
+                        accion: 'eliminar_actividad',
                         id:id
                     }, success: function (data) { 
                         //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
@@ -388,36 +374,71 @@ $(document).ready(function (){
           });//modal guardar sweet-close
     });//eliminar-close
 
-    $(this).on('click','#agregar_alumno', function(e){e.preventDefault(); //agregar estudiante
+    $(this).on('click', '#eliminar_etapa', function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+        // muestra el primer modal y oculta el segundo
+        $("#modal-gestionar-etapa").modal('hide');
+        $("#modal-gestionar-etapa_eliminar").modal('show');
+    });
+
+    // evento click para el botón de eliminar dentro del segundo modal
+    $(this).on('click', '#btnetapaeliminar', function() {
+        // obtiene el valor del campo de selección dentro del segundo modal
+        var id = $('#txtetapa2').val();
+        console.log("fase2: ", id);
+        
+        Swal.fire({
+            title: "Deseas eliminar la etapa?",
+            text: "Proceso no revertible..",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Se elimino la etapa!",
+                    text: "Se recargara la lista..",
+                    icon: "success"
+                });
+                   $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
+                        accion: 'eliminar_etapa',
+                        id:id
+                        }, success: function (data) { 
+                        //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+            }
+        });
+    });
+
+    $(this).on('click','#agregar_actividad', function(e){e.preventDefault(); //agregar actividad
         //llamo el modal y despliego las variables para almacenar los datos
-        $("#modal-gestionar-alumno").modal('show'); 
-        var accion_data = "";
+        $("#modal-gestionar-actividad").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
-        $("#btnGuardarAlumno").click(function () {
-            var nombres = $('#txtnombres').val(),
-                apellidos = $('#txtapellidos').val(),
-                correo = $('#txtcorreo').val(),
-                puesto = $('#txtpuesto').val(),
-                clave = $('#txtclave').val(),
-                clase = $('#txtclase').val()
+        $("#btnGuardaractividad").click(function () {
+            var nombre_actividad = $('#txtnombre_actividad').val().toLowerCase(),
+                descripcion = $('#txtdescripcion').val(),
+                punteo = $('#txtpunteo').val(),
+                etapa = $('#txtetapa').val()
             var datos = new FormData();
-            datos.append('nombres', nombres);
-            datos.append('apellidos', apellidos);
-            datos.append('correo', correo);
-            datos.append('puesto', puesto);
-            datos.append('clave', clave);
-            datos.append('clase', clase)
+            datos.append('nombre_actividad', nombre_actividad);
+            datos.append('descripcion', descripcion);
+            datos.append('punteo', punteo);
+            datos.append('etapa', etapa)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
             }
-            console.log("Datos: ");
             formDataArray.forEach(pair => {
                 console.log(pair[0] + ": " + pair[1]);
             });
-                if(nombres === null || nombres === undefined || nombres === '' || 
-                   apellidos === null || apellidos === undefined || apellidos === '' ||
-                   clase === null || clase === undefined || clase === '' || clase === 'Asignar clase'
+                if(nombre_actividad === null || nombre_actividad === undefined || nombre_actividad === '' || 
+                   punteo === null || punteo === undefined || punteo === '' ||
+                   etapa === null || etapa === undefined || etapa === '' || etapa === 'Asignar etapa'
                 ){
                     Swal.fire({
                         icon: "error",
@@ -425,9 +446,8 @@ $(document).ready(function (){
                         text: "Llenar todos los campos, por favor.."
                       });
                 } else {
-                    if (correo === undefined || correo === '' && clave === undefined || clave === ''){
-                        correo === null;
-                        clave === null;
+                    if (descripcion === undefined || descripcion === ''){
+                        descripcion === null;
                     }
                     Swal.fire({
                         title: "Estas seguro?",
@@ -445,13 +465,11 @@ $(document).ready(function (){
                             icon: "success"
                           });
                                 $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                                    accion: 'guardar_alumno',
-                                    nombres: nombres,
-                                    apellidos: apellidos,
-                                    correo: correo,     
-                                    puesto: puesto,
-                                    clave: clave,
-                                    clase: clase
+                                    accion: 'guardar_actividad',
+                                    nombre_actividad: nombre_actividad,
+                                    descripcion: descripcion,
+                                    punteo: punteo,     
+                                    etapa: etapa
                                 }, success: function (data) { 
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {
@@ -469,26 +487,22 @@ $(document).ready(function (){
 
     });//formulario-close
 
-    $(this).on('click','#agregar_clase', function(e){e.preventDefault(); //agregar una clase raiz
+    $(this).on('click','#agregar_etapa', function(e){e.preventDefault(); //agregar una etapa raiz
         //llamo el modal y despliego las variables para almacenar los datos
-        $("#modal-gestionar-clase").modal('show'); 
+        $("#modal-gestionar-etapa").modal('show'); 
         //boton guardar, mando la inf al controlador y lueego al modelo
-        $("#btnGuardarClase").click(function () {
-            var grado = $('#txtgrado').val().toLowerCase(), //captura siempre en minuscula
-                seccion = $('#txtseccion').val().toUpperCase(); //captura siempre en mayuscula
+        $("#btnGuardaretapa").click(function () {
+            var nombre_etapa = $('#txtnombre_etapa').val().toLowerCase() //captura siempre en minuscula
             var datos = new FormData();
-            datos.append('grado', grado);
-            datos.append('seccion', seccion);
+            datos.append('nombre_etapa', nombre_etapa);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
             }
-            console.log("Datos del FormData:");
             formDataArray.forEach(pair => {
                 console.log(pair[0] + ": " + pair[1]);
             });
-                if(grado === null || grado === undefined || grado === '' || 
-                   seccion === null || seccion === undefined || seccion === ''
+                if(nombre_etapa === null || nombre_etapa === undefined || nombre_etapa === ''
                 ){
                     Swal.fire({
                         icon: "error",
@@ -498,7 +512,7 @@ $(document).ready(function (){
                 } else {
                     Swal.fire({
                         title: "Estas seguro?",
-                        text: "Se creara una nueva clase",
+                        text: "Se creara una nueva etapa",
                         icon: "question",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
@@ -507,16 +521,15 @@ $(document).ready(function (){
                       }).then((result) => {
                         if (result.isConfirmed) {
                           Swal.fire({
-                            title: "Se creo la nueva clase",
+                            title: "Se creo la nueva etapa",
                             text: "Se recargara la lista..",
                             icon: "success"
                           });
                                 $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                                    accion: 'guardar_clase',
-                                    grado: grado,
-                                    seccion: seccion
+                                    accion: 'guardar_etapa',
+                                    nombre_etapa: nombre_etapa
                                 }, success: function (data) { 
-                                    $("#modal-gestionar-clase").modal('hide');
+                                    $("#modal-gestionar-etapa").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
                                     }, 2000);
@@ -531,15 +544,5 @@ $(document).ready(function (){
         });//btnGuardar-close
 
     });//formulario-close
-
-    function get_example(){ //plantilla ajax
-        $('#grafo').html(set_spinner);
-        $.ajax({ async: true, type: 'post', url: 'bulto_controlador.php', data: {
-            accion: 'get_grafo_bodega_ubicaciones'
-        }, success: function (data) {   
-            $('#grafo').html(data);
-        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
-    }
-   
     
 });
