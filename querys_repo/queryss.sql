@@ -272,17 +272,16 @@ select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
 
 /*capturar alumnos y eliminarlos juntos a las clases*/
         select 
-            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota,
+            t2.id,t2.clave,t1.id as id_persona,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
         from 
         (/*tabla persona*/
             select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
         (/*tabla estudiantes*/
             select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
         (/*tabla clase*/
-            select id,grado,seccion,fecha,id_clase from clase) t3 on t2.id_clase = t3.id
-        where t2.id is not null and t2.id_usuario = 2 and t3.id_clase
-
-
+            select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
+        where t2.id is not null and t2.id_usuario = 2 and t3.id = 10
+				
 
 
         select 
