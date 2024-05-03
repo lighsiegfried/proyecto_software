@@ -391,7 +391,6 @@ $(document).ready(function (){
     $(this).on('click','#agregar_alumno', function(e){e.preventDefault(); //agregar estudiante
         //llamo el modal y despliego las variables para almacenar los datos
         $("#modal-gestionar-alumno").modal('show'); 
-        var accion_data = "";
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
         $("#btnGuardarAlumno").click(function () {
             var nombres = $('#txtnombres').val(),
@@ -399,14 +398,16 @@ $(document).ready(function (){
                 correo = $('#txtcorreo').val(),
                 puesto = $('#txtpuesto').val(),
                 clave = $('#txtclave').val(),
-                clase = $('#txtclase').val()
+                clase = $('#txtclase').val(),
+                id_usuario = $('#txtid_usuario').val();
             var datos = new FormData();
             datos.append('nombres', nombres);
             datos.append('apellidos', apellidos);
             datos.append('correo', correo);
             datos.append('puesto', puesto);
             datos.append('clave', clave);
-            datos.append('clase', clase)
+            datos.append('clase', clase);
+            datos.append('id_usuario', id_usuario);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -429,6 +430,7 @@ $(document).ready(function (){
                         correo === null;
                         clave === null;
                     }
+                    console.log(clave);
                     Swal.fire({
                         title: "Estas seguro?",
                         text: "Se creara un nuevo usuario",
@@ -444,20 +446,22 @@ $(document).ready(function (){
                             text: "Se recargara la lista..",
                             icon: "success"
                           });
-                                $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                    accion: 'guardar_alumno',
-                                    nombres: nombres,
-                                    apellidos: apellidos,
-                                    correo: correo,     
-                                    puesto: puesto,
-                                    clave: clave,
-                                    clase: clase
-                                }, success: function (data) { 
-                                    $("#modal-gestionar-usuario").modal('hide');
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 2000);
-                                }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                          $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                                accion: 'guardar_alumno',
+                                nombres: nombres,
+                                apellidos: apellidos,
+                                correo: correo,
+                                puesto: puesto,
+                                clave: clave,
+                                clase: clase,
+                                id_usuario: id_usuario
+                            },
+                            success: function (data) {
+                                $("#modal-gestionar-alumno").modal('hide');
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 2000);
+                            },error: function (request, status, error) {console.log('error en petición');},timeout: 30 * 60 * 1000 /*esperar 30min*/});//ajax-close
                         }//confirmacion sweet-close
                       });//modal guardar sweet-close
                 } //fin else-close
@@ -475,10 +479,12 @@ $(document).ready(function (){
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardarClase").click(function () {
             var grado = $('#txtgrado').val().toLowerCase(), //captura siempre en minuscula
-                seccion = $('#txtseccion').val().toUpperCase(); //captura siempre en mayuscula
+                seccion = $('#txtseccion').val().toUpperCase(),
+                id_usuario = $('#txtid_usuario').val(); 
             var datos = new FormData();
             datos.append('grado', grado);
             datos.append('seccion', seccion);
+            datos.append('id_usuario', id_usuario);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -514,7 +520,8 @@ $(document).ready(function (){
                                 $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                                     accion: 'guardar_clase',
                                     grado: grado,
-                                    seccion: seccion
+                                    seccion: seccion,
+                                    id_usuario:id_usuario
                                 }, success: function (data) { 
                                     $("#modal-gestionar-clase").modal('hide');
                                     setTimeout(function() {
@@ -543,6 +550,19 @@ $(document).ready(function (){
     $(this).on('click', '#btnclaseeliminar', function() {
         // obtiene el valor del campo de selección dentro del segundo modal
         var id = $('#txtclase2').val();
+        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+            accion: 'consultar_clase',
+            id:id
+            }, success: function (data) { 
+                var datos;
+                try {
+                    datos = JSON.parse(data);
+                   } catch (error) {
+                   //console.error("Error al analizar JSON:", error);
+                   }
+                   
+                   console.log("AQUI VAA: ",datos)
+       
         Swal.fire({
             title: "Deseas eliminar la clase?",
             text: "Proceso no revertible..",
@@ -569,6 +589,7 @@ $(document).ready(function (){
                     }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
             }
         });
+      }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
     });
 
    

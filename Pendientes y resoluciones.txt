@@ -14,14 +14,20 @@ Resuelto **agregar las librerias completas en LOCAL
 Resuelto **modulo usuarios/ CRUD - (Create, Read, Update, Delete)
 Resuelto **modulo de estudiantes/ CRUD - (Create, Read, Update, Delete)
 Resuelto **relacion ruta raiz>menu>menu.php Usuarios 
+Resuelto **se agrego id_usuario en etapa, ,clase,actividad y estudiante para poder filtrar con usuario de creacion, no mostrara datos no creados por el usuario profesor/administrador
+Resuelto **modulo para eliminar actividades y etapas
+
+
+
+vulnerabilidad -- si eliminan una etapa o clase en uso, los datos colapsan y no despliega la pagina web
 
 
 
 ********* -- PENDIENTES -- *********
---modulo actividades
+--modulo actividades notas
 --seguir con el modulo de reportes
 
-
+--agregar modulo de registro de acceso por consulta en REPORTES, para evitar que otros alumnos consulten las notas de otro alumno
 
 
 

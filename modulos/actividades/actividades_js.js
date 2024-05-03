@@ -423,12 +423,14 @@ $(document).ready(function (){
             var nombre_actividad = $('#txtnombre_actividad').val().toLowerCase(),
                 descripcion = $('#txtdescripcion').val(),
                 punteo = $('#txtpunteo').val(),
-                etapa = $('#txtetapa').val()
+                etapa = $('#txtetapa').val(),
+                id_usuario = $('#txtid_usuario').val();
             var datos = new FormData();
             datos.append('nombre_actividad', nombre_actividad);
             datos.append('descripcion', descripcion);
             datos.append('punteo', punteo);
-            datos.append('etapa', etapa)
+            datos.append('etapa', etapa);
+            datos.append('id_usuario', id_usuario)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -469,7 +471,8 @@ $(document).ready(function (){
                                     nombre_actividad: nombre_actividad,
                                     descripcion: descripcion,
                                     punteo: punteo,     
-                                    etapa: etapa
+                                    etapa: etapa,
+                                    id_usuario: id_usuario
                                 }, success: function (data) { 
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {
@@ -493,8 +496,10 @@ $(document).ready(function (){
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardaretapa").click(function () {
             var nombre_etapa = $('#txtnombre_etapa').val().toLowerCase() //captura siempre en minuscula
+            id_usuario = $('#txtid_usuario').val();
             var datos = new FormData();
             datos.append('nombre_etapa', nombre_etapa);
+            datos.append('id_usuario', id_usuario);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -527,7 +532,8 @@ $(document).ready(function (){
                           });
                                 $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
                                     accion: 'guardar_etapa',
-                                    nombre_etapa: nombre_etapa
+                                    nombre_etapa: nombre_etapa,
+                                    id_usuario: id_usuario
                                 }, success: function (data) { 
                                     $("#modal-gestionar-etapa").modal('hide');
                                     setTimeout(function() {

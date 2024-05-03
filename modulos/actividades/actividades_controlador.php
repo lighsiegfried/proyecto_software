@@ -16,7 +16,8 @@ if (isset($_POST['accion'])) {
 
         case 'guardar_etapa':
             $nombre_etapa = $_POST['nombre_etapa'];
-            $modelo->add_etapa($nombre_etapa);
+            $id_usuario = $_POST['id_usuario'];
+            $modelo->add_etapa($nombre_etapa,$id_usuario);
         break;
 
         case 'guardar_actividad':
@@ -24,7 +25,8 @@ if (isset($_POST['accion'])) {
             $descripcion = $_POST['descripcion'];
             $punteo = $_POST['punteo'];
             $etapa = $_POST['etapa'];
-            $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa);
+            $id_usuario = $_POST['id_usuario'];
+            $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario);
         break;
 
         case 'get_lista_vista':

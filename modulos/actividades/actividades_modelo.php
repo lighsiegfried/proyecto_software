@@ -1,5 +1,5 @@
 <?php
-
+//$id_usuario = $_SESSION['id'];
 //Data
 class actividades_modelo{
     private $pdo;
@@ -9,6 +9,7 @@ class actividades_modelo{
         $this->pdo=$pdo;
     }
     function get_actividades(){
+        $id_usuario = $_SESSION['id'];
         $qry="
         select 
             t2.id,
@@ -22,19 +23,19 @@ class actividades_modelo{
         (/*tabla etapa*/
             select id,nombre_etapa from etapa) t1 left join 
         (/*tabla actividades*/
-            select id,nombre_actividad,descripcion,punteo,id_etapa from actividad) t2 on t1.id = t2.id_etapa
-        where t2.id is not null;
+            select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t2 on t1.id = t2.id_etapa
+        where t2.id is not null and t2.id_usuario = $id_usuario;
         ";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa){ //agrega actividad 1
+    function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario){ //agrega actividad 1
         global $pdo;
         $qry="
         start transaction;
-        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa)
-        values ('$nombre_actividad', '$descripcion', '$punteo', $etapa);
+        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario)
+        values ('$nombre_actividad', '$descripcion', '$punteo', $etapa,$id_usuario);
         commit;
         ";
         $qqry=$pdo->query($qry);
@@ -44,12 +45,12 @@ class actividades_modelo{
             }
     }
 
-    function add_etapa($nombre_etapa){ //agrega nueva etapa
+    function add_etapa($nombre_etapa,$id_usuario){ //agrega nueva etapa
         global $pdo;
         $qry="
         start transaction;
-        insert into etapa (nombre_etapa)
-        values ('$nombre_etapa');
+        insert into etapa (nombre_etapa,id_usuario)
+        values ('$nombre_etapa',$id_usuario);
         commit;
         ";
         $qqry=$pdo->query($qry);
@@ -60,9 +61,10 @@ class actividades_modelo{
     }
 
     function show(){//muestra las etapas existentes cuando se crea/actualiza un alumno
+        $id_usuario = $_SESSION['id'];
         global $pdo;
         $qry="
-        select id,nombre_etapa from etapa;
+        select id,nombre_etapa from etapa where id_usuario = $id_usuario;
         ";
         $qqry=$pdo->query($qry);
         return $qqry->fetchAll();

@@ -116,46 +116,6 @@ insert into estudiante values(4,4,null,6,3)
 
 select id,clave,total_nota,id_persona,id_clase from estudiante
 
-
-
-select 
- t1.nombres,t1.apellidos,t3.grado,t3.seccion, t4.total_nota
-from
-(
-/*tabla persona*/
-select id,nombres,apellidos,correo,id_puesto from persona ) t1 left join 
-(
-/*tabla puesto tomar solo el id=6 alumnos*/
-select id,descripcion from puesto where id=6) t2 on t2.id = t1.id_puesto left join 
-(
-/*tabla clase */
-select id,grado,seccion,fecha from clase) t3 left join 
-(
-/*tabla estudiante*/
-select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_persona = t1.id
-where t1.id = 1 and t4.id_clase = t3.id; 
-
-
-select 
-	t1.id as id1, t2.id as id2,t1.nombres,t2.descripcion
-from
-(
-/*tabla persona*/
-select id,nombres,apellidos,correo,id_puesto from persona ) t1 left join 
-(
-/*tabla puesto tomar solo el id=6 alumnos*/
-select id,descripcion from puesto where id=6) t2 on t2.id = t1.id_puesto left join
-(
-/*tabla clase */
-select id,grado,seccion,fecha from clase) t3 left join 
-(
-/*tabla estudiante*/
-select id,clave,total_nota,id_persona,id_clase from estudiante) t4 on t4.id_clase = t3.id
-where t2.id = 6
-
-
-
-
 select 
 	t3.id as idclase
 from
@@ -231,8 +191,6 @@ select id,grado,seccion,fecha  from clase
  
 select grado,seccion from clase where grado='fdsa' and seccion='A'   -- que lo lea en minuscula todo y que lo guarde en minuscula tambien
 
-
-
 -- persona, asocia el id_persona en  tabla-estudiante
 select id,nombres,apellidos,correo,id_puesto from persona
 
@@ -303,4 +261,36 @@ from
 where t2.id is not null;
 
 --------------------------------------------------------------------------------------------------------------
+insertar id_usuario
+alter table (tabla) add column id_usuario int(11)  para todas las tablas de abajo
+
+select id,grado,seccion,fecha,id_usuario  from clase
+select id,nombre_etapa,id_usuario from etapa
+select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
+select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
+
+
+/*capturar alumnos y eliminarlos juntos a las clases*/
+        select 
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota,
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_clase from clase) t3 on t2.id_clase = t3.id
+        where t2.id is not null and t2.id_usuario = 2 and t3.id_clase
+
+
+
+
+        select 
+            t1.clave+1 as clave
+        from 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t1 left join 
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_usuario  from clase) t2 on t2.id=t1.id_clase
+        where id_clase = 7 and t1.id_usuario = 1 order by t1.clave desc limit 1
 

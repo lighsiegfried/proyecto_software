@@ -2,7 +2,7 @@
     require_once '../../config/validate_session.php';
     require_once('../../config/config.php');
     get_pdo();
-    
+
     //especial para este modulo
     require_once('estudiantes_modelo.php');
     $modelo= new estudiantes_modelo();      
@@ -17,8 +17,16 @@ if (isset($_POST['accion'])) {
         case 'guardar_clase':
             $grado = $_POST['grado'];
             $seccion = $_POST['seccion'];
+            $id_usuario = $_POST['id_usuario'];
+            
+            //get_alumnos_eliminar($id)
+            $modelo->add_class($grado,$seccion,$id_usuario);
+        break;
 
-            $modelo->add_class($grado,$seccion);
+        case 'consultar_clase':
+            $id = $_POST['id'];
+            $lista_class=$modelo->consultar_clase($id);
+            echo json_encode($lista_class,true);
         break;
 
         case 'guardar_alumno':
@@ -28,6 +36,7 @@ if (isset($_POST['accion'])) {
             $puesto = $_POST['puesto'];
             $clave = $_POST['clave'];
             $id_clase = $_POST['clase'];
+
             $id_persona_mas=$modelo->id_up_personas();
             foreach ($id_persona_mas as $valor) {
                 $id_persona_mas_uno=$valor['id'];
@@ -41,7 +50,8 @@ if (isset($_POST['accion'])) {
                     $id_clave=$valor1['clave'];
                 }
             }
-            $modelo->agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase);
+            $id_usuario = $_POST['id_usuario'];
+            $modelo->agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase,$id_usuario);
         break;
 
         case 'get_lista_vista':

@@ -5,7 +5,7 @@ class actividades_vista
     //funciones de vista
 
     function get_lista_vista($lista)
-    {
+    {   $id_usuario = $_SESSION['id'];
         ?>
         <style>
             input[type="text"],
@@ -80,6 +80,7 @@ class actividades_vista
                                         </div>
                                     </div>
                                     <input type="hidden" name="id" id="txtid">
+                                    <input type="hidden" name="id_usuario" id="txtid_usuario" value="<?php echo $id_usuario ?>">
                                 </div>
                             </div>
 
@@ -120,6 +121,7 @@ class actividades_vista
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="id_usuario" id="txtid_usuario" value="<?php echo $id_usuario ?>">
                             </div>
                             <!-- modal footer  -->
                             <div class="modal-footer justify-content-end">
