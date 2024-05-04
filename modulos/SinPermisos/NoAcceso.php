@@ -15,27 +15,40 @@ require_once ('rutas.php');
   <!-- <script src="../../librerias/fontawesome-free-6.5.2/css/all.min.css"> </script> -->
   <title>Tenemos un infriltrado</title>
 </head>
+<style>
+    .castor {
+    margin-top: -100px;
+  }
+  .castor2 {
+    margin-top: -30px;
+  }
+  .castor3 {
+    margin-top: -18px;
+  }
+</style>
 <body>
-  <div class="mb-4" Style="font-size: 45px; font-weight: bold;" class="text-light">
-    <h1 class="mb-4" Style="font-size: 45px; font-weight: bold;" class="text-light">Acceso denegado...</h1>
-    <div class="mx-auto" style="width: 600px;">
-      <img src="<?php echo $server_schema . $division . $server_host . $jpg3312 ?>" alt="jpg" style="width: 600px;">
+  <div class="castor">
+    <div  Style="font-size: 45px; font-weight: bold;" class="text-light">
+      <h1  Style="font-size: 45px; font-weight: bold;" class="text-light">Acceso denegado...</h1>
+      <div class="mx-auto castor2" style="width: 600px;">
+        <img src="<?php echo $server_schema . $division . $server_host . $jpg3312 ?>" alt="jpg" style="width: 600px;">
+      </div>
+      <div class="mt-2"></div>
+      <div class="mx-auto x" style="width: 500px;">
+        <img src="<?php echo $server_schema . $division . $server_host . $gif3312 ?>" alt="gif" style="width: 500px;">
+      </div>
+    </div>
+    <div class="mt-4" Style="font-size: 45px; font-weight: bold;" class="text-light">
+      <h1 Style="font-size: 45px; font-weight: bold;" class="text-light castor3">No posees permisos para acceder a</h1>
+      <h1 Style="font-size: 45px; font-weight: bold;" class="text-light castor3">este modulo, contacta al Administrador..</h1>
+    </div>
+    <div class="mx-auto castor3" style="width: 200px;">
+      <button class="btn btn-light" type="button">
+        <a href="<?php echo $server_schema . $division . $server_host . $retornoIndex ?>" Style="font-size: 20px; font-weight: bold;" class="text-black" >Regresar a inicio</a>
+      </button>
     </div>
     <div class="mt-4"></div>
-    <div class="mx-auto" style="width: 500px;">
-      <img src="<?php echo $server_schema . $division . $server_host . $gif3312 ?>" alt="gif" style="width: 500px;">
-    </div>
   </div>
-  <div class="mt-4" Style="font-size: 45px; font-weight: bold;" class="text-light">
-    <h1 class="mt-4" Style="font-size: 45px; font-weight: bold;" class="text-light">No posees permisos para acceder a</h1>
-    <h1 class="mt-4" Style="font-size: 45px; font-weight: bold;" class="text-light">este modulo, contacta al Administrador..</h1>
-  </div>
-  <div class="mx-auto" style="width: 200px;">
-    <button class="btn btn-light" type="button">
-      <a href="<?php echo $server_schema . $division . $server_host . $retornoIndex ?>">Regresar a inicio</a>
-    </button>
-  </div>
-  <div class="mt-4"></div>
 </body>
 
 </html>
