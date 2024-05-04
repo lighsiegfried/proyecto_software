@@ -385,34 +385,51 @@ $(document).ready(function (){
     $(this).on('click', '#btnetapaeliminar', function() {
         // obtiene el valor del campo de selección dentro del segundo modal
         var id = $('#txtetapa2').val();
-        console.log("fase2: ", id);
-        
-        Swal.fire({
-            title: "Deseas eliminar la etapa?",
-            text: "Proceso no revertible..",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si, eliminar!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Se elimino la etapa!",
-                    text: "Se recargara la lista..",
-                    icon: "success"
-                });
-                   $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                        accion: 'eliminar_etapa',
-                        id:id
-                        }, success: function (data) { 
-                        //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
-            }
-        });
+        $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
+            accion: 'consulta_etapa',
+            id:id,
+            }, success: function (data) { 
+                var datos;
+                try {
+                    datos = JSON.parse(data);
+                   } catch (error) {
+                   //console.error("Error al analizar JSON:", error);
+                   }
+            if (datos === null){
+            Swal.fire({
+                title: "Deseas eliminar la etapa?",
+                text: "Proceso no revertible..",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, eliminar!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Se elimino la etapa!",
+                        text: "Se recargara la lista..",
+                        icon: "success"
+                    });
+                    $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
+                            accion: 'eliminar_etapa',
+                            id:id
+                            }, success: function (data) { 
+                            //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                }
+            });
+        } else { 
+            Swal.fire({
+                title: "No es posible eliminar",
+                text: "reasigne/elimine las actividades en la etapa, para poder eliminarla",
+                icon: "error"
+              });
+        }
+        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
     });
 
     $(this).on('click','#agregar_actividad', function(e){e.preventDefault(); //agregar actividad

@@ -261,7 +261,6 @@ $(document).ready(function (){
 
     $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar estudiantes
         var datos = tablaOrigen.row($(this).parents('tr')).data();
-        console.log(datos);
         var id = datos["id"];
         var clave = datos["clave"];
         var nombres = datos["nombres"];
@@ -270,88 +269,99 @@ $(document).ready(function (){
         var seccion = datos["seccion"];
         var total_nota = datos["total_nota"]; 
 
-        $("#txtid").val(id);
-        $("#txtclave").val(clave);
-        $("#txtnombres").val(nombres);
-        $("#txtapellidos").val(apellidos);
-        $("#txtgrado").val(grado);
-        $("#txtseccion").val(seccion);
-        $("#txttotal_nota").val(total_nota);
-        
-        $("#modal-gestionar-alumno").modal('show');
-        $("#btnGuardarAlumno").click(function () {
-            id = $('#txtid').val()
-            nombres = $('#txtnombres').val(),
-            apellidos = $('#txtapellidos').val(),
-            correo = $('#txtcorreo').val(),
-            puesto = $('#txtpuesto').val(),
-            clave = $('#txtclave').val(),
-            clase = $('#txtclase').val(),
-            total_nota = $('#txttotal_nota').val()
-
-            var datos = new FormData();
-            datos.append('id', id);
-            datos.append('nombres', nombres);
-            datos.append('apellidos', apellidos);
-            datos.append('correo', correo);
-            datos.append('puesto', puesto);
-            datos.append('clave', clave);
-            datos.append('clase', clase); //id de clase
-            datos.append('total_nota', total_nota);
-            var formDataArray = [];
-            for (var pair of datos.entries()) {
-                formDataArray.push(pair);
-            }
-                if(nombres === null || nombres === undefined || nombres === '' || 
-                   apellidos === null || apellidos === undefined || apellidos === '' 
-                ){
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Llenar todos los campos, por favor.."
-                      });
-                      
-                } else {
-                    if (correo === undefined || correo === '' || total_nota === undefined || total_nota === ''){
-                        correo === null; total_nota === null;
-                    }
-                    Swal.fire({
-                        title: "Estas seguro?",
-                        text: "Los datos se actualizarán",
-                        icon: "question",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Si!"
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          Swal.fire({
-                            title: "Actualizacion efectuada",
-                            text: "Se recargara la lista..",
-                            icon: "success"
-                          });
-                                $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                    accion: 'editar_alumno',
-                                    id:id,
-                                    nombres: nombres,
-                                    apellidos: apellidos,
-                                    correo: correo,     
-                                    puesto: puesto,
-                                    clave: clave,
-                                    clase: clase,
-                                    total_nota: total_nota
-                                }, success: function (data) { 
-                                    console.log(data);
-                                    $("#modal-gestionar-alumno").modal('hide');
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 2000);
-                                }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
-                        }//confirmacion sweet-close
-                      });//modal guardar sweet-close
-                } //fin else-close
-        });//btnGuardar-close
-
+        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+            accion: 'capturar_id_clase',
+            id:id,
+            seccion: seccion,
+            grado: grado
+        }, success: function (data) { 
+            var datos;
+                try {
+                    datos = JSON.parse(data);
+                   } catch (error) {
+                   //console.error("Error al analizar JSON:", error);
+                   }
+            var clase = datos[0].id_clase;
+            $("#txtid").val(id);
+            $("#txtclave").val(clave);
+            $("#txtnombres").val(nombres);
+            $("#txtapellidos").val(apellidos);
+            $("#txtclase").val(clase);
+            $("#txttotal_nota").val(total_nota);
+            
+            $("#modal-gestionar-alumno").modal('show');
+            $("#btnGuardarAlumno").click(function () {
+                id = $('#txtid').val()
+                nombres = $('#txtnombres').val(),
+                apellidos = $('#txtapellidos').val(),
+                correo = $('#txtcorreo').val(),
+                puesto = $('#txtpuesto').val(),
+                clave = $('#txtclave').val(),
+                clase = $('#txtclase').val(),
+                total_nota = $('#txttotal_nota').val()
+                var datos = new FormData();
+                datos.append('id', id);
+                datos.append('nombres', nombres);
+                datos.append('apellidos', apellidos);
+                datos.append('correo', correo);
+                datos.append('puesto', puesto);
+                datos.append('clave', clave);
+                datos.append('clase', clase); //id de clase
+                datos.append('total_nota', total_nota);
+                var formDataArray = [];
+                for (var pair of datos.entries()) {
+                    formDataArray.push(pair);
+                }
+                    if(nombres === null || nombres === undefined || nombres === '' || 
+                    apellidos === null || apellidos === undefined || apellidos === '' 
+                    ){
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Llenar todos los campos, por favor.."
+                        });
+                        
+                    } else {
+                        if (correo === undefined || correo === '' || total_nota === undefined || total_nota === ''){
+                            correo === null; total_nota === null;
+                        }
+                        Swal.fire({
+                            title: "Estas seguro?",
+                            text: "Los datos se actualizarán",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Si!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Actualizacion efectuada",
+                                text: "Se recargara la lista..",
+                                icon: "success"
+                            });
+                                    $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                                        accion: 'editar_alumno',
+                                        id:id,
+                                        nombres: nombres,
+                                        apellidos: apellidos,
+                                        correo: correo,     
+                                        puesto: puesto,
+                                        clave: clave,
+                                        clase: clase,
+                                        total_nota: total_nota
+                                    }, success: function (data) { 
+                                        console.log(data);
+                                        $("#modal-gestionar-alumno").modal('hide');
+                                        setTimeout(function() {
+                                            location.reload();
+                                        }, 2000);
+                                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close 2
+                            }//confirmacion sweet-close
+                        });//modal guardar sweet-close
+                    } //fin else-close
+            });//btnGuardar-close
+        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close 1
 
     });
 
@@ -549,47 +559,52 @@ $(document).ready(function (){
     // evento click para el botón de eliminar dentro del segundo modal
     $(this).on('click', '#btnclaseeliminar', function() {
         // obtiene el valor del campo de selección dentro del segundo modal
-        var id = $('#txtclase2').val();
+        var id = $('#txtclase2').val(); 
         $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-            accion: 'consultar_clase',
-            id:id
-            }, success: function (data) { 
-                var datos;
-                try {
-                    datos = JSON.parse(data);
-                   } catch (error) {
-                   //console.error("Error al analizar JSON:", error);
-                   }
-                   
-                   console.log("AQUI VAA: ",datos)
-       
-        Swal.fire({
-            title: "Deseas eliminar la clase?",
-            text: "Proceso no revertible..",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Si, eliminar!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Se elimino la clase!",
-                    text: "Se recargara la lista..",
-                    icon: "success"
-                });
-                   $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                        accion: 'eliminar_clase',
-                        id:id
-                        }, success: function (data) { 
-                        //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
-            }
-        });
-      }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                accion: 'consultar_clase2',
+                id:id,
+                }, success: function (data) { 
+                    var datos;
+                    try {
+                        datos = JSON.parse(data);
+                       } catch (error) {
+                       //console.error("Error al analizar JSON:", error);
+                       }
+                if (datos === null){
+                    Swal.fire({
+                        title: "Deseas eliminar la clase?",
+                        text: "Proceso no revertible..",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Si, eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Se elimino la clase!",
+                                text: "Se recargara la lista..",
+                                icon: "success"
+                            });
+                            $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                                    accion: 'eliminar_clase',
+                                    id:id
+                                    }, success: function (data) { 
+                                    //tablaOrigen.ajax.reload(null, false); no funciona esta accion. evita recargar la pagina entera, sin embargo no es funcional.
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
+                                }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                        }
+                    });
+                } else { 
+                    Swal.fire({
+                        title: "No es posible eliminar",
+                        text: "reasigne/elimine a los alumnos en esta clase para poder eliminarla",
+                        icon: "error"
+                      });
+                }
+        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
     });
 
    

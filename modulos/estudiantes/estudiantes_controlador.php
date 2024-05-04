@@ -29,6 +29,13 @@ if (isset($_POST['accion'])) {
             echo json_encode($lista_class,true);
         break;
 
+        case 'consultar_clase2':
+            $id = $_POST['id'];
+
+            $lista_class=$modelo->consultar_clases($id);
+            echo json_encode($lista_class,true);
+        break;
+
         case 'guardar_alumno':
             $nombres = $_POST['nombres'];
             $apellidos = $_POST['apellidos'];
@@ -62,6 +69,14 @@ if (isset($_POST['accion'])) {
         case 'get_lista_datos':
             $lista_de_alumnos=$modelo->get_alumnos();
             echo json_encode($lista_de_alumnos,true);
+        break;
+
+        case 'capturar_id_clase':
+            $id = $_POST['id'];
+            $grado = $_POST['grado'];
+            $seccion = $_POST['seccion'];
+            $lista=$modelo->capturar_id_clases($id,$grado,$seccion);
+            echo json_encode($lista,true);
         break;
 
         case 'editar_alumno':

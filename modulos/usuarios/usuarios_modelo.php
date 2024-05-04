@@ -80,36 +80,6 @@ class usuarios_modelo{
         }
     }
 
-    // function editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_personas,$contrasenia){
-    //     global $pdo;
-    //     $qry="
-    //     start transaction;
-        
-    //     -- actualizar la tabla de persona
-    //     update persona
-    //     set nombres = '$nombres',
-    //         apellidos = '$apellidos',
-    //         correo = '$correo',
-    //         id_puesto = '$puesto'
-    //     where id = $id_personas; -- id_persona en tabla login
-
-    //     -- actualiza la tabla login
-    //     update login
-    //     set usuario = '$usuario',
-    //         id_rol = '$rol',
-    //         id_personas = $id_personas,
-    //         pass = '$contrasenia'
-    //     where id = $id; -- id unico en tabla login
-
-    //     commit;
-    //     ";
-    //     $qqry=$pdo->query($qry);
-    //         if (!$qqry) {
-    //             echo "Error en la consulta: " . $pdo->errorInfo()[2];
-    //             exit;
-    //         }
-    // }
-
     function capturar_personas($id){ //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
         $qry="
@@ -134,20 +104,6 @@ class usuarios_modelo{
         $stmtPersona->bindParam(':id', $persona); 
         $stmtPersona->execute();
     }
-
-    // function eliminar_usuario($id){ //eliminar user
-    //     global $pdo;
-    //     $qry="
-    //     delete from login where id = :id ;
-    //         ";
-    //     $stmt = $pdo->prepare($qry);
-
-    //     //evita inserciones por usuarios con conocimientos SQL
-    //     $stmt->bindParam(':id', $id); 
-
-    //     //fin ejecucion
-    //     $stmt->execute();
-    // }
 
 
 }

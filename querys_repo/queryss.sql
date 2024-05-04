@@ -260,9 +260,23 @@ from
 		select id,nombre_actividad,descripcion,punteo,id_etapa from actividad) t2 on t1.id = t2.id_etapa
 where t2.id is not null;
 
+        select 
+            t2.id,
+            t1.id as id_etapa,
+            t2.nombre_actividad,
+            t2.descripcion,
+            t2.punteo,
+            t1.nombre_etapa,
+            'X' as acciones
+        from 
+        (/*tabla etapa*/
+            select id,nombre_etapa from etapa) t1 left join 
+        (/*tabla actividades*/
+            select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t2 on t1.id = t2.id_etapa
+        where t2.id is not null and t2.id_usuario = 1 and t1.id = 1;
 --------------------------------------------------------------------------------------------------------------
 insertar id_usuario
-alter table (tabla) add column id_usuario int(11)  para todas las tablas de abajo
+alter table actividad add column id_usuario int(11)  para todas las tablas de abajo
 
 select id,grado,seccion,fecha,id_usuario  from clase
 select id,nombre_etapa,id_usuario from etapa
@@ -272,7 +286,7 @@ select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
 
 /*capturar alumnos y eliminarlos juntos a las clases*/
         select 
-            t2.id,t2.clave,t1.id as id_persona,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+            t2.id,t2.clave,t1.id as id_persona,t3.id as id_clase,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
         from 
         (/*tabla persona*/
             select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
@@ -280,9 +294,8 @@ select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
             select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
         (/*tabla clase*/
             select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
-        where t2.id is not null and t2.id_usuario = 2 and t3.id = 10
-				
-
+        where t2.id = 7 and t2.id_usuario = 1 and t3.grado = 'primero' and t3.seccion = 'A'
+						
 
         select 
             t1.clave+1 as clave
@@ -292,4 +305,20 @@ select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
         (/*tabla clase*/
             select id,grado,seccion,fecha,id_usuario  from clase) t2 on t2.id=t1.id_clase
         where id_clase = 7 and t1.id_usuario = 1 order by t1.clave desc limit 1
+
+        select 
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
+            where t2.id is not null and t2.id_usuario = 1 and t3.id = 27
+
+
+
+
+
 

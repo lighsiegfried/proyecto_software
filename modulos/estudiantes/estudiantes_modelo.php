@@ -38,10 +38,33 @@ class estudiantes_modelo{
             select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
         (/*tabla clase*/
             select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
-            where t2.id is not null and t2.id_usuario = $id_usuario and and t3.id = $id
+            where t2.id is not null and t2.id_usuario = $id_usuario and t3.id = $id
         ";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
+    }
+
+    function consultar_clases($id){
+        $id_usuario = $_SESSION['id'];
+        global $pdo;
+        $qry="
+        select 
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
+            where t2.id is not null and t2.id_usuario = $id_usuario and t3.id = $id
+        ";
+        $qqry=$pdo->query($qry);
+        $resultados = $qqry->fetchAll();
+    if (empty($resultados)) {
+        return null;
+    }
+    return $resultados;
     }
 
     function id_up_personas(){ //captura id a ingresar en personas..
@@ -119,8 +142,6 @@ class estudiantes_modelo{
     }
 
 
-
-
     function editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$id_personas,$clave,$clase, $total_nota)
     {
         global $pdo;
@@ -145,7 +166,26 @@ class estudiantes_modelo{
             return false;
         }
     }
-    
+    //
+    function capturar_id_clases($id,$grado,$seccion){ //captura id personas para actualizar/editar/eliminar data.
+        global $pdo;
+        $id_usuario = $_SESSION['id'];
+        $qry="
+        select 
+            t2.id,t2.clave,t1.id as id_persona,t3.id as id_clase,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
+        where t2.id = $id and t2.id_usuario = $id_usuario and t3.grado = '$grado' and t3.seccion = '$seccion'
+        ";
+        $qqry=$pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
     function capturar_personas_estudiante($id){ //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
         $qry="

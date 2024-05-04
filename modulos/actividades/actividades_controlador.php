@@ -59,6 +59,12 @@ if (isset($_POST['accion'])) {
             $modelo->eliminar_etapa($id);
         break;
 
+        case 'consulta_etapa':
+            $id = $_POST['id'];
+            $lista=$modelo->consultar_etapa($id);
+            echo json_encode($lista,true);
+        break;
+
         default:
             $respuesta = [];
             $respuesta['estado'] = 0;

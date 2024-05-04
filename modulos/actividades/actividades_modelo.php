@@ -113,6 +113,32 @@ class actividades_modelo{
     
     }
 
+    function consultar_etapa($id){
+        $id_usuario = $_SESSION['id'];
+        global $pdo;
+        $qry="
+        select 
+        t2.id,
+        t1.id as id_etapa,
+        t2.nombre_actividad,
+        t2.descripcion,
+        t2.punteo,
+        t1.nombre_etapa,
+        'X' as acciones
+    from 
+    (/*tabla etapa*/
+        select id,nombre_etapa from etapa) t1 left join 
+    (/*tabla actividades*/
+        select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t2 on t1.id = t2.id_etapa
+    where t2.id is not null and t2.id_usuario = $id_usuario and t1.id = $id;
+        ";
+        $qqry=$pdo->query($qry);
+        $resultados = $qqry->fetchAll();
+    if (empty($resultados)) {
+        return null;
+    }
+    return $resultados;
+    }
 
 }
 
