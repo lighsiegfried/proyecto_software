@@ -261,6 +261,7 @@ $(document).ready(function (){
 
     $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar estudiantes
         var datos = tablaOrigen.row($(this).parents('tr')).data();
+        console.log(datos);
         var id = datos["id"];
         var clave = datos["clave"];
         var nombres = datos["nombres"];
@@ -400,6 +401,14 @@ $(document).ready(function (){
 
     $(this).on('click','#agregar_alumno', function(e){e.preventDefault(); //agregar estudiante
         //llamo el modal y despliego las variables para almacenar los datos
+        var esnull;
+        $('#txtnombres').val(''),
+        $('#txtapellidos').val(''),
+        $('#txtcorreo').val(''),
+        $('#txtclave').val(''),
+        $('#txtclase').val(''),
+        $('#txtid_usuario').val('');
+        
         $("#modal-gestionar-alumno").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
         $("#btnGuardarAlumno").click(function () {
@@ -428,7 +437,9 @@ $(document).ready(function (){
             });
                 if(nombres === null || nombres === undefined || nombres === '' || 
                    apellidos === null || apellidos === undefined || apellidos === '' ||
-                   clase === null || clase === undefined || clase === '' || clase === 'Asignar clase'
+                   clase === null || clase === undefined || clase === '' || clase === 'Asignar clase' || clase === 'null' ||
+                   puesto === null || puesto === undefined || puesto === '' ||
+                   clase === null || clase === undefined || clase === '' 
                 ){
                     Swal.fire({
                         icon: "error",

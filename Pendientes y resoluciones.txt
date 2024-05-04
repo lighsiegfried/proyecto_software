@@ -16,14 +16,17 @@ Resuelto **modulo de estudiantes/ CRUD - (Create, Read, Update, Delete)
 Resuelto **relacion ruta raiz>menu>menu.php Usuarios 
 Resuelto **se agrego id_usuario en etapa, ,clase,actividad y estudiante para poder filtrar con usuario de creacion, no mostrara datos no creados por el usuario profesor/administrador
 Resuelto **modulo para eliminar actividades y etapas
-
-
-
-vulnerabilidad -- si eliminan una etapa o clase en uso, los datos colapsan y no despliega la pagina web
-
+Resuelto **limpieza de modals al agregar informacion
+Resuelto ** vulnerabilidad al eliminar usuarios con privilegios - 
+Resuelto **vulnerabilidad -- si eliminan una etapa o clase en uso, los datos colapsan y no despliega la pagina web
+Resuelto **cada maestro tendra su propio modulo SIN QUE SE REVUELVAN LOS ALUMNOS y ETAPAS de otros profesores
+Resuelto **modulo usuarios completado
+Resuelto **modulo estudiantes completado (en espera de cambios)
+Resuelto **modulo de actividades creacion de actividades y etapas completado - 
 
 
 ********* -- PENDIENTES -- *********
+
 --modulo actividades notas
 --seguir con el modulo de reportes
 

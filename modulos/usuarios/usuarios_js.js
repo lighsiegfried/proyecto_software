@@ -409,8 +409,15 @@ $(document).ready(function (){
 
     $(this).on('click','#agregar_usuario', function(e){e.preventDefault();
         //llamo el modal y despliego las variables para almacenar los datos
+        $('#txtnombres').val('');
+        $('#txtapellidos').val('');
+        $('#txtcorreo').val('');
+        $('#txtpuesto').val('');
+        $('#txtusuario').val('');
+        $('#txtrol').val('');
+        $('#txtcontrasenia').val('');
         $("#modal-gestionar-usuario").modal('show'); 
-        var accion_data = "";
+        
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardar").click(function () {
             var nombres = $('#txtnombres').val(),
@@ -440,7 +447,10 @@ $(document).ready(function (){
                    apellidos === null || apellidos === undefined || apellidos === '' ||
                    correo === null || correo === undefined || correo === '' || 
                    usuario === null || usuario === undefined || usuario === '' || 
-                   contrasenia === null || contrasenia === undefined || contrasenia === '' 
+                   contrasenia === null || contrasenia === undefined || contrasenia === '' ||
+                   puesto === null || puesto === undefined || puesto === '' ||
+                   rol === null || rol === undefined || rol === ''
+
                 ){
                     Swal.fire({
                         icon: "error",

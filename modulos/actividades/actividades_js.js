@@ -434,6 +434,12 @@ $(document).ready(function (){
 
     $(this).on('click','#agregar_actividad', function(e){e.preventDefault(); //agregar actividad
         //llamo el modal y despliego las variables para almacenar los datos
+        $('#txtnombre_actividad').val(''),
+        $('#txtdescripcion').val(''),
+        $('#txtpunteo').val(''),
+        $('#txtetapa').val(''),
+        $('#txtid_usuario').val('');
+
         $("#modal-gestionar-actividad").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
         $("#btnGuardaractividad").click(function () {
@@ -457,7 +463,7 @@ $(document).ready(function (){
             });
                 if(nombre_actividad === null || nombre_actividad === undefined || nombre_actividad === '' || 
                    punteo === null || punteo === undefined || punteo === '' ||
-                   etapa === null || etapa === undefined || etapa === '' || etapa === 'Asignar etapa'
+                   etapa === null || etapa === undefined || etapa === '' || etapa === 'Asignar etapa' || etapa === 'null'
                 ){
                     Swal.fire({
                         icon: "error",
