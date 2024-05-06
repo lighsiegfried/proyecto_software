@@ -19,8 +19,8 @@ if (isset($_POST['accion'])) {
         break;
 
         case 'get_lista_datos':
-            $lista_de_usuarios=$modelo->get_usuarios();
-            echo json_encode($lista_de_usuarios,true);
+            $lista=$modelo->get_usuarios();
+            echo json_encode($lista,true);
         break;
 
         case 'guardar_usuario':

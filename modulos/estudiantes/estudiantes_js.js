@@ -407,7 +407,6 @@ $(document).ready(function (){
         $('#txtcorreo').val(''),
         $('#txtclave').val(''),
         $('#txtclase').val(''),
-        $('#txtid_usuario').val('');
         
         $("#modal-gestionar-alumno").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
@@ -478,6 +477,7 @@ $(document).ready(function (){
                                 id_usuario: id_usuario
                             },
                             success: function (data) {
+                                console.log(data); 
                                 $("#modal-gestionar-alumno").modal('hide');
                                 setTimeout(function () {
                                     location.reload();

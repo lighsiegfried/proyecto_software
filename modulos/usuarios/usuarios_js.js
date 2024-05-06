@@ -416,6 +416,7 @@ $(document).ready(function (){
         $('#txtusuario').val('');
         $('#txtrol').val('');
         $('#txtcontrasenia').val('');
+        
         $("#modal-gestionar-usuario").modal('show'); 
         
         //boton guardar, mando la inf al controlador y lueego al modelo
@@ -482,7 +483,8 @@ $(document).ready(function (){
                                     usuario: usuario,
                                     rol: rol,
                                     contrasenia: contrasenia
-                                }, success: function (data) { 
+                                }, success: function (data) {
+                                    console.log(data);  
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
@@ -498,15 +500,5 @@ $(document).ready(function (){
         });//btnGuardar-close
 
     });//formulario-close
-
-    function get_example(){
-        $('#grafo').html(set_spinner);
-        $.ajax({ async: true, type: 'post', url: 'bulto_controlador.php', data: {
-            accion: 'get_grafo_bodega_ubicaciones'
-        }, success: function (data) {   
-            $('#grafo').html(data);
-        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
-    }
-   
     
 });

@@ -437,8 +437,7 @@ $(document).ready(function (){
         $('#txtnombre_actividad').val(''),
         $('#txtdescripcion').val(''),
         $('#txtpunteo').val(''),
-        $('#txtetapa').val(''),
-        $('#txtid_usuario').val('');
+        $('#txtetapa').val('');
 
         $("#modal-gestionar-actividad").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
@@ -497,6 +496,7 @@ $(document).ready(function (){
                                     etapa: etapa,
                                     id_usuario: id_usuario
                                 }, success: function (data) { 
+                                    console.log(data); 
                                     $("#modal-gestionar-usuario").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
@@ -558,6 +558,7 @@ $(document).ready(function (){
                                     nombre_etapa: nombre_etapa,
                                     id_usuario: id_usuario
                                 }, success: function (data) { 
+                                    console.log(data);
                                     $("#modal-gestionar-etapa").modal('hide');
                                     setTimeout(function() {
                                         location.reload();
