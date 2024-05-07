@@ -26,15 +26,7 @@ class usuarios_modelo{
         return $qqry->fetchAll();
     }
 
-    function id_up_personas(){ //captura id a ingresar en personas..
-        global $pdo;
-        $qry="
-        select id+1 as id from persona order by id desc limit 1;";
-        $qqry=$pdo->query($qry);
-        return $qqry->fetchAll();
-    }
-
-    function agregar_nuevo_usuario($nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_persona_mas_uno,$contrasenia){
+    function insert_pesona($nombres,$apellidos,$correo,$puesto){
         global $pdo;
         $qry="
         start transaction;
@@ -43,9 +35,31 @@ class usuarios_modelo{
         insert into persona (nombres, apellidos, correo, id_puesto)
         values ('$nombres', '$apellidos', '$correo', $puesto);
 
+        commit;
+        ";
+        $qqry=$pdo->query($qry);
+            if (!$qqry) {
+                echo "Error en la consulta: " . $pdo->errorInfo()[2];
+                exit;
+            }
+    }
+
+    function get_id_pesona(){
+        $qry="
+        select id from persona order by id desc limit 1;
+        ";
+        $qqry=$this->pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
+    function agregar_nuevo_usuario($usuario,$rol,$id_persona,$contrasenia){
+        global $pdo;
+        $qry="
+        start transaction;
+
         -- Insertar en la tabla de login
         insert into login (usuario, id_rol, id_personas, pass)
-        values ('$usuario', $rol, $id_persona_mas_uno , '$contrasenia');
+        values ('$usuario', $rol, $id_persona , '$contrasenia');
 
         commit;
         ";

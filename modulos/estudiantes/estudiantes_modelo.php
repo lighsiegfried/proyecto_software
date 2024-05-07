@@ -96,7 +96,7 @@ class estudiantes_modelo{
     return $resultados;
 }
 
-    function agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase,$id_usuario){
+    function insert_pesona($nombres,$apellidos,$correo,$puesto){
         global $pdo;
         $qry="
         start transaction;
@@ -105,9 +105,31 @@ class estudiantes_modelo{
         insert into persona (nombres, apellidos, correo, id_puesto)
         values ('$nombres', '$apellidos', '$correo', $puesto);
 
+        commit;
+        ";
+        $qqry=$pdo->query($qry);
+            if (!$qqry) {
+                echo "Error en la consulta: " . $pdo->errorInfo()[2];
+                exit;
+            }
+    }
+
+    function get_id_pesona(){
+        $qry="
+        select id from persona order by id desc limit 1;
+        ";
+        $qqry=$this->pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
+    function agregar_nuevo_alumno($id_clave,$id_persona,$id_clase,$id_usuario){
+        global $pdo;
+        $qry="
+        start transaction;
+
         -- Insertar en la tabla estudiante
         insert into estudiante (clave,total_nota,id_persona,id_clase,id_usuario)
-        values ($id_clave,null,$id_persona_mas_uno,$id_clase,$id_usuario);
+        values ($id_clave,null,$id_persona,$id_clase,$id_usuario);
 
         commit;
         ";

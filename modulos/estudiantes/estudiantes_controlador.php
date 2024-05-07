@@ -44,10 +44,13 @@ if (isset($_POST['accion'])) {
             $clave = $_POST['clave'];
             $id_clase = $_POST['clase'];
 
-            $id_persona_mas=$modelo->id_up_personas();
-            foreach ($id_persona_mas as $valor) {
-                $id_persona_mas_uno=$valor['id'];
+            $modelo->insert_pesona($nombres,$apellidos,$correo,$puesto);
+            
+            $id_per=$modelo->get_id_pesona();
+            foreach ($id_per as $valor) {
+                $id_persona=$valor['id'];
             }
+
             $id_clav=$modelo->existe_clase_asignacion($id_clase);
             if($id_clav === null)
             {
@@ -58,7 +61,7 @@ if (isset($_POST['accion'])) {
                 }
             }
             $id_usuario = $_POST['id_usuario'];
-            $modelo->agregar_nuevo_alumno($nombres,$apellidos,$correo,$puesto,$id_clave,$id_persona_mas_uno,$id_clase,$id_usuario);
+            $modelo->agregar_nuevo_alumno($id_clave,$id_persona,$id_clase,$id_usuario);
         break;
 
         case 'get_lista_vista':

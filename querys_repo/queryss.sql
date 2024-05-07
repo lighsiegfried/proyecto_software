@@ -149,10 +149,10 @@ USUARIOS
 
         -- Insertar en la tabla de login
         insert into login (usuario, id_rol, id_personas, pass)
-        values ('sdf', 2, 17 , '1');
+        values ('sdf', 2, 28 , '1');
 
         commit;
-
+select id from persona order by id desc limit 1;
 
 
 /*manda a traer el ultimo id*/				

@@ -14,7 +14,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
       <div class="nav__data">
          <a href="<?php echo $server_schema . $division . $server_host . $bienvenida ?>" class="nav__logo">
             <img src="<?php echo $logoapp ?>" style="width: 100px; height: auto;  padding: 15px;"></img>
-            Inventario de notas
+            Seccion de notas
          </a>
 
          <div class="nav__toggle" id="nav-toggle">

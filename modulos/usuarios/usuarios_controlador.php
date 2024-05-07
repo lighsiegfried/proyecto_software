@@ -32,11 +32,14 @@ if (isset($_POST['accion'])) {
             $rol = $_POST['rol'];
             $contrasenia = $_POST['contrasenia'];
 
-            $id_persona_mas=$modelo->id_up_personas();
-            foreach ($id_persona_mas as $valor) {
-                $id_persona_mas_uno=$valor['id'];
+            $modelo->insert_pesona($nombres,$apellidos,$correo,$puesto);
+
+            $id_per=$modelo->get_id_pesona();
+            foreach ($id_per as $valor) {
+                $id_persona=$valor['id'];
             }
-            $modelo->agregar_nuevo_usuario($nombres,$apellidos,$correo,$puesto,$usuario,$rol,$id_persona_mas_uno,$contrasenia);
+            
+            $modelo->agregar_nuevo_usuario($usuario,$rol,$id_persona,$contrasenia);
         break;
 
         case 'editar_usuario':
