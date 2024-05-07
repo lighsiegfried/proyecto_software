@@ -29,8 +29,11 @@ if (isset($_SESSION['rol'])):
 
       <link rel="stylesheet" href="../../librerias/DataTables/datatables.css">
       <link rel="stylesheet" href="../../librerias/DataTables/datatables.min.css">
+      <link rel="stylesheet" href="../../librerias/DataTables/3-0-2-responsive.bootstrap5.min.css">
       <script src="../../librerias/DataTables/datatables.js"> </script>
       <script src="../../librerias/DataTables/datatables.min.js"> </script>
+      <script src="../../librerias/DataTables/3-0-2-dataTables.responsive.min.js"> </script>
+      <script src="../../librerias/DataTables/3-0-2-responsive.bootstrap5.min.js"> </script>
       <script src="../../librerias/sweetalert2@11.js"></script>
       <!-- <script src="../../librerias/fontawesome-free-6.5.2/css/all.min.css"> </script> -->
       <script src="usuarios_js.js"> </script>
