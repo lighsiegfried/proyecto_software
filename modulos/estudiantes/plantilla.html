@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar y Descargar Plantilla XLSX</title>
+</head>
+<body>
+    <button onclick="generarYDescargarPlantilla()">Descargar Plantilla XLSX</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function generarYDescargarPlantilla() {
+            // Crear una nueva hoja de cálculo
+            var workbook = XLSX.utils.book_new();
+            var worksheet = XLSX.utils.aoa_to_sheet([
+                ['Nombre', 'Apellidos', 'Clase']
+            ]); // Encabezados
+
+            // Agregar la hoja de cálculo al libro
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Plantilla');
+
+            // Generar el archivo XLSX
+            var wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+            // Convertir el archivo en un Blob
+            var blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+            // Descargar el archivo
+            var fileName = 'plantilla.xlsx';
+            if (navigator.msSaveBlob) { // Para IE
+                navigator.msSaveBlob(blob, fileName);
+            } else {
+                var link = document.createElement('a');
+                if (link.download !== undefined) {
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', fileName);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

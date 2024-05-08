@@ -33,7 +33,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                   <li class="dropdown__item">
                      <div class="nav__link">
                         <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
-                        </a><i class="ri-add-line dropdown__add"></i>
+                        </a><i class="ri-line-chart-line"></i>
                      </div>
                   </li>
                   <!--=============== dropdown usuarios ===============-->
@@ -54,45 +54,19 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
 
                   <!--=============== dropdown estudiantes ===============-->
                   <li class="dropdown__item">
-                     <div class="nav__link">
-                        <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="nav__link" title="Listado de estudiantes">Estudiantes
-                        </a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
-                     </div>
-                  </li>
-                  <li class="dropdown__item">
-                        <a href="#" class="nav__link" title="Actividades de alumnos">
-                        Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i>
-                        </a>
-                        <ul class="dropdown__menu">
-                           <li>
-                              <a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="dropdown__link">
-                                 <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
-                              </a>
-                              <!-- class="ri-pie-chart-line" -->
-                           </li>
-                        </ul>
-                     </li>
-               <?php elseif ($rol === 'Profesor'): ?>
-
-                  <li class="dropdown__item">
-                     <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
-                        </a><i class="ri-add-line dropdown__add"></i>
-                     </div>
-                  </li>
-                  <!--=============== dropdown estudiantes ===============-->
-                  <li class="dropdown__item">
-                     <div class="nav__link">
-                        <a href="<?php echo $server_schema . $division . $server_host . $estudiantes ?>" class="nav__link" title="Listado de estudiantes">Estudiantes </a><i
-                           class="ri-arrow-down-s-line dropdown__arrow"></i>
-                     </div>
-
+                     <a href="#" class="nav__link" title="Lista de estudiantes">
+                        Estudiantes<i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                     </a>
                      <ul class="dropdown__menu">
                         <li>
-                           <a href="#" class="dropdown__link">
-                              <i class="ri-arrow-up-down-line"></i> -Modulo en construccion
+                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="dropdown__link">
+                              <i class="ri-pencil-ruler-2-line"></i> Agregar un solo alumno
                            </a>
-                           <!-- class="ri-pie-chart-line"                         -->
+                        </li>
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
+                              <i class="ri-git-merge-fill"></i> Agregar grupo alumnos
+                           </a>
                         </li>
                      </ul>
                   </li>
@@ -107,13 +81,62 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                               </a>
                               <!-- class="ri-pie-chart-line" -->
                            </li>
+                           <li>
+                              <a href="<?php echo $server_schema . $division . $server_host . $actividades2?>" class="dropdown__link">
+                                 <i class="ri-corner-down-right-fill"></i> Ver actividades
+                              </a>
+                           </li>
+                        </ul>
+                     </li>
+               <?php elseif ($rol === 'Profesor'): ?>
+
+                  <li class="dropdown__item">
+                     <div class="nav__link">
+                        <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
+                        </a><i class="ri-line-chart-line"></i>
+                     </div>
+                  </li>
+                  <!--=============== dropdown estudiantes ===============-->
+                  <li class="dropdown__item">
+                     <a href="#" class="nav__link" title="Lista de estudiantes">
+                        Estudiantes<i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                     </a>
+                     <ul class="dropdown__menu">
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="dropdown__link">
+                              <i class="ri-pencil-ruler-2-line"></i> Agregar un solo alumno
+                           </a>
+                        </li>
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
+                              <i class="ri-git-merge-fill"></i> Agregar grupo alumnos
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+                  <li class="dropdown__item">
+                        <a href="#" class="nav__link" title="Actividades de alumnos">
+                        Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </a>
+                        <ul class="dropdown__menu">
+                           <li>
+                              <a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="dropdown__link">
+                                 <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
+                              </a>
+                              <!-- class="ri-pie-chart-line" -->
+                           </li>
+                           <li>
+                              <a href="<?php echo $server_schema . $division . $server_host . $actividades2?>" class="dropdown__link">
+                                 <i class="ri-corner-down-right-fill"></i> Ver actividades
+                              </a>
+                           </li>
                         </ul>
                   </li>
                <?php elseif ($rol === 'Consultor'): ?>
                   <li class="dropdown__item">
                      <div class="nav__link">
                         <i class="ri-bar-chart-line"></i><a href="<?php  echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
-                        </a><i class="ri-add-line dropdown__add"></i>
+                        </a><i class="ri-line-chart-line"></i>
                      </div>
                   </li>
                <?php endif; ?>

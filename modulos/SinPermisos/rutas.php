@@ -29,8 +29,14 @@ $usuariosver = '/proyecto_software/modulos/usuarios/index.php';
 //estudiantes
 $estudiantes = '/proyecto_software/modulos/estudiantes/index.php';
 
+//agregar grupo de estudiantes
+$estudiantes2 = '/proyecto_software/modulos/estudiantes/agregar_grupo_alumnos/index.php';
+
 //actividades
 $actividades = '/proyecto_software/modulos/actividades/index.php';
+
+//actividades asignadas, ver por lista de clase y etapa
+$actividades2 = '/proyecto_software/modulos/actividades_asignadas/index.php';
 
 //reportes
 $reportes = '/proyecto_software/modulos/reportes/index.php';

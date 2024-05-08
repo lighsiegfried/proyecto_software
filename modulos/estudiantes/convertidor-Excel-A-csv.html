@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convertir Excel a CSV</title>
+  <script src="xlsx.full.min.js"></script>
+</head>
+<body>
+  <input type="file" id="inputsubirxlsx" accept=".xlsx">
+  <button onclick="convertToCSV()">imprimir en consola</button>
+  <script>
+    let archivoSubido;
+
+    function handleFileUpload(event) {
+    archivoSubido = event.target.files[0];
+    }
+
+    function convertToCSV() {
+    if (!archivoSubido) {
+        alert('Por favor, sube un archivo antes de convertirlo.');
+        return;
+    }
+
+    const leer = new FileReader();
+
+    leer.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const alumnos = XLSX.read(data, { type: 'array' });
+        const hoja = alumnos.SheetNames[0];
+        const analizada = alumnos.Sheets[hoja];
+        const csv = XLSX.utils.sheet_to_csv(analizada, { delimiter: ',' });
+        // pasar el CSV a función para analizarlo
+        csv_archivo(csv);
+    };
+
+    leer.readAsArrayBuffer(archivoSubido);
+    }
+
+    function csv_archivo(csvData) {
+    // se traspasara el dataTable aqui
+    console.log(csvData); //solo se muestra en la consola como ejemplo de que se capturo bien
+    }
+
+    document.getElementById('inputsubirxlsx').addEventListener('change', handleFileUpload);
+
+
+  </script>
+</body>
+</html>
