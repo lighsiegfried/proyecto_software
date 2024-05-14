@@ -19,12 +19,14 @@ class actividades_vista
         </style>
         <div class="row justify-content-center ">
             <form id="lista_general_from11" method="post" class="mt-4">
+            <div class="d-flex justify-content-center">
                 <div class="btn-agregar-actividad">
-                    <button id="agregar_actividad" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-gestionar-actividad" data-dismiss="modal">
-                        <i class="material-icons">group_add</i>
-                        Agregar actividad
-                    </button>
+                        <button id="agregar_actividad" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
+                            data-target="#modal-gestionar-actividad" data-dismiss="modal">
+                            <i class="material-icons" style="position: relative; top: 4px;">arrow_drop_down</i>
+                            Seleccionar etapa
+                        </button>
+                    </div>
                 </div>
                 <div class="modal fade" id="modal-gestionar-actividad">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -97,7 +99,7 @@ class actividades_vista
                 <div class="btn-agregar-etapa btnAgregaretapa d-flex justify-content-center">
                     <button id="agregar_etapa" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
                         data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">
-                        <i class="material-icons">group_add</i>
+                        <i class="material-icons" style="position: relative; top: 4px;">group_add</i>
                         Agregar etapa
                     </button>
                 </div>
