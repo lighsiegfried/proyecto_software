@@ -305,7 +305,7 @@ from
 where t2.id is not null  and t2.id_usuario = 1  
 																					
 
-
+select * from clase where id_usuario = 1;
 					
 
 						
@@ -313,6 +313,10 @@ where t2.id is not null  and t2.id_usuario = 1
 						-- insercion de una sub actividad o corto
 						insert into actividad2 (nota_actividad,id_estudiantes,id_actividad,id_usuario)
 						values (5,5,5,1)
+
+
+
+
 
 
 
