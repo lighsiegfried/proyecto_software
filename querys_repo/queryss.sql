@@ -293,7 +293,7 @@ insertar id_usuario
 alter table actividad add column id_usuario int(11)  para todas las tablas de abajo
 
 select id,grado,seccion,fecha,id_usuario  from clase
-select id,nombre_etapa,id_usuario from etapa
+select * from etapa
 select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
 select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
 
@@ -341,30 +341,29 @@ select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
 
 
         select 
-            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,'X' as acciones
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t4.nota_actividad,t5.nombre_actividad,'X' as acciones
         from 
         (/*tabla persona*/
             select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
         (/*tabla estudiantes*/
             select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
         (/*tabla clase*/
-            select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id
-        where t2.id is not null and t2.id_usuario = 1
-
-
-  select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
-	
-	select id,nota_actividad,id_estudiante,id_actividad from actividad2
-
-
-
+            select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id left join
+				(/*tabla actividad2*/
+						select id,nota_actividad,id_estudiantes,id_actividad from actividad2 ) t4 on t4.id_estudiantes = t2.id left join 
+				(/*tabla actividad principal*/
+						select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad ) t5 on t5.id = t4.id_actividad	
+        where t2.id is not null and t2.id_usuario = 1				
+				select count(*) from actividad  = 2 
+select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad	
+select id,nota_actividad,id_estudiantes,id_actividad from actividad2
 select * from etapa
-
-alter table etapa add column id_bimestre int(11);
-
-
-
 select * from actividad
+select * from actividad2
+insert into actividad2 (nota_actividad,id_estudiantes,id_actividad) values (5,9,1)
+
+
+
 
 
 

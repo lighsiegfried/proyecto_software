@@ -193,11 +193,13 @@ class actividades_vista
                                     <thead class="table-active ">
                                         <tr>
                                             <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Clave etapa</th>
-                                            <th scope="col" class="text-center">Nombre actividad</th> <!--codigos quemados -->
-                                            <th scope="col" class="text-center">Descripcion</th>
-                                            <th scope="col" class="text-center">Punteo</th>
-                                            <th scope="col" class="text-center">etapa</th>
+                                            <th scope="col" class="text-center">Clave</th>
+                                            <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center">Apellidos</th>
+                                            <th scope="col" class="text-center">Grado</th>
+                                            <th scope="col" class="text-center">seccion</th>
+                                            <th scope="col" class="text-center">Nota Actividad</th>
+                                            <th scope="col" class="text-center">Nombre Actividad</th>
                                             <th scope="col" class="text-center">Opciones</th>
                                         </tr>
                                     </thead>
@@ -207,11 +209,13 @@ class actividades_vista
                                     <tfoot class="table-active">
                                         <tr>
                                             <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Clave etapa</th>
-                                            <th scope="col" class="text-center">Nombre actividad</th> <!--codigos quemados -->
-                                            <th scope="col" class="text-center">Descripcion</th>
-                                            <th scope="col" class="text-center">Punteo</th>
-                                            <th scope="col" class="text-center">etapa</th>
+                                            <th scope="col" class="text-center">Clave</th>
+                                            <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center">Apellidos</th>
+                                            <th scope="col" class="text-center">Grado</th>
+                                            <th scope="col" class="text-center">seccion</th>
+                                            <th scope="col" class="text-center">Nota Actividad</th>
+                                            <th scope="col" class="text-center">Nombre Actividad</th>
                                             <th scope="col" class="text-center">Opciones</th>
                                     </tfoot>
                                 </table>
