@@ -242,22 +242,21 @@ values (2,null,8,2)
 
 --------------------------------------------------------------------------------------------------------
 -- se crea una etapa nueva - Es el bimestre
-select id,nombre_etapa,id_usuario from etapa
+select id,nombre_etapa from etapa
 
 
 -- actividad
-select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
+select id,nombre_actividad,descripcion,punteo,id_etapa from actividad
 
 -- relacion  id_estudiante y id_actividad
-select id,nota_actividad,id_estudiantes,id_actividad, id_usuario from actividad2
-
--- examen 2 referencia al 1 y agrega nota adquirida en el examen, amarra id_estudiante y id_examen
-select id,nota_examen,id_estudiante,id_examen from examen2
+select id,nota_actividad,id_estudiantes,id_actividad from actividad2
 
 -- examen 1 nombre examen y puntos de cuanto vale
 select id,nombre_examen,descripcion, total_examen from examen
 
-alter table actividad2 add column id_usuario varchar(100) 
+-- examen 2 referencia al 1 y agrega nota adquirida en el examen, amarra id_estudiante y id_examen
+select id,nota_examen,id_estudiante,id_examen from examen2
+
 
 /*consulta de actividades*/
 select 
@@ -272,11 +271,23 @@ from
 (/*tabla etapa*/
 		select id,nombre_etapa from etapa) t1 left join 
 (/*tabla actividades*/
-		select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t2 on t1.id = t2.id_etapa
-where t2.id is not null and t2.id_usuario = 1;
+		select id,nombre_actividad,descripcion,punteo,id_etapa from actividad) t2 on t1.id = t2.id_etapa
+where t2.id is not null;
 
-
-
+        select 
+            t2.id,
+            t1.id as id_etapa,
+            t2.nombre_actividad,
+            t2.descripcion,
+            t2.punteo,
+            t1.nombre_etapa,
+            'X' as acciones
+        from 
+        (/*tabla etapa*/
+            select id,nombre_etapa from etapa) t1 left join 
+        (/*tabla actividades*/
+            select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t2 on t1.id = t2.id_etapa
+        where t2.id is not null and t2.id_usuario = 1 and t1.id = 1;
 --------------------------------------------------------------------------------------------------------------
 insertar id_usuario
 alter table actividad add column id_usuario int(11)  para todas las tablas de abajo
@@ -284,35 +295,87 @@ alter table actividad add column id_usuario int(11)  para todas las tablas de ab
 select id,grado,seccion,fecha,id_usuario  from clase
 select id,nombre_etapa,id_usuario from etapa
 select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
-select id,nota_actividad,id_estudiantes,id_actividad, id_usuario from actividad2
 select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
 
 
-/*capturar alumnos, clase, etapa en la que estan, actividad actual y corto en el que se encuentran */
-select
-		t2.id,t2.clave,t1.id as id_persona,t3.id as id_clase,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t5.id as id_actividad1,t5.nombre_actividad,t5.punteo,t5.id_etapa, t4.id_actividad2,t4.nota_actividad,t4.id_actividad
-from 
-(/*tabla persona*/
-		select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
-(/*tabla estudiantes*/
-		select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
-(/*tabla clase*/
-		select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id left join 
-(/*tabla actividades2*/
-		select id as id_actividad2 ,nota_actividad,id_estudiantes,id_actividad,id_usuario from actividad2) t4 on t3.id_usuario = t4.id_usuario and t2.id = t4.id_estudiantes left join 
-(/*tabla actividades1*/
-		select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t5 on t4.id_actividad = t5.id and t4.id_estudiantes= t2.id
-where t2.id is not null  and t2.id_usuario = 1  
-																					
-
-select * from clase where id_usuario = 1;
-					
-
+/*capturar alumnos y eliminarlos juntos a las clases*/
+        select 
+            t2.id,t2.clave,t1.id as id_persona,t3.id as id_clase,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
+        where t2.id = 7 and t2.id_usuario = 1 and t3.grado = 'primero' and t3.seccion = 'A'
 						
-						select id,nota_actividad,id_estudiantes,id_actividad,id_usuario from actividad2
-						-- insercion de una sub actividad o corto
-						insert into actividad2 (nota_actividad,id_estudiantes,id_actividad,id_usuario)
-						values (5,5,5,1)
+
+
+        select 
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
+            where t2.id is not null and t2.id_usuario = 1 and t3.id = 27
+
+
+        select 
+            t2.id,
+            t1.id as id_etapa,
+            t2.nombre_actividad,
+            t2.descripcion,
+            t2.punteo,
+            t1.nombre_etapa,
+            'X' as acciones
+        from 
+        (/*tabla etapa*/
+            select id,nombre_etapa from etapa) t1 left join 
+        (/*tabla actividades*/
+            select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad) t2 on t1.id = t2.id_etapa 
+        where t2.id is not null and t2.id_usuario = 1
+
+
+        select 
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,'X' as acciones
+        from 
+        (/*tabla persona*/
+            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
+        (/*tabla estudiantes*/
+            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
+        (/*tabla clase*/
+            select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id
+        where t2.id is not null and t2.id_usuario = 1
+
+
+  select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
+	
+	select id,nota_actividad,id_estudiante,id_actividad from actividad2
+
+
+
+select * from etapa
+
+alter table etapa add column id_bimestre int(11);
+
+
+
+select * from actividad
+
+
+
+
+
+
+
+
+
+
+
 
 
 
