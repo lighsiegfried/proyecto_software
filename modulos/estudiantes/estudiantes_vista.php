@@ -206,7 +206,12 @@ class estudiantes_vista
                     </div>
                 </div>
 
-
+                <div class="btn-agregar-clase btnGenerarPlantilla">
+                    <button id="studentsExcelBtn" type="button" class="btn btn-light btn-sm mb-4">
+                        <i class="material-icons">add</i>
+                        Generar Plantilla
+                    </button>
+                </div>                            
             </form>
             <div class="col-11">
                 <div class="card shadow">

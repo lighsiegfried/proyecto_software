@@ -254,9 +254,9 @@ $(document).ready(function (){
                     "lengthMenu": [[5,10,40,70,100, -1],[5,10,40,70,100,"Mostrar Todo"]],
                 });
                 
-            }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
+            }, error: function (request, status, error) { console.log('error en peticion fffff'); } , timeout: 30*60*1000/*esperar 30min*/ });
 
-        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
+        }, error: function (request, status, error) { console.log('error en peticion gggg'); } , timeout: 30*60*1000/*esperar 30min*/ });
     }
 
     $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar estudiantes
@@ -617,7 +617,30 @@ $(document).ready(function (){
                 }
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
     });
-
    
+
+    $(this).on('click', '#studentsExcelBtn', function(){
+
+        let excelData = {
+            dataClassValidators: [],
+        }
+
+        let newData = [];
+
+        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+            accion: 'get_lista_clases_excel',
+        }, success: function (data) { 
+            //excelData.dataClassValidators.push({});
+            const datosV = JSON.parse(data);
+            datosV.forEach(function(element) {
+                newData.push(element.clase)
+            });
+
+            excelData.dataClassValidators.push({column: "F", data: newData});
+            window.generate_template(excelData);
+            
+        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-clos
+
+    });
     
 });
