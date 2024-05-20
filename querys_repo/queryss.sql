@@ -341,7 +341,7 @@ select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante
 
 _____________________________________________________________________ -- query para visualizar las actividades
         select 
-            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t4.nota_actividad,t4.nota_actividad,t5.nombre_actividad ,'X' as acciones
+            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t4.nota_actividad,t5.nombre_actividad ,t5.id_usuario,'X' as acciones
         from 
         (/*tabla persona*/
             select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
@@ -353,7 +353,8 @@ _____________________________________________________________________ -- query p
 						select id,nota_actividad,id_estudiantes,id_actividad from actividad2 ) t4 on t4.id_estudiantes = t2.id left join 
 				(/*tabla actividad principal*/
 						select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad ) t5 on t5.id = t4.id_actividad
-        where t2.id is not null and t2.id_usuario = 1		
+        where t2.id is not null and t2.id_usuario = 1
+	
 				
 	
 						
@@ -363,12 +364,12 @@ select id,nota_actividad,id_estudiantes,id_actividad from actividad2
 select * from etapa
 select * from actividad
 select * from actividad2
-insert into actividad2 (nota_actividad,id_estudiantes,id_actividad) values (5,9,1)
+insert into actividad2 (nota_actividad,id_estudiantes,id_actividad) values (10,5,1)
 
 select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad 
 
 
-
+update actividad2 set id_actividad=5 where id=4
 	SELECT
 	t4.id, t5.nombre_actividad, t4.nota_actividad 
 	from
@@ -379,13 +380,55 @@ select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad
 						where                                                                       
 						
 				 
+t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t4.nota_actividad,t4.nota_actividad,t5.nombre_actividad ,t5.id_usuario,'X' as acciones
+4,	1,	wil,	wils,	tercero, primaria,	A,	4,	4,	recapp,	1,	X,
+5,	2,	prueba,	pruebas,	tercero, primaria,	A,	5,	5,	recapp,	1,	X
+5,	2,	prueba,	pruebas,	tercero, primaria,	A,	10,	10,	recapp,	1,	X
+10,	1,	alumnoprueba,	dos,	segundo, primaria,	A, null, null,null,null,	X
+
+t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t4.nota_actividad(recapp),t5.nombre_actividad(recapp2) ,t5.id_usuario,'X' as acciones
+5,	2,	prueba,	pruebas,	tercero, primaria,	A,	t4.nota_actividad(5 nota de recapp),	t4.nota_actividad(5 nota de recapp2),	,	1,	X
 
 
 
 
-
-
-
+SELECT 
+    t2.id,
+    t2.clave,
+    t1.nombres,
+    t1.apellidos,
+    t3.grado,
+    t3.seccion,
+    MAX(CASE WHEN t5.nombre_actividad = 'recapp' THEN t4.nota_actividad ELSE NULL END) AS recapp_nota,
+    MAX(CASE WHEN t5.nombre_actividad = 'recapp2' THEN t4.nota_actividad ELSE NULL END) AS recapp2_nota,
+    t2.id_usuario,
+    'X' AS acciones
+FROM 
+    (/*tabla persona*/
+        SELECT id, nombres, apellidos, correo, id_puesto FROM persona
+    ) t1
+    LEFT JOIN 
+    (/*tabla estudiantes*/
+        SELECT id, clave, total_nota, id_persona, id_clase, id_usuario FROM estudiante
+    ) t2 ON t1.id = t2.id_persona
+    LEFT JOIN
+    (/*tabla clase*/
+        SELECT id, grado, seccion, fecha FROM clase
+    ) t3 ON t2.id_clase = t3.id
+    LEFT JOIN
+    (/*tabla actividad2*/
+        SELECT id, nota_actividad, id_estudiantes, id_actividad FROM actividad2
+    ) t4 ON t4.id_estudiantes = t2.id
+    LEFT JOIN
+    (/*tabla actividad principal*/
+        SELECT id, nombre_actividad, descripcion, punteo, id_etapa, id_usuario FROM actividad
+    ) t5 ON t5.id = t4.id_actividad
+WHERE 
+    t2.id IS NOT NULL AND t2.id_usuario = 1
+GROUP BY 
+    t2.id, t2.clave, t1.nombres, t1.apellidos, t3.grado, t3.seccion, t2.id_usuario
+ORDER BY 
+    t2.id;
 
 
 
