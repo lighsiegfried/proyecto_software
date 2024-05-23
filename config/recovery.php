@@ -9,6 +9,7 @@ require '../PHPMailer/SMTP.php';
  
 require_once('config.php');
 require_once('../recovery.php');
+//require_once('../modulos/SinPermisos/rutas.php');
 
 $email = $_POST['email'];
 $query = "
@@ -33,6 +34,7 @@ if($result->num_rows > 0){
   $mail = new PHPMailer(true);
   $usuario = $row['usuario'];
 try {
+    //$server_name = $server_schema . $division . $server_host . $recovery;
     $mail->SMTPDebug = 0;
     $mail->isSMTP();
     $mail->Host       = 'smtp-mail.outlook.com';
@@ -47,9 +49,10 @@ try {
     $mail->addAddress( $email, $usuario);
     $mail->isHTML(true);
     $mail->Subject = 'Recuperación de contraseña';
-    
+
     $body = file_get_contents('../PHPMailer/body.html');
     $body = str_replace('{{id}}', $row['id'], $body);
+    //$body = str_replace('{{hostname}}', $server_name , $body);
     
     $mail->Body = $body;
 
@@ -64,3 +67,7 @@ try {
 }
 
 ?>
+<script>
+  var variable = <?php echo $server_name ?>
+  console.log('variable: ',variable);
+</script>

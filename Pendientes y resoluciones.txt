@@ -33,4 +33,4 @@ Resuelto **modulo de actividades creacion de actividades y etapas completado -
 --agregar modulo de registro de acceso por consulta en REPORTES, para evitar que otros alumnos consulten las notas de otro alumno
 
 
-
+--trigger en la tabla de alumnos, si se hace consulta,disparar el registro a una tabla de reportes para mostrar la data en un nuevo modulo llamado consultas de 

@@ -1,3 +1,8 @@
+<?php 
+//require_once('modulos/SinPermisos/rutas.php');
+//$server_name = $server_schema . $division . $server_host . $recovery;
+//echo $server_name;
+?>
 <!DOCTYPE html>
 <html lang="en">
 

@@ -47,3 +47,6 @@ $gif3312 = '/proyecto_software/modulos/SinPermisos/3312.gif';
 //3312.jpg
 $jpg3312 = '/proyecto_software/modulos/SinPermisos/3312.jpg'; 
 
+//recovery
+$recovery = '/proyecto_software/change_password.php';
+
