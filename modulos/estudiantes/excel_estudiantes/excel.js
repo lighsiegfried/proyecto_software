@@ -3,6 +3,7 @@ $(document).ready(function (){
     var _workBook;
 
     window.generate_template = generate_template;
+    window.import_template = importFile;
 
     function generate_template(data){
         _workBook = new ExcelJS.Workbook;
@@ -20,11 +21,9 @@ $(document).ready(function (){
         const sheet = _workBook.addWorksheet('prueba');
         
         sheet.columns = [
-            {header: "Clave alumno", key: "id"},
             {header: "Nombres", key: 'studentName'},
             {header: 'Apellidos', key: 'studentLastNames'},
             {header: 'Correo', key: 'studentEmail'},
-            {header: 'Puesto', key: 'studentPosition'},
             {header: 'Clase', key: 'studentClass'},
             {header: 'Nota Total (opcional)', key: 'studentNote'}
         ];
@@ -38,7 +37,7 @@ $(document).ready(function (){
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'example.xlsx';
+            a.download = 'alumnos.xlsx';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -80,11 +79,55 @@ $(document).ready(function (){
                 studentName: (data.nombres) ? data.nombres : "", 
                 studentLastNames: (data.apellidos) ? data.apellidos : "",
                 studentEmail: (data.correo) ? data.correo : "",
-                studentPosition: (data.puesto) ? data.puesto : "",
                 studentClass: (data.clase) ? data.clase : "",
                 studentNote: (data.notaTotal) ? data.notaTotal : "",
             });
         });
+    }
+
+    //---------------------For import excel to JSON ------------------------------
+    async function importFile(file){
+        let studentsList = [];
+        _workBook = new ExcelJS.Workbook;
+        await _workBook.xlsx.load(file);
+
+        const sheet = _workBook.getWorksheet(1);
+
+        let studentObject = {
+            nombres: "",
+            apellidos: "",
+            correo: "",
+            puesto: '',
+            clase: "",
+        }
+        
+            sheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+                console.log()
+                if(rowNumber > 1){
+                    studentObject = {
+                        nombres: row.getCell(1).value,
+                        apellidos: row.getCell(2).value,
+                        correo: row.getCell(3).value,
+                        puesto: 6,
+                        clase: convertColumnClassToIdClass(row.getCell(4).value),
+                    }
+                    studentsList.push(studentObject);
+                }
+                
+            });
+            
+        return studentsList; 
+    }
+
+
+    function convertColumnClassToIdClass(column){
+        // Encuentra la posición del último guion
+        const lastDashIndex = column.lastIndexOf('-');
+
+        // Extrae la subcadena después del último guion
+        const result = column.substring(lastDashIndex + 1);
+
+        return result;
     }
 })
 

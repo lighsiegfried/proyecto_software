@@ -26,7 +26,7 @@ Resuelto **modulo de actividades creacion de actividades y etapas completado -
 
 
 ********* -- PENDIENTES -- *********
-
+--crear nuevo campo en tabla actividad que almacene la clase a la que pertenece
 --modulo actividades notas
 --seguir con el modulo de reportes
 

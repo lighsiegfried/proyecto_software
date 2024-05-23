@@ -206,11 +206,24 @@ class estudiantes_vista
                     </div>
                 </div>
 
-                <div class="btn-agregar-clase btnGenerarPlantilla">
-                    <button id="studentsExcelBtn" type="button" class="btn btn-light btn-sm mb-4">
-                        <i class="material-icons">add</i>
-                        Generar Plantilla
+                <div class="btn-agregar-clase btnGenerarPlantilla col-md-8" style="width: 100%; display: flex; justify-content: center;">
+                    <button id="studentsExcelBtn" type="button" class="btn btn-light btn-sm mb-4"
+                    style="display: flex; justify-content: center; align-items: center;">
+                        <i class="material-icons">
+                            add
+                        </i>
+                        <span>Generar Plantilla</span>
                     </button>
+
+                    <button id="studentsExcelUploadBtn" type="button" class="btn btn-light btn-sm mb-4"
+                    style="display: flex; justify-content: center; align-items: center; margin-left: 5px">
+                        <i class="material-icons">
+                            upload
+                        </i>
+                        <span>Subir Plantilla</span>
+                    </button>
+                    <input id="uploadFileInput" type="file" accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+                    <input type="hidden" name="id_usuario" id="txtid_usuario" value="<?php echo $id_usuario ?>">
                 </div>                            
             </form>
             <div class="col-11">

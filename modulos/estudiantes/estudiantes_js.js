@@ -636,11 +636,65 @@ $(document).ready(function (){
                 newData.push(element.clase)
             });
 
-            excelData.dataClassValidators.push({column: "F", data: newData});
+            excelData.dataClassValidators.push({column: "D", data: newData});
             window.generate_template(excelData);
             
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-clos
 
     });
+
+    $(this).on('click', '#studentsExcelUploadBtn', function(){
+        $('#uploadFileInput').click();
+    })
+
+    $(this).on('change', '#uploadFileInput', async function(){
+        if (this.files.length > 0) {
+            const file = this.files[0];
+            let studentList = await window.import_template(file);
+            let isSuccess = true;
+            let idUser = document.getElementById('txtid_usuario').value;
+
+            $('#lista').html(set_spinner);
+            studentList.forEach(function(element, index) {
+                $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                    accion: 'guardar_alumno',
+                    nombres: element.nombres,
+                    apellidos: element.apellidos,
+                    correo: element.correo,
+                    puesto: element.puesto,
+                    clave: element.clave,
+                    clase: element.clase,
+                    id_usuario: idUser
+                },
+                success: function (data) {
+                    console.log(data); 
+                    
+                },error: function (request, status, error) {
+                    console.log('error en petición');
+                    isSuccess = false;
+                },timeout: 30 * 60 * 1000 /*esperar 30min*/});//ajax-close
+            });
+            
+            if(isSuccess){
+                Swal.fire({
+                    title: "Se creo la nueva clase",
+                    text: "Se recargara la lista..",
+                    icon: "success"
+                });
+                setTimeout(function () {
+                        location.reload();
+                }, 2000);
+            }else{
+                Swal.fire({
+                    title: "Oops, Hubo un Problema!",
+                    text: "Se recargara la lista..",
+                    icon: "error"
+                });
+                setTimeout(function () {
+                        location.reload();
+                }, 2000);
+            }
+        }
+    })
     
 });
