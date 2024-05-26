@@ -479,9 +479,9 @@ $(document).ready(function (){
                             success: function (data) {
                                 console.log(data); 
                                 $("#modal-gestionar-alumno").modal('hide');
-                                setTimeout(function () {
-                                    location.reload();
-                                }, 2000);
+                                // setTimeout(function () {
+                                //     location.reload();
+                                // }, 2000);
                             },error: function (request, status, error) {console.log('error en petición');},timeout: 30 * 60 * 1000 /*esperar 30min*/});//ajax-close
                         }//confirmacion sweet-close
                       });//modal guardar sweet-close

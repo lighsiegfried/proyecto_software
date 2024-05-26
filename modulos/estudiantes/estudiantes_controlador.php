@@ -61,7 +61,13 @@ if (isset($_POST['accion'])) {
                 }
             }
             $id_usuario = $_POST['id_usuario'];
-            $modelo->agregar_nuevo_alumno($id_clave,$id_persona,$id_clase,$id_usuario);
+            $lista_actividades = [];
+            $id_nuevo_estudiante = $modelo->agregar_nuevo_alumno($id_clave,$id_persona,$id_clase,$id_usuario);
+            if($id_nuevo_estudiante != null && $id_nuevo_estudiante != 0){
+                $lista_actividades = $modelo->get_actividades_clase($id_clase);
+                $modelo->actualizar_actividades_nuevo_estudiante($id_nuevo_estudiante, $lista_actividades);
+            }
+            echo json_encode($id_nuevo_estudiante, true);
         break;
 
         case 'get_lista_vista':
@@ -120,6 +126,17 @@ if (isset($_POST['accion'])) {
             $clases_excel=$modelo->get_lista_clases_excel();
             echo json_encode($clases_excel,true);
         break;
+
+        case 'get_actividades_clase':
+            $id_clase = $_POST['id_clase'];
+            $actividades_clases=$modelo->get_actividades_clase($id_clase);
+            echo json_encode($actividades_clases,true);
+
+        case 'actualizar_actividades_nuevo_estudiante':
+            $id_estudiante = $_POST['id_estudiante'];
+            $lista_actividades = $_POST['lista_actividades'];
+            $modelo->actualizar_actividades_nuevo_estudiante($id_estudiante, $lista_actividades);
+
 
         default:
             $respuesta = [];

@@ -122,22 +122,46 @@ class estudiantes_modelo{
         return $qqry->fetchAll();
     }
 
-    function agregar_nuevo_alumno($id_clave,$id_persona,$id_clase,$id_usuario){
+    function agregar_nuevo_alumno($id_clave, $id_persona, $id_clase, $id_usuario) {
         global $pdo;
-        $qry="
-        start transaction;
-
-        -- Insertar en la tabla estudiante
-        insert into estudiante (clave,total_nota,id_persona,id_clase,id_usuario)
-        values ($id_clave,null,$id_persona,$id_clase,$id_usuario);
-
-        commit;
-        ";
-        $qqry=$pdo->query($qry);
-            if (!$qqry) {
-                echo "Error en la consulta: " . $pdo->errorInfo()[2];
-                exit;
-            }
+    
+        try {
+            // Iniciar la transacción
+            $pdo->beginTransaction();
+    
+            // Preparar la consulta de inserción
+            $qry = "
+                INSERT INTO estudiante (clave, total_nota, id_persona, id_clase, id_usuario)
+                VALUES (:id_clave, NULL, :id_persona, :id_clase, :id_usuario)
+            ";
+    
+            // Preparar la sentencia
+            $stmt = $pdo->prepare($qry);
+    
+            // Vincular los parámetros
+            $stmt->bindParam(':id_clave', $id_clave, PDO::PARAM_INT);
+            $stmt->bindParam(':id_persona', $id_persona, PDO::PARAM_INT);
+            $stmt->bindParam(':id_clase', $id_clase, PDO::PARAM_INT);
+            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+    
+            // Ejecutar la sentencia
+            $stmt->execute();
+    
+            // Obtener el ID generado
+            $lastInsertId = $pdo->lastInsertId();
+    
+            // Confirmar la transacción
+            $pdo->commit();
+    
+            // Retornar el ID generado
+            return $lastInsertId;
+    
+        } catch (PDOException $e) {
+            // Revertir la transacción en caso de error
+            $pdo->rollBack();
+            echo "Error en la consulta: " . $e->getMessage();
+            exit;
+        }
     }
 
     function add_class($grado,$seccion,$id_usuario){ //agrega nueva clase
@@ -248,6 +272,35 @@ class estudiantes_modelo{
         WHERE c.id_usuario = $id_usuario;";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
+    }
+
+    function actualizar_actividades_nuevo_estudiante($id_estud, $lista_id_actividades){
+        try{
+            $this->pdo->beginTransaction();
+            foreach($lista_id_actividades as $actividad_id){
+                $query = "insert into actividad2(nota_actividad, id_estudiantes, id_actividad)
+                values (0, $id_estud, ". $actividad_id['id'] .")";
+                if(!($this->pdo->query($query))){
+                    throw new Exception("Error en el primer insert: " . $this->pdo->error);
+                }
+            }
+
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            echo "Error en la transacción: " . $e->getMessage();
+        }
+        
+    }
+
+    function get_actividades_clase($id_clase){
+        try{
+            $qry = "select id FROM actividad where id_clase = $id_clase;";
+            $qqry=$this->pdo->query($qry);
+            return $qqry->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo "Error al traer actividades: " . $e->getMessage();
+        }
     }
 
 }
