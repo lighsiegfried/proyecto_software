@@ -11,20 +11,13 @@ class actividades_modelo{
     function get_actividades(){
         $id_usuario = $_SESSION['id'];
         $qry="
-        select 
-            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t4.nota_actividad,t5.nombre_actividad,'X' as acciones
-        from 
-        (/*tabla persona*/
-            select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
-        (/*tabla estudiantes*/
-            select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
-        (/*tabla clase*/
-            select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id left join
-                (/*tabla actividad2*/
-                        select id,nota_actividad,id_estudiantes,id_actividad from actividad2 ) t4 on t4.id_estudiantes = t2.id left join 
-                (/*tabla actividad principal*/
-                        select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad ) t5 on t5.id = t4.id_actividad	
-        where t2.id is not null and t2.id_usuario = $id_usuario;		
+        SELECT es.id as idEstudiante, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,'X' as opciones
+        FROM actividad a 
+        LEFT JOIN etapa e ON a.id_etapa = e.id
+        LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
+        LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
+        LEFT JOIN persona p ON p.id = es.id_persona
+        where a.id_usuario = $id_usuario;		
         ";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();

@@ -430,6 +430,38 @@ GROUP BY
 ORDER BY 
     t2.id;
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT es.id as idEstudiante, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,'Y' as acciones
+FROM actividad a 
+LEFT JOIN etapa e ON a.id_etapa = e.id
+LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
+LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
+LEFT JOIN persona p ON p.id = es.id_persona
+where a.id_usuario = 1
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ALTER TABLE etapa
+ADD id_bimestre INT NOT NULL;
+
+ALTER TABLE actividad
+ADD column id_clase int;
+
+ALTER TABLE actividad
+ADD CONSTRAINT fk_clase_actividad FOREIGN KEY (id_clase) REFERENCES clase(id);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

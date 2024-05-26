@@ -1,8 +1,8 @@
 <?php 
-$host = "sql107.infinityfree.com";
-$user = "if0_36499074";
-$password = "1ZyEuyeLtV";
-$db = "if0_36499074_proyecto_software";
+$host = "localhost"; //sql107.infinityfree.com
+$user = "root"; //if0_36499074
+$password = ""; //1ZyEuyeLtV
+$db = "proyecto_software"; //if0_36499074_proyecto_software
 $port = "3306";
 
 $conexion = new mysqli($host, $user, $password, $db, $port);

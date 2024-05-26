@@ -60,14 +60,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                      <ul class="dropdown__menu">
                         <li>
                            <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="dropdown__link">
-                              <i class="ri-pencil-ruler-2-line"></i> Agregar un solo alumno
+                              <i class="ri-pencil-ruler-2-line"></i> Agregar alumnos
                            </a>
                         </li>
-                        <li>
-                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
+                        <!-- <li>
+                           <a href="<?php //echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
                               <i class="ri-git-merge-fill"></i> Agregar grupo alumnos
                            </a>
-                        </li>
+                        </li> -->
                      </ul>
                   </li>
                   <li class="dropdown__item">
@@ -104,14 +104,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                      <ul class="dropdown__menu">
                         <li>
                            <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="dropdown__link">
-                              <i class="ri-pencil-ruler-2-line"></i> Agregar un solo alumno
+                              <i class="ri-pencil-ruler-2-line"></i> Agregar alumnos
                            </a>
                         </li>
-                        <li>
-                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
+                        <!-- <li>
+                           <a href="<?php //echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
                               <i class="ri-git-merge-fill"></i> Agregar grupo alumnos
                            </a>
-                        </li>
+                        </li> -->
                      </ul>
                   </li>
                   <li class="dropdown__item">

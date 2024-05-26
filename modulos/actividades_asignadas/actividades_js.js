@@ -83,6 +83,7 @@ $(document).ready(function (){
                    } catch (error) {
                    //console.error("Error al analizar JSON:", error);
                    }
+                   console.log(datos),
                 now = new Date();
                 fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
                 var contarsigeneral=0;
@@ -91,14 +92,13 @@ $(document).ready(function (){
                       data:datos,
                       select: 'single',
                     columns:[
-                        { data: 'id'},
-                        { data: 'clave'},
+                        { data: 'idEstudiante'},
                         { data: 'nombres'},
                         { data: 'apellidos'},
-                        { data: 'grado'},
-                        { data: 'seccion'},
-                        { data: 'nota_actividad'},
-                        { data: 'nombre_actividad'},
+                        { data: 'notaEstudiante'},
+                        { data: 'notaActividad'},
+                        { data: 'idActividad'},
+                        { data: 'etapaId'},
                         { data: 'acciones',"bSortable": false,}
                     ],
                     order:[
@@ -235,12 +235,12 @@ $(document).ready(function (){
                         ]
                     }, 
                     columnDefs: [{
-                        targets: 8,
+                        targets: 7,
                         sortable: false,
                         render: function(data, type, full, meta) {
                             return "<center>" +
                                         "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
-                                        "<i class='material-icons'>edit</i></i>" +
+                                        "<i class='material-icons'>remove_red_eye</i></i>" +
                                         "</button>" + "&ensp; "+
                                         "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
                                         "<i class='material-icons'>close</i></i>" +

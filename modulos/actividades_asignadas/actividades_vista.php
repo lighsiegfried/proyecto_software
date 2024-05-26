@@ -193,13 +193,12 @@ class actividades_vista
                                     <thead class="table-active ">
                                         <tr>
                                             <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Clave</th>
                                             <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
                                             <th scope="col" class="text-center">Apellidos</th>
-                                            <th scope="col" class="text-center">Grado</th>
-                                            <th scope="col" class="text-center">seccion</th>
+                                            <th scope="col" class="text-center">Nota Estudiante</th>
                                             <th scope="col" class="text-center">Nota Actividad</th>
-                                            <th scope="col" class="text-center">Nombre Actividad</th>
+                                            <th scope="col" class="text-center">Cod. actividad</th>
+                                            <th scope="col" class="text-center">Cod. etapa</th>
                                             <th scope="col" class="text-center">Opciones</th>
                                         </tr>
                                     </thead>
@@ -208,15 +207,14 @@ class actividades_vista
                                     </tbody>
                                     <tfoot class="table-active">
                                         <tr>
-                                            <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Clave</th>
-                                            <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
-                                            <th scope="col" class="text-center">Apellidos</th>
-                                            <th scope="col" class="text-center">Grado</th>
-                                            <th scope="col" class="text-center">seccion</th>
-                                            <th scope="col" class="text-center">Nota Actividad</th>
-                                            <th scope="col" class="text-center">Nombre Actividad</th>
-                                            <th scope="col" class="text-center">Opciones</th>
+                                        <th scope="col" class="text-center">No.</th>
+                                        <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
+                                        <th scope="col" class="text-center">Apellidos</th>
+                                        <th scope="col" class="text-center">Nota Estudiante</th>
+                                        <th scope="col" class="text-center">Nota Actividad</th>
+                                        <th scope="col" class="text-center">Cod. actividad</th>
+                                        <th scope="col" class="text-center">Cod. etapa</th>
+                                        <th scope="col" class="text-center">Opciones</th>
                                     </tfoot>
                                 </table>
                             </div>
