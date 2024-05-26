@@ -21,12 +21,37 @@ $(document).ready(function (){
         const sheet = _workBook.addWorksheet('prueba');
         
         sheet.columns = [
-            {header: "Nombres", key: 'studentName'},
-            {header: 'Apellidos', key: 'studentLastNames'},
-            {header: 'Correo', key: 'studentEmail'},
-            {header: 'Clase', key: 'studentClass'},
-            {header: 'Nota Total (opcional)', key: 'studentNote'}
+            {header: "Nombres", key: 'studentName', width: 30},
+            {header: 'Apellidos', key: 'studentLastNames', width: 30},
+            {header: 'Correo', key: 'studentEmail', width: 20},
+            {header: 'Clase', key: 'studentClass', width: 30},
+            {header: 'Nota Total (opcional)', key: 'studentNote', width: 30}
         ];
+
+        sheet.getRow(1).eachCell((cell) => {
+            cell.font = {
+                name: 'Arial',
+                family: 2,
+                size: 12,
+                bold: true,
+                color: {argb: 'FFFFFF'} // Color de la fuente en blanco
+            };
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: {argb: '1F4E78'} // Color de fondo azul oscuro
+            };
+            cell.alignment = {
+                vertical: 'middle',
+                horizontal: 'center'
+            };
+            cell.border = {
+                top: {style: 'thin'},
+                left: {style: 'thin'},
+                bottom: {style: 'thin'},
+                right: {style: 'thin'}
+            };
+        });
 
         if(data) insertStudentData(sheet, data);
     }
