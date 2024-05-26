@@ -4,7 +4,7 @@ class actividades_vista
 {
     //funciones de vista
 
-    function get_lista_vista($lista)
+    function get_lista_vista($lista, $lista_actividades)
     {   $id_usuario = $_SESSION['id'];
         ?>
         <style>
@@ -82,12 +82,21 @@ class actividades_vista
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="txtbimestre">Bimestre actual</label>
-                                            <select name="bimestre" class="form-control" id="txtbimestre" required>
-                                                    <option value="1">Bimestre 1</option>
-                                                    <option value="2">Bimestre 2</option>
-                                                    <option value="3">Bimestre 3</option>
-                                                    <option value="4">Bimestre 4</option>
+                                            <label for="txtclase">Clase</label>
+                                            <select name="clase" class="form-control" id="txtclase" required>
+                                                <option value="<?php if (!isset($_POST['id']))
+                                                    echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                                          echo 'selected'; ?>>Asignar clase</option>
+                                                <?php
+                                                foreach ($lista_actividades as $valor) {
+                                                    ?>
+                                                    <option value="<?php echo $valor['id']; ?>" <?php if (isset($_POST['id']) and $valor['id'] == $_POST['id'])
+                                                           echo "selected"; ?>>
+                                                        <?php echo $valor['grado']; ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>

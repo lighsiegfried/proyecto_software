@@ -30,12 +30,12 @@ class actividades_modelo{
         return $qqry->fetchAll();
     }
 
-    function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_bimestre){ //agrega actividad 1
+    function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_clase){ //agrega actividad 1
         global $pdo;
         $qry="
         start transaction;
-        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario,id_bimestre)
-        values ('$nombre_actividad', '$descripcion', '$punteo', $etapa,$id_usuario,$id_bimestre);
+        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario,id_clase)
+        values ('$nombre_actividad', '$descripcion', $punteo, $etapa,$id_usuario, $id_clase);
         commit;
         ";
         $qqry=$pdo->query($qry);
@@ -66,6 +66,15 @@ class actividades_modelo{
         $qry="
         select id,nombre_etapa from etapa where id_usuario = $id_usuario;
         ";
+        $qqry=$pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
+    function showClases(){//muestra las etapas existentes cuando se crea/actualiza un alumno
+        $id_usuario = $_SESSION['id'];
+        global $pdo;
+        $qry="
+        SELECT id, CONCAT(grado, ' - ', seccion) AS grado FROM clase WHERE id_usuario = $id_usuario;";
         $qqry=$pdo->query($qry);
         return $qqry->fetchAll();
     }

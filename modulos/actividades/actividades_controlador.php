@@ -27,13 +27,14 @@ if (isset($_POST['accion'])) {
             $punteo = $_POST['punteo'];
             $etapa = $_POST['etapa'];
             $id_usuario = $_POST['id_usuario'];
-            $id_bimestre = $_POST['id_bimestre'];
-            $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_bimestre);
+            $id_clase = $_POST['id_clase'];
+            $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_clase);
         break;
 
         case 'get_lista_vista':
             $lista=$modelo->show();
-            $vista->get_lista_vista($lista);
+            $clases = $modelo->showClases();
+            $vista->get_lista_vista($lista, $clases);
         break;
 
         case 'get_lista_datos':

@@ -438,7 +438,6 @@ $(document).ready(function (){
         $('#txtdescripcion').val(''),
         $('#txtpunteo').val(''),
         $('#txtetapa').val('null'),
-        $('#txtbimestre').val('1');
 
         $("#modal-gestionar-actividad").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
@@ -448,14 +447,14 @@ $(document).ready(function (){
                 punteo = $('#txtpunteo').val(),
                 etapa = $('#txtetapa').val(),
                 id_usuario = $('#txtid_usuario').val(),
-                id_bimestre = $('#txtbimestre').val();
+                id_clase = $('#txtclase').val();
             var datos = new FormData();
             datos.append('nombre_actividad', nombre_actividad);
             datos.append('descripcion', descripcion);
             datos.append('punteo', punteo);
             datos.append('etapa', etapa);
             datos.append('id_usuario', id_usuario);
-            datos.append('id_bimestre', id_bimestre);
+            datos.append('id_clase', id_clase)
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -463,10 +462,12 @@ $(document).ready(function (){
             formDataArray.forEach(pair => {
                 console.log(pair[0] + ": " + pair[1]);
             });
+            
+
                 if(nombre_actividad === null || nombre_actividad === undefined || nombre_actividad === '' || 
                    punteo === null || punteo === undefined || punteo === '' ||
                    etapa === null || etapa === undefined || etapa === '' || etapa === 'Asignar etapa' || etapa === 'null'
-                ){
+                    || id_clase === null){
                     Swal.fire({
                         icon: "error",
                         title: "Error",
@@ -491,6 +492,7 @@ $(document).ready(function (){
                             text: "Se recargara la lista..",
                             icon: "success"
                           });
+
                                 $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
                                     accion: 'guardar_actividad',
                                     nombre_actividad: nombre_actividad,
@@ -498,7 +500,7 @@ $(document).ready(function (){
                                     punteo: punteo,     
                                     etapa: etapa,
                                     id_usuario: id_usuario,
-                                    id_bimestre: id_bimestre
+                                    id_clase: id_clase
                                 }, success: function (data) { 
                                     console.log(data); 
                                     $("#modal-gestionar-usuario").modal('hide');
