@@ -93,7 +93,7 @@ $(document).ready(function (){
                 type: 'list',
                 allowBlank: false,
                 showErrorMessage: true,
-                formulae: ['validators!$' + columnForValidationPage + '$1:validators!$' + columnForValidationPage + '$' + dataLength]
+                formulae: ['validators!$' + columnForValidationPage + '$1:$' + columnForValidationPage + '$' + dataLength]
             };
         }        
     }
