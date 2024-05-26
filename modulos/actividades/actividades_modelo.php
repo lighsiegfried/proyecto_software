@@ -32,17 +32,24 @@ class actividades_modelo{
 
     function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_clase){ //agrega actividad 1
         global $pdo;
-        $qry="
-        start transaction;
-        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario,id_clase)
-        values ('$nombre_actividad', '$descripcion', $punteo, $etapa,$id_usuario, $id_clase);
-        commit;
-        ";
-        $qqry=$pdo->query($qry);
+        try{
+            $pdo->beginTransaction();
+            $qry="insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario,id_clase) 
+            values ('$nombre_actividad', '$descripcion', $punteo, $etapa,$id_usuario, $id_clase);";
+            $qqry=$pdo->query($qry);
             if (!$qqry) {
                 echo "Error insercion: " . $pdo->errorInfo()[2];
-                exit;
+                $pdo->rollBack();
+                return null;
             }
+
+            $id_actividad = $pdo->lastInsertId();
+            $pdo->commit();
+            return $id_actividad;
+        }catch(Exception $e){
+            $pdo->rollBack();
+            return null;
+        }
     }
 
     function add_etapa($nombre_etapa,$id_usuario,$id_bimestre){ //agrega nueva etapa
@@ -147,6 +154,37 @@ class actividades_modelo{
         return null;
     }
     return $resultados;
+    }
+
+    function get_estudiantes_clase($id_clase){
+        global $pdo;
+        try{
+            $qry = "select id from estudiante where id_clase = $id_clase";
+            $qqry = $pdo->query($qry);
+            $res = $qqry->fetchAll(PDO::FETCH_ASSOC);
+            return $res;
+        }catch(Exception $e){
+            return null;
+        }
+    }
+
+    function actualizar_estudiantes_nueva_actividad($lista_id_estud, $id_actividad){
+        try{
+            $this->pdo->beginTransaction();
+            foreach($lista_id_estud as $estudiante){
+                $query = "insert into actividad2(nota_actividad, id_estudiantes, id_actividad)
+                values (0, " . $estudiante['id'] .", $id_actividad)";
+                if(!($this->pdo->query($query))){
+                    throw new Exception("Error en el primer insert: " . $this->pdo->error);
+                }
+            }
+
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            echo "Error en la transacción: " . $e->getMessage();
+        }
+        
     }
 
 }

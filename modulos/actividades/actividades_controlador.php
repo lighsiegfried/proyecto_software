@@ -28,7 +28,12 @@ if (isset($_POST['accion'])) {
             $etapa = $_POST['etapa'];
             $id_usuario = $_POST['id_usuario'];
             $id_clase = $_POST['id_clase'];
-            $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_clase);
+            $id_nueva_actividad = $modelo->agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_clase);
+            $lista_estudiantes = $modelo->get_estudiantes_clase($id_clase);
+            if($id_nueva_actividad != null && $lista_estudiantes != null) {
+                $modelo->actualizar_estudiantes_nueva_actividad($lista_estudiantes, $id_nueva_actividad);
+            }
+            echo json_encode($id_nueva_actividad);
         break;
 
         case 'get_lista_vista':
