@@ -59,6 +59,7 @@ class actividades_vista
                                                 placeholder="Ingrese punteo de actividad" autocomplete="off" required>
                                         </div>
                                     </div>
+                                    <div class="mt-2"></div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="txtetapa">Etapa</label>
@@ -76,6 +77,17 @@ class actividades_vista
                                                     <?php
                                                 }
                                                 ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtbimestre">Bimestre actual</label>
+                                            <select name="bimestre" class="form-control" id="txtbimestre" required>
+                                                    <option value="1">Bimestre 1</option>
+                                                    <option value="2">Bimestre 2</option>
+                                                    <option value="3">Bimestre 3</option>
+                                                    <option value="4">Bimestre 4</option>
                                             </select>
                                         </div>
                                     </div>
@@ -121,6 +133,17 @@ class actividades_vista
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                        <div class="form-group">
+                                            <label for="txtbimestre">Bimestre actual</label>
+                                            <select name="bimestre" class="form-control" id="txtbimestre" required>
+                                                    <option value="1">Bimestre 1</option>
+                                                    <option value="2">Bimestre 2</option>
+                                                    <option value="3">Bimestre 3</option>
+                                                    <option value="4">Bimestre 4</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 <input type="hidden" name="id_usuario" id="txtid_usuario" value="<?php echo $id_usuario ?>">
                             </div>
                             <!-- modal footer  -->

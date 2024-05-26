@@ -116,6 +116,11 @@ if (isset($_POST['accion'])) {
             $modelo->eliminar_clase($id);
         break;
 
+        case 'get_lista_clases_excel':
+            $clases_excel=$modelo->get_lista_clases_excel();
+            echo json_encode($clases_excel,true);
+        break;
+
         default:
             $respuesta = [];
             $respuesta['estado'] = 0;

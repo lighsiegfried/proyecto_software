@@ -25,6 +25,7 @@ if (isset($_SESSION['rol'])):
       <link rel="stylesheet" href="../../librerias/remixicon-3.2.0/fonts/remixicon.css">
       <link rel="stylesheet" href="../../menu/assets/css/styles.css">
       <link rel="stylesheet" href="../../menu/assets/css/icon.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
       <link rel="stylesheet" href="../../librerias/DataTables/datatables.css">
       <link rel="stylesheet" href="../../librerias/DataTables/datatables.min.css">
@@ -44,6 +45,8 @@ if (isset($_SESSION['rol'])):
 
     </body>
 
+
+    <script src="excel_estudiantes/excel.js"> </script>
     </html>
 <?php elseif ($rol === 'Consultor'): ?>
     <div style="margin: 100px 0 0 10px;"> <?php include ('../SinPermisos/NoAcceso.php'); ?> </div>

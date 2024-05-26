@@ -90,11 +90,11 @@ class estudiantes_modelo{
         ;";
         $qqry=$pdo->query($qry);
         $resultados = $qqry->fetchAll();
-    if (empty($resultados)) {
+        if (empty($resultados)) {
         return null;
+        }
+        return $resultados;
     }
-    return $resultados;
-}
 
     function insert_pesona($nombres,$apellidos,$correo,$puesto){
         global $pdo;
@@ -240,6 +240,14 @@ class estudiantes_modelo{
         $stmt = $pdo->prepare($qry);
         $stmt->bindParam(':id', $id);  //evita inserciones por usuarios con conocimientos SQL
         $stmt->execute();              //fin ejecucion
+    }
+
+    function get_lista_clases_excel(){
+        $id_usuario = $_SESSION['id'];
+        $qry= "select CONCAT(c.grado, ' ', c.seccion, ' -', c.id) as clase FROM clase c 
+        WHERE c.id_usuario = $id_usuario;";
+        $qqry=$this->pdo->query($qry);
+        return $qqry->fetchAll();
     }
 
 }

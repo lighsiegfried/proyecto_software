@@ -92,11 +92,13 @@ $(document).ready(function (){
                       select: 'single',
                     columns:[
                         { data: 'id'},
-                        { data: 'id_etapa'},
+                        { data: 'clave'},
+                        { data: 'nombres'},
+                        { data: 'apellidos'},
+                        { data: 'grado'},
+                        { data: 'seccion'},
+                        { data: 'nota_actividad'},
                         { data: 'nombre_actividad'},
-                        { data: 'descripcion'},
-                        { data: 'punteo'},
-                        { data: 'nombre_etapa'},
                         { data: 'acciones',"bSortable": false,}
                     ],
                     order:[
@@ -233,7 +235,7 @@ $(document).ready(function (){
                         ]
                     }, 
                     columnDefs: [{
-                        targets: 6,
+                        targets: 8,
                         sortable: false,
                         render: function(data, type, full, meta) {
                             return "<center>" +

@@ -30,12 +30,12 @@ class actividades_modelo{
         return $qqry->fetchAll();
     }
 
-    function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario){ //agrega actividad 1
+    function agregar_nuevo_actividad($nombre_actividad,$descripcion,$punteo,$etapa,$id_usuario,$id_bimestre){ //agrega actividad 1
         global $pdo;
         $qry="
         start transaction;
-        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario)
-        values ('$nombre_actividad', '$descripcion', '$punteo', $etapa,$id_usuario);
+        insert into actividad (nombre_actividad,descripcion,punteo,id_etapa,id_usuario,id_bimestre)
+        values ('$nombre_actividad', '$descripcion', '$punteo', $etapa,$id_usuario,$id_bimestre);
         commit;
         ";
         $qqry=$pdo->query($qry);
@@ -45,12 +45,12 @@ class actividades_modelo{
             }
     }
 
-    function add_etapa($nombre_etapa,$id_usuario){ //agrega nueva etapa
+    function add_etapa($nombre_etapa,$id_usuario,$id_bimestre){ //agrega nueva etapa
         global $pdo;
         $qry="
         start transaction;
-        insert into etapa (nombre_etapa,id_usuario)
-        values ('$nombre_etapa',$id_usuario);
+        insert into etapa (nombre_etapa,id_usuario,id_bimestre)
+        values ('$nombre_etapa',$id_usuario,$id_bimestre);
         commit;
         ";
         $qqry=$pdo->query($qry);

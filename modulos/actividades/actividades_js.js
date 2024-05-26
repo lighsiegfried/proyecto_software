@@ -437,7 +437,8 @@ $(document).ready(function (){
         $('#txtnombre_actividad').val(''),
         $('#txtdescripcion').val(''),
         $('#txtpunteo').val(''),
-        $('#txtetapa').val('');
+        $('#txtetapa').val('null'),
+        $('#txtbimestre').val('1');
 
         $("#modal-gestionar-actividad").modal('show'); 
         //boton guardar, mando la inf al controlador y lueeeeego al modelo
@@ -446,13 +447,15 @@ $(document).ready(function (){
                 descripcion = $('#txtdescripcion').val(),
                 punteo = $('#txtpunteo').val(),
                 etapa = $('#txtetapa').val(),
-                id_usuario = $('#txtid_usuario').val();
+                id_usuario = $('#txtid_usuario').val(),
+                id_bimestre = $('#txtbimestre').val();
             var datos = new FormData();
             datos.append('nombre_actividad', nombre_actividad);
             datos.append('descripcion', descripcion);
             datos.append('punteo', punteo);
             datos.append('etapa', etapa);
-            datos.append('id_usuario', id_usuario)
+            datos.append('id_usuario', id_usuario);
+            datos.append('id_bimestre', id_bimestre);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -494,7 +497,8 @@ $(document).ready(function (){
                                     descripcion: descripcion,
                                     punteo: punteo,     
                                     etapa: etapa,
-                                    id_usuario: id_usuario
+                                    id_usuario: id_usuario,
+                                    id_bimestre: id_bimestre
                                 }, success: function (data) { 
                                     console.log(data); 
                                     $("#modal-gestionar-usuario").modal('hide');
@@ -518,11 +522,13 @@ $(document).ready(function (){
         $("#modal-gestionar-etapa").modal('show'); 
         //boton guardar, mando la inf al controlador y lueego al modelo
         $("#btnGuardaretapa").click(function () {
-            var nombre_etapa = $('#txtnombre_etapa').val().toLowerCase() //captura siempre en minuscula
-            id_usuario = $('#txtid_usuario').val();
+            var nombre_etapa = $('#txtnombre_etapa').val().toLowerCase(), //captura siempre en minuscula
+            id_usuario = $('#txtid_usuario').val(),
+            id_bimestre  = $('#txtbimestre').val();
             var datos = new FormData();
             datos.append('nombre_etapa', nombre_etapa);
             datos.append('id_usuario', id_usuario);
+            datos.append('id_bimestre', id_bimestre);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
@@ -556,7 +562,8 @@ $(document).ready(function (){
                                 $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
                                     accion: 'guardar_etapa',
                                     nombre_etapa: nombre_etapa,
-                                    id_usuario: id_usuario
+                                    id_usuario: id_usuario,
+                                    id_bimestre : id_bimestre
                                 }, success: function (data) { 
                                     console.log(data);
                                     $("#modal-gestionar-etapa").modal('hide');
