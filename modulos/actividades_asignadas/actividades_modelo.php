@@ -10,15 +10,38 @@ class actividades_modelo{
     }
     function get_actividades(){
         $id_usuario = $_SESSION['id'];
+
+        $qry_init = "SET @row_number = 0;";
+        $this->pdo->exec($qry_init);
+
         $qry="
-        SELECT es.id as idEstudiante, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,'X' as opciones
+        SELECT @row_number:=@row_number+1 AS indice, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,
+        'X' as opciones, a.nombre_actividad as nombreActividad, a2.id as idActividad2
         FROM actividad a 
         LEFT JOIN etapa e ON a.id_etapa = e.id
         LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
         LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
         LEFT JOIN persona p ON p.id = es.id_persona
-        where a.id_usuario = $id_usuario;		
-        ";
+        where a.id_usuario = $id_usuario;";
+        $qqry=$this->pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
+    function get_actividades_filter($idEtapa){
+        $id_usuario = $_SESSION['id'];
+
+        $qry_init = "SET @row_number = 0;";
+        $this->pdo->exec($qry_init);
+
+        $qry="
+        SELECT @row_number:=@row_number+1 AS indice, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,
+        'X' as opciones, a.nombre_actividad as nombreActividad, a2.id as idActividad2
+        FROM actividad a 
+        LEFT JOIN etapa e ON a.id_etapa = e.id
+        LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
+        LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
+        LEFT JOIN persona p ON p.id = es.id_persona
+        where a.id_usuario = $id_usuario AND e.id = $idEtapa;";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
     }
@@ -63,7 +86,7 @@ class actividades_modelo{
         return $qqry->fetchAll();
     }
 
-    function editar_actividad1($id,$nombre_actividad,$descripcion,$punteo,$etapa)
+    function editar_actividad1($idActividad2,$notaAsignada)
     {
         global $pdo;
 
@@ -71,8 +94,8 @@ class actividades_modelo{
             $pdo->beginTransaction();
 
             // actualizar data
-            $stmt_persona = $pdo->prepare("update actividad set id=? ,nombre_actividad=? ,descripcion=? ,punteo=? ,id_etapa=? WHERE id = $id");
-            $stmt_persona->execute([$id,$nombre_actividad,$descripcion,$punteo,$etapa]);
+            $stmt_persona = $pdo->prepare("update actividad2 set nota_actividad=? WHERE id = $idActividad2");
+            $stmt_persona->execute([$notaAsignada]);
 
             $pdo->commit();
             return true;

@@ -70,242 +70,238 @@ $(document).ready(function (){
     function get_lista_Actividades(){
         $('#lista').html(set_spinner);
         $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-            accion: 'get_lista_vista'
+            accion: 'get_lista_vista',
         }, success: function (data) {
             $('#lista').html(data);
             //estructura de la datatable
-            $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                accion: 'get_lista_datos'
-            }, success: function (data) {
-                var datos;
-                try {
-                    datos = JSON.parse(data);
-                   } catch (error) {
-                   //console.error("Error al analizar JSON:", error);
-                   }
-                   console.log(datos),
-                now = new Date();
-                fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
-                var contarsigeneral=0;
-                var contarnogeneral=0;
-                tablaOrigen = $('#tablaOrigen').DataTable({
-                      data:datos,
-                      select: 'single',
-                    columns:[
-                        { data: 'idEstudiante'},
-                        { data: 'nombres'},
-                        { data: 'apellidos'},
-                        { data: 'notaEstudiante'},
-                        { data: 'notaActividad'},
-                        { data: 'idActividad'},
-                        { data: 'etapaId'},
-                        { data: 'acciones',"bSortable": false,}
-                    ],
-                    order:[
-                       [0, 'asc']
-                    ],
-                    dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
-                         "<'row'<'col-md-12'tr>>" +
-                         "<'row'<'col-md-6'i><'col-md-6'p>>",
-                    
-                    buttons: {
-                        dom: {
-                            container:{
-                            tag:'div',
-                            className:'flexcontent'
-                            },
-                            buttonLiner: {
-                            tag: null
-                            }
-                        },
-                        buttons:[                
-                            {
-                                extend:    'copyHtml5',
-                                text:      '<i class="material-icons">content_copy</i><br>Copiar',
-                                title:'Actividades registrados',
-                                titleAttr: 'Copiar',
-                                className: 'btn btn-app export barras',
-                                exportOptions: {
-                                    // columns: [ 0, 1 ]
-                                }
-                            },
-                            {
-                                extend:    'pdfHtml5',
-                                orientation: 'letter',
-                                pageSize: 'LEGAL',
-                                text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
-                                title:'Listado de Actividades',
-                                titleAttr: 'PDF',
-                                className: 'btn btn-app export pdf',
-                                filename: `Actividades registrados - ${fecha.toString()}`,
-                                exportOptions: {
-                                    // columns: [ 0, 1,2,3,4,5,6 ]
-                                    columnsDefs:[{
-                                        className: "text-center", "targets": data
-                                    }
-                                    ],
-                                columns: ':visible',
-                                search: 'applied',
-                                order: 'applied',
-                                row: {
-                                    selected: true
-                                },
-                                },//tr > td > colspan > 7  
-                                customize:function(doc) {
-                                    doc.styles.title = {
-                                        color: '#223673',
-                                        fontSize: '20',
-                                        alignment: 'center'
-                                    },
-                                    doc.styles['td:nth-child(2)'] = { 
-                                        width: '100px',
-                                        'max-width': '70px',
-                                    },
-                                    doc.styles.tableHeader = {
-                                        fillColor:'#3068bf', 
-                                        color:'white',
-                                        alignment:'center'
-                                    },
-                                    doc.content[1].margin = [ 1, 0, 2.5, 0 ],
-                                    doc.defaultStyle.fontSize = 6,
-                                    doc.defaultStyle.alignment='center'
-                                },
-                                iniCompleto: function() { //permite seleccion personalizada de columnas a imprimir en PDF
-                                    var tabla = this.api();
-                                    var seleccion = tabla.rows({ seleccion: true }).count();
-                                
-                                    if (seleccion > 0) {
-                                        var columnaSeleccionada = tabla.columns({ seleccion: true }).indexes();
-                                        var exportOpciones = {
-                                            columnas: columnaSeleccionada
-                                        };
-                                        var botonPDF = tablaOrigen.button('.export.pdf');
-                                        botonPDF[0].inst.s.dt.button('.export.pdf').text('Exportar Selección');
-                                        botonPDF[0].inst.s.dt.button('.export.pdf').conf.exportOpciones = exportOpciones;
+            getDataTableData(null);
 
-                                        var botonDeColvis = tablaOrigen.button('.export.barras');
-                                        botonDeColvis[0].inst.s.dt.button('.export.barras').conf.exportOpciones = {
-                                            columnas: columnaSeleccionada
-                                        };
-                                    }
-                                },
-                                select: {
-                                    style: 'multi'
-                                }
+        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
+    }
 
-                            },
-                            {
-                                extend:    'excelHtml5',
-                                text:      '<i class="material-icons">content_copy</i><br>Excel',
-                                title:'Actividades registrados',
-                                titleAttr: 'Excel',
-                                className: 'btn btn-app export excel',
-                                exportOptions: {
-                                    // columns: [ 0, 1 ]
-                                },
-                            },
-                            {
-                                extend:    'csvHtml5',
-                                text:      '<i class="material-icons">open_in_browser</i><br>CSV',
-                                title:'Actividades registrados CSV',
-                                titleAttr: 'CSV',
-                                className: 'btn btn-app export csv',
-                                exportOptions: {
-                                    // columns: [ 0, 1 ]
-                                }
-                            },
-                            {
-                                extend:    'colvis',
-                                text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
-                                title:'Actividades',
-                                titleAttr: 'Copiar',
-                                className: 'btn btn-app export barras',
-                                exportOptions: {
-                                    // columns: [ 0, 1 ]
-                                }
-                            },
-                            {
-                                extend:    'pageLength',
-                                titleAttr: 'Registros a mostrar',
-                                className: 'selectTable',
-                                exportOptions: {
-                                    columns: [ 0, 1 ]
-                                }
-                            }
-                        ]
-                    }, 
-                    columnDefs: [{
-                        targets: 7,
-                        sortable: false,
-                        render: function(data, type, full, meta) {
-                            return "<center>" +
-                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
-                                        "<i class='material-icons'>remove_red_eye</i></i>" +
-                                        "</button>" + "&ensp; "+
-                                        "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
-                                        "<i class='material-icons'>close</i></i>" +
-                                        "</button>" +
-                                   "</center>";
-                        },
-                        selectable: false,
-                        copy: false // Corrección del error tipográfico aquí
-                    }],
-                    "language":idioma_espanol,
-                    select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": true,"Sortable":false, 
-                    "lengthMenu": [[5,10,40,70,100, -1],[5,10,40,70,100,"Mostrar Todo"]],
-                });
+    function getDataTableData(idEtapa){
+        $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
+            accion: 'get_lista_datos',
+            idEtapa: (idEtapa)? idEtapa : null,
+        }, success: function (data) {
+            var datos;
+            try {
+                datos = JSON.parse(data);
+               } catch (error) {
+               //console.error("Error al analizar JSON:", error);
+               }
+               console.log(datos),
+            now = new Date();
+            fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
+            var contarsigeneral=0;
+            var contarnogeneral=0;
+            tablaOrigen = $('#tablaOrigen').DataTable({
+                  data:datos,
+                  select: 'single',
+                columns:[
+                    { data: 'indice'},
+                    { data: 'nombres'},
+                    { data: 'apellidos'},
+                    { data: 'nombreActividad'},
+                    { data: 'notaEstudiante'},
+                    { data: 'notaActividad'},
+                    { data: 'opciones',"bSortable": false,},
+                    {data: 'idActividad2', visible: false}
+                ],
+                order:[
+                   [0, 'asc']
+                ],
+                dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
+                     "<'row'<'col-md-12'tr>>" +
+                     "<'row'<'col-md-6'i><'col-md-6'p>>",
                 
-            }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
+                buttons: {
+                    dom: {
+                        container:{
+                        tag:'div',
+                        className:'flexcontent'
+                        },
+                        buttonLiner: {
+                        tag: null
+                        }
+                    },
+                    buttons:[                
+                        {
+                            extend:    'copyHtml5',
+                            text:      '<i class="material-icons">content_copy</i><br>Copiar',
+                            title:'Actividades registrados',
+                            titleAttr: 'Copiar',
+                            className: 'btn btn-app export barras',
+                            exportOptions: {
+                                // columns: [ 0, 1 ]
+                            }
+                        },
+                        {
+                            extend:    'pdfHtml5',
+                            orientation: 'letter',
+                            pageSize: 'LEGAL',
+                            text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
+                            title:'Listado de Actividades',
+                            titleAttr: 'PDF',
+                            className: 'btn btn-app export pdf',
+                            filename: `Actividades registrados - ${fecha.toString()}`,
+                            exportOptions: {
+                                // columns: [ 0, 1,2,3,4,5,6 ]
+                                columnsDefs:[{
+                                    className: "text-center", "targets": data
+                                }
+                                ],
+                            columns: ':visible',
+                            search: 'applied',
+                            order: 'applied',
+                            row: {
+                                selected: true
+                            },
+                            },//tr > td > colspan > 7  
+                            customize:function(doc) {
+                                doc.styles.title = {
+                                    color: '#223673',
+                                    fontSize: '20',
+                                    alignment: 'center'
+                                },
+                                doc.styles['td:nth-child(2)'] = { 
+                                    width: '100px',
+                                    'max-width': '70px',
+                                },
+                                doc.styles.tableHeader = {
+                                    fillColor:'#3068bf', 
+                                    color:'white',
+                                    alignment:'center'
+                                },
+                                doc.content[1].margin = [ 1, 0, 2.5, 0 ],
+                                doc.defaultStyle.fontSize = 6,
+                                doc.defaultStyle.alignment='center'
+                            },
+                            iniCompleto: function() { //permite seleccion personalizada de columnas a imprimir en PDF
+                                var tabla = this.api();
+                                var seleccion = tabla.rows({ seleccion: true }).count();
+                            
+                                if (seleccion > 0) {
+                                    var columnaSeleccionada = tabla.columns({ seleccion: true }).indexes();
+                                    var exportOpciones = {
+                                        columnas: columnaSeleccionada
+                                    };
+                                    var botonPDF = tablaOrigen.button('.export.pdf');
+                                    botonPDF[0].inst.s.dt.button('.export.pdf').text('Exportar Selección');
+                                    botonPDF[0].inst.s.dt.button('.export.pdf').conf.exportOpciones = exportOpciones;
 
+                                    var botonDeColvis = tablaOrigen.button('.export.barras');
+                                    botonDeColvis[0].inst.s.dt.button('.export.barras').conf.exportOpciones = {
+                                        columnas: columnaSeleccionada
+                                    };
+                                }
+                            },
+                            select: {
+                                style: 'multi'
+                            }
+
+                        },
+                        {
+                            extend:    'excelHtml5',
+                            text:      '<i class="material-icons">content_copy</i><br>Excel',
+                            title:'Actividades registrados',
+                            titleAttr: 'Excel',
+                            className: 'btn btn-app export excel',
+                            exportOptions: {
+                                // columns: [ 0, 1 ]
+                            },
+                        },
+                        {
+                            extend:    'csvHtml5',
+                            text:      '<i class="material-icons">open_in_browser</i><br>CSV',
+                            title:'Actividades registrados CSV',
+                            titleAttr: 'CSV',
+                            className: 'btn btn-app export csv',
+                            exportOptions: {
+                                // columns: [ 0, 1 ]
+                            }
+                        },
+                        {
+                            extend:    'colvis',
+                            text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
+                            title:'Actividades',
+                            titleAttr: 'Copiar',
+                            className: 'btn btn-app export barras',
+                            exportOptions: {
+                                // columns: [ 0, 1 ]
+                            }
+                        },
+                        {
+                            extend:    'pageLength',
+                            titleAttr: 'Registros a mostrar',
+                            className: 'selectTable',
+                            exportOptions: {
+                                columns: [ 0, 1 ]
+                            }
+                        }
+                    ]
+                }, 
+                columnDefs: [{
+                    targets: 6,
+                    sortable: false,
+                    render: function(data, type, full, meta) {
+                        return "<center>" +
+                                    "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
+                                    "<i class='material-icons'>edit</i></i>" +
+                                    "</button>" + "&ensp; "+
+                                    "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
+                                    "<i class='material-icons'>close</i></i>" +
+                                    "</button>" +
+                               "</center>";
+                    },
+                    selectable: false,
+                    copy: false // Corrección del error tipográfico aquí
+                }],
+                "language":idioma_espanol,
+                select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": true,"Sortable":false, 
+                "lengthMenu": [[5,10,40,70,100, -1],[5,10,40,70,100,"Mostrar Todo"]],
+            });
+            
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });
     }
 
     $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar actividades
         var datos = tablaOrigen.row($(this).parents('tr')).data();
         console.log(datos);
-        var id = datos["id"];
-        var nombre_actividad = datos["nombre_actividad"];
-        var descripcion = datos["descripcion"];
-        var punteo = datos["punteo"];
-        var etapa = datos["id_etapa"];
+        
+        var idActividad2 = datos["idActividad2"];
+        var notaTotal = datos["notaActividad"];
+        var notaEstudiante = datos["notaEstudiante"];
+        
+        $("#txt_idActividad2").val(idActividad2);
+        $("#txt_notaTotal").val(notaTotal);
+        $("#txtpunteo").val(notaEstudiante);
 
-        $("#txtid").val(id);
-        $("#txtnombre_actividad").val(nombre_actividad);
-        $("#txtdescripcion").val(descripcion);
-        $("#txtpunteo").val(punteo);
-        $("#txtetapa").val(etapa);
         
         $("#modal-gestionar-actividad").modal('show');
         $("#btnGuardaractividad").click(function () {
-            id = $('#txtid').val(),
-            nombre_actividad = $('#txtnombre_actividad').val(),
-            descripcion = $('#txtdescripcion').val(),
-            punteo = $('#txtpunteo').val(),
-            etapa = $('#txtetapa').val()
-            console.log(id,nombre_actividad,descripcion,punteo,etapa)
+            idActividad2 = $('#txt_idActividad2').val(),
+            notaActividad = $('#txt_notaTotal').val(),
+            notaAsignada = $('#txtpunteo').val(),
+            console.log(idActividad2,notaActividad,notaAsignada);
             var datos = new FormData();
-            datos.append('id', id);
-            datos.append('nombre_actividad', nombre_actividad);
-            datos.append('descripcion', descripcion);
-            datos.append('punteo', punteo);
-            datos.append('etapa', etapa)
+            datos.append('idActividad2', idActividad2);
+            datos.append('notaActividad', notaActividad);
+            datos.append('notaAsignada', notaAsignada);
             var formDataArray = [];
             for (var pair of datos.entries()) {
                 formDataArray.push(pair);
             } 
-                if(nombre_actividad === null || nombre_actividad === undefined || nombre_actividad === '' || 
-                   punteo === null || punteo === undefined || punteo === '' ||
-                   etapa === null || etapa === undefined || etapa === ''
-                ){
+                if((Number(notaActividad) < Number(notaAsignada))){
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Llenar todos los campos, por favor.."
+                        text: "Nota Asignada mayor a la nota de la actividad"
                       });
                       
                 } else {
-                    if (descripcion === undefined || descripcion === ''){
-                        descripcion === null;
+                    if (notaAsignada === undefined || notaAsignada === ''){
+                        notaAsignada === 0;
                     }
                     Swal.fire({
                         title: "Estas seguro?",
@@ -317,25 +313,30 @@ $(document).ready(function (){
                         confirmButtonText: "Si!"
                       }).then((result) => {
                         if (result.isConfirmed) {
-                          Swal.fire({
-                            title: "Actualizacion efectuada",
-                            text: "Se recargara la lista..",
-                            icon: "success"
-                          });
-                                $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
-                                    accion: 'editar_actividad',
-                                    id:id,
-                                    nombre_actividad: nombre_actividad,
-                                    descripcion: descripcion,
-                                    punteo: punteo,     
-                                    etapa: etapa
-                                }, success: function (data) { 
-                                    console.log(data);
-                                    $("#modal-gestionar-actividad").modal('hide');
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 2000);
-                                }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                            $.ajax({ async: true, type: 'post', url: 'actividades_controlador.php', data: {
+                                accion: 'editar_actividad',
+                                idActividad2 :idActividad2,
+                                notaAsignada: notaAsignada,
+                            }, success: function (data) { 
+                                console.log(data);
+                                $("#modal-gestionar-actividad").modal('hide');
+                                Swal.fire({
+                                    title: "Actualizacion efectuada",
+                                    text: "Se recargara la lista..",
+                                    icon: "success"
+                                });
+                                var idEtapaSelect = $('#txtEtapaSelect').val();
+                                changeDataTable(idEtapaSelect);
+                            }, error: function (request, status, error) { 
+                                console.log('error en peticion'); 
+                                Swal.fire({
+                                    title: "Oops Algo salio mal",
+                                    text: "Porfavor intente de nuevo mas tarde",
+                                    icon: "error"
+                                });
+                            } , timeout: 30*60*1000/*esperar 30min*/ 
+                            });//ajax-close
+                                
                         }//confirmacion sweet-close
                       });//modal guardar sweet-close
                 } //fin else-close
@@ -576,5 +577,16 @@ $(document).ready(function (){
         });//btnGuardar-close
 
     });//formulario-close
+
+    $(this).on('change', '#txtEtapaSelect', function(){
+        id_etapa = $('#txtEtapaSelect').val();
+        console.log(id_etapa);
+        changeDataTable(id_etapa);
+    });
+
+    function changeDataTable(idEtapa){
+        tablaOrigen.destroy();
+        getDataTableData(idEtapa);
+    }
     
 });

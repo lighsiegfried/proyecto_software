@@ -35,18 +35,18 @@ if (isset($_POST['accion'])) {
         break;
 
         case 'get_lista_datos':
-            $lista_actividades=$modelo->get_actividades();
+            $idEtapa = $_POST['idEtapa'];
+            $lista_actividades;
+            if($idEtapa == null || $idEtapa == '' || $idEtapa == 'null') $lista_actividades=$modelo->get_actividades();
+            else $lista_actividades=$modelo->get_actividades_filter($idEtapa);
             echo json_encode($lista_actividades,true);
         break;
 
         case 'editar_actividad':
-            $id = $_POST['id'];
-            $nombre_actividad = $_POST['nombre_actividad'];
-            $descripcion = $_POST['descripcion'];
-            $punteo = $_POST['punteo'];
-            $etapa = $_POST['etapa'];
+            $idActividad2 = $_POST['idActividad2'];
+            $notaAsignada = $_POST['notaAsignada'];
 
-            $modelo->editar_actividad1($id,$nombre_actividad,$descripcion,$punteo,$etapa);
+            $modelo->editar_actividad1($idActividad2,$notaAsignada);
         break;
 
         case 'eliminar_actividad':
