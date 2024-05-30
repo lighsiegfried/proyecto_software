@@ -71,13 +71,25 @@ if (isset($_POST['accion'])) {
         break;
 
         case 'get_lista_vista':
+            $lista=$modelo->show();
             $lista_class=$modelo->show_class();
-            $vista->get_lista_vista($lista_class);
+            $vista->get_lista_vista($lista,$lista_class);
         break;
 
         case 'get_lista_datos':
             $lista_de_alumnos=$modelo->get_alumnos();
             echo json_encode($lista_de_alumnos,true);
+        break;
+
+        case 'consultar_actividad':
+            $vista->get_actividad();
+        break;
+
+        case 'consultar_actividad_datos':
+            $idEtapa = $_POST['idEtapa'];
+            $lista_actividades;
+            $lista_actividades=$modelo->get_actividades($idEtapa);
+            echo json_encode($lista_actividades,true);
         break;
 
         case 'capturar_id_clase':

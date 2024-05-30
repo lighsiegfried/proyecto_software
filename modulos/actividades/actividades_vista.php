@@ -19,13 +19,23 @@ class actividades_vista
         </style>
         <div class="row justify-content-center ">
             <form id="lista_general_from11" method="post" class="mt-4">
+            <div class="col-md-8" style="width: 100%; display: flex; justify-content: center;">
                 <div class="btn-agregar-actividad">
-                    <button id="agregar_actividad" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
+                    <button id="agregar_actividad" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal" style="display: flex; justify-content: center; align-items: center;"
                         data-target="#modal-gestionar-actividad" data-dismiss="modal">
                         <i class="material-icons">group_add</i>
                         Agregar actividad
                     </button>
                 </div>
+                &nbsp;&nbsp;
+                <div class="btn-agregar-etapa btnAgregaretapa d-flex justify-content-center">
+                    <button id="agregar_etapa" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal" style="display: flex; justify-content: center; align-items: center;"
+                        data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">
+                        <i class="material-icons">group_add</i>
+                        Agregar etapa
+                    </button>
+                </div>
+            </div>
                 <div class="modal fade" id="modal-gestionar-actividad">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
@@ -114,14 +124,6 @@ class actividades_vista
                     </div>
                 </div>
                 <!-- -------------------------------------------------------------------------------------------------------------------- -->
-
-                <div class="btn-agregar-etapa btnAgregaretapa d-flex justify-content-center">
-                    <button id="agregar_etapa" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">
-                        <i class="material-icons">group_add</i>
-                        Agregar etapa
-                    </button>
-                </div>
                 <div class="modal fade" id="modal-gestionar-etapa">
                     <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">

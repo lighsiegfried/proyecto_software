@@ -63,7 +63,7 @@ $(document).ready(function (){
 
     function get_contenido(){
         get_lista_Actividades();
-    }
+    }f
 
     get_contenido();
 

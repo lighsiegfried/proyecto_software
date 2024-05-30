@@ -618,7 +618,6 @@ $(document).ready(function (){
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
     });
    
-
     $(this).on('click', '#studentsExcelBtn', function(){
 
         let excelData = {
@@ -697,4 +696,216 @@ $(document).ready(function (){
         }
     })
     
+    $(this).on('click', '#ver_actividad', function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+        // muestra el primer modal y oculta el segundo
+        $("#modal-gestionar-alumno").modal('hide');
+        $("#modal-gestionar-actividades").modal('show');
+    });
+
+    // evento click para el botón de eliminar dentro del segundo modal
+    $(this).on('click', '#btnver_actividad', function() {
+        $("#modal-gestionar-actividades").modal('hide');
+        // obtiene el valor del campo de selección dentro del segundo modal
+        var idEtapa = $('#txtetapa2').val(); 
+        $("#modal-gestionar-actividades_alumno").modal('show');
+        $('#mostrar_data_actividades').html(set_spinner);
+        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                accion: 'consultar_actividad'
+                }, success: function (data) { 
+                    $('#mostrar_data_actividades').html(data);
+                            $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                                accion: 'consultar_actividad'
+                                }, success: function (data) { 
+                                        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                                            accion: 'consultar_actividad_datos',
+                                            idEtapa:idEtapa
+                                            }, success: function (data) { 
+                                            var datos;
+                                            try {
+                                                datos = JSON.parse(data);
+                                               } catch (error) {
+                                               //console.error("Error al analizar JSON:", error);
+                                               }
+                                               console.log(datos),
+                                                now = new Date();
+                                                fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
+                                                var contarsigeneral=0;
+                                                var contarnogeneral=0;
+                                                tablaOrigen = $('#tablaOrigen').DataTable({
+                                                    data:datos,
+                                                    select: 'single',
+                                                    columns:[
+                                                        { data: 'indice'},
+                                                        { data: 'nombres'},
+                                                        { data: 'apellidos'},
+                                                        { data: 'nombreActividad'},
+                                                        { data: 'notaEstudiante'},
+                                                        { data: 'notaActividad'},
+                                                        { data: 'opciones',"bSortable": false,},
+                                                        {data: 'idActividad2', visible: false}
+                                                    ],
+                                                    order:[
+                                                    [0, 'asc']
+                                                    ],
+                                                    dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
+                                                        "<'row'<'col-md-12'tr>>" +
+                                                        "<'row'<'col-md-6'i><'col-md-6'p>>",
+                                                    
+                                                    buttons: {
+                                                        dom: {
+                                                            container:{
+                                                            tag:'div',
+                                                            className:'flexcontent'
+                                                            },
+                                                            buttonLiner: {
+                                                            tag: null
+                                                            }
+                                                        },
+                                                        buttons:[                
+                                                            {
+                                                                extend:    'copyHtml5',
+                                                                text:      '<i class="material-icons">content_copy</i><br>Copiar',
+                                                                title:'Actividades registrados',
+                                                                titleAttr: 'Copiar',
+                                                                className: 'btn btn-app export barras',
+                                                                exportOptions: {
+                                                                    // columns: [ 0, 1 ]
+                                                                }
+                                                            },
+                                                            {
+                                                                extend:    'pdfHtml5',
+                                                                orientation: 'letter',
+                                                                pageSize: 'LEGAL',
+                                                                text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
+                                                                title:'Listado de Actividades',
+                                                                titleAttr: 'PDF',
+                                                                className: 'btn btn-app export pdf',
+                                                                filename: `Actividades registrados - ${fecha.toString()}`,
+                                                                exportOptions: {
+                                                                    // columns: [ 0, 1,2,3,4,5,6 ]
+                                                                    columnsDefs:[{
+                                                                        className: "text-center", "targets": data
+                                                                    }
+                                                                    ],
+                                                                columns: ':visible',
+                                                                search: 'applied',
+                                                                order: 'applied',
+                                                                row: {
+                                                                    selected: true
+                                                                },
+                                                                },//tr > td > colspan > 7  
+                                                                customize:function(doc) {
+                                                                    doc.styles.title = {
+                                                                        color: '#223673',
+                                                                        fontSize: '20',
+                                                                        alignment: 'center'
+                                                                    },
+                                                                    doc.styles['td:nth-child(2)'] = { 
+                                                                        width: '100px',
+                                                                        'max-width': '70px',
+                                                                    },
+                                                                    doc.styles.tableHeader = {
+                                                                        fillColor:'#3068bf', 
+                                                                        color:'white',
+                                                                        alignment:'center'
+                                                                    },
+                                                                    doc.content[1].margin = [ 1, 0, 2.5, 0 ],
+                                                                    doc.defaultStyle.fontSize = 6,
+                                                                    doc.defaultStyle.alignment='center'
+                                                                },
+                                                                iniCompleto: function() { //permite seleccion personalizada de columnas a imprimir en PDF
+                                                                    var tabla = this.api();
+                                                                    var seleccion = tabla.rows({ seleccion: true }).count();
+                                                                
+                                                                    if (seleccion > 0) {
+                                                                        var columnaSeleccionada = tabla.columns({ seleccion: true }).indexes();
+                                                                        var exportOpciones = {
+                                                                            columnas: columnaSeleccionada
+                                                                        };
+                                                                        var botonPDF = tablaOrigen.button('.export.pdf');
+                                                                        botonPDF[0].inst.s.dt.button('.export.pdf').text('Exportar Selección');
+                                                                        botonPDF[0].inst.s.dt.button('.export.pdf').conf.exportOpciones = exportOpciones;
+                                    
+                                                                        var botonDeColvis = tablaOrigen.button('.export.barras');
+                                                                        botonDeColvis[0].inst.s.dt.button('.export.barras').conf.exportOpciones = {
+                                                                            columnas: columnaSeleccionada
+                                                                        };
+                                                                    }
+                                                                },
+                                                                select: {
+                                                                    style: 'multi'
+                                                                }
+                                    
+                                                            },
+                                                            {
+                                                                extend:    'excelHtml5',
+                                                                text:      '<i class="material-icons">content_copy</i><br>Excel',
+                                                                title:'Actividades registrados',
+                                                                titleAttr: 'Excel',
+                                                                className: 'btn btn-app export excel',
+                                                                exportOptions: {
+                                                                    // columns: [ 0, 1 ]
+                                                                },
+                                                            },
+                                                            {
+                                                                extend:    'csvHtml5',
+                                                                text:      '<i class="material-icons">open_in_browser</i><br>CSV',
+                                                                title:'Actividades registrados CSV',
+                                                                titleAttr: 'CSV',
+                                                                className: 'btn btn-app export csv',
+                                                                exportOptions: {
+                                                                    // columns: [ 0, 1 ]
+                                                                }
+                                                            },
+                                                            {
+                                                                extend:    'colvis',
+                                                                text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
+                                                                title:'Actividades',
+                                                                titleAttr: 'Copiar',
+                                                                className: 'btn btn-app export barras',
+                                                                exportOptions: {
+                                                                    // columns: [ 0, 1 ]
+                                                                }
+                                                            },
+                                                            {
+                                                                extend:    'pageLength',
+                                                                titleAttr: 'Registros a mostrar',
+                                                                className: 'selectTable',
+                                                                exportOptions: {
+                                                                    columns: [ 0, 1 ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }, 
+                                                    columnDefs: [{
+                                                        targets: 6,
+                                                        sortable: false,
+                                                        render: function(data, type, full, meta) {
+                                                            return "<center>" +
+                                                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
+                                                                        "<i class='material-icons'>edit</i></i>" +
+                                                                        "</button>" + "&ensp; "+
+                                                                        "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
+                                                                        "<i class='material-icons'>close</i></i>" +
+                                                                        "</button>" +
+                                                                "</center>";
+                                                        },
+                                                        selectable: false,
+                                                        copy: false // Corrección del error tipográfico aquí
+                                                    }],
+                                                    "language":idioma_espanol,
+                                                    select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": true,"Sortable":false, 
+                                                    "lengthMenu": [[5,10,40,70,100, -1],[5,10,40,70,100,"Mostrar Todo"]],
+                                                });
+                                        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                            }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+    });
+
+    $(this).on('click', '#closeM', function() {
+        setTimeout(function() {
+            location.reload();
+        }, 200);
+    });
 });

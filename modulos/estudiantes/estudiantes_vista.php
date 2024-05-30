@@ -3,7 +3,7 @@
 class estudiantes_vista
 {
     //funciones de vista
-    function get_lista_vista($lista_class)
+    function get_lista_vista($lista,$lista_class)
     {   $id_usuario = $_SESSION['id'];
         ?>
         <style>
@@ -18,19 +18,30 @@ class estudiantes_vista
         </style>
         <div class="row justify-content-center ">
             <form id="lista_general_from11" method="post" class="mt-4">
-                <div class="btn-agregar-alumno">
-                    <button id="agregar_alumno" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-gestionar-alumno" data-dismiss="modal">
-                        <i class="material-icons">group_add</i>
-                        Agregar estudiante
-                    </button>
+                <div class="col-md-8" style="width: 100%; display: flex; justify-content: center;">
+                    <div class="btn-agregar-alumno">
+                        <button id="agregar_alumno" type="button" class="btn btn-light btn-sm mb-4"  style="display: flex; justify-content: center; align-items: center;" data-toggle="modal"
+                            data-target="#modal-gestionar-alumno" data-dismiss="modal">
+                            <i class="material-icons">group_add</i>
+                            Agregar estudiante
+                        </button>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="btn-agregar-clase btnAgregarclase">
+                        <button id="agregar_clase" type="button" class="btn btn-light btn-sm mb-4" style="display: flex; justify-content: center; align-items: center;" data-toggle="modal"
+                            data-target="#modal-gestionar-clase" data-dismiss="modal">
+                            <i class="material-icons">group_add</i>
+                            Agregar clase
+                        </button>
+                    </div>
                 </div>
+
                 <div class="modal fade" id="modal-gestionar-alumno">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <!-- modal header -->
                             <div class="modal-header">
-                                <h4 class="modal-title">Agregar nuevo estudiante</h4>
+                                <h4 class="modal-title">Agregar estudiante</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
                             </div>
                             <!-- modal body -->
@@ -107,6 +118,7 @@ class estudiantes_vista
 
                             <!-- modal footer  -->
                             <div class="modal-footer justify-content-end">
+                                <button id="ver_actividad" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Ver Actividades</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" id="btnGuardarAlumno" class="btn btn-primary">Guardar</button>
                             </div>
@@ -114,16 +126,6 @@ class estudiantes_vista
                     </div>
                 </div>
                 <!-- -------------------------------------------------------------------------------------------------------------------- -->
-
-                <div class="btn-agregar-clase btnAgregarclase">
-                    <button id="agregar_clase" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-gestionar-clase" data-dismiss="modal">
-                        <i class="material-icons">group_add</i>
-                        Agregar clase
-                    </button>
-
-
-                </div>
                 <div class="modal fade" id="modal-gestionar-clase">
                     <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
@@ -163,6 +165,7 @@ class estudiantes_vista
                         </div>
                     </div>
                 </div>
+                <!-- -------------------------------------------------------------------------------------------------------------------- -->
                 <div class="modal fade" id="modal-gestionar-clase_eliminar">
                     <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
@@ -205,7 +208,73 @@ class estudiantes_vista
                         </div>
                     </div>
                 </div>
-
+                <!-- -------------------------------------------------------------------------------------------------------------------- -->
+                <div class="modal fade" id="modal-gestionar-actividades">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Seleccion Etapa para ver actividades de alumno:  </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                
+                                        <div class="form-group">
+                                            <label for="txtetapa">Etapa</label>
+                                            <select name="etapa2" class="form-control" id="txtetapa2" required>
+                                                <option value="<?php if (!isset($_POST['id']))
+                                                    echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                                          echo 'selected'; ?>>Seleccione etapa</option>
+                                                <?php
+                                                foreach ($lista as $valor) {
+                                                    ?>
+                                                    <option value="<?php echo $valor['id']; ?>" <?php if (isset($_POST['id']) and $valor['id'] == $_POST['id'])
+                                                           echo "selected"; ?>>
+                                                        <?php echo $valor['nombre_etapa']; ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    
+                            </div>
+                            <!-- modal footer  -->
+                            <div class="modal-footer d-flex justify-content-center">
+                                <div class="">
+                                    <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" id="btnver_actividad" class="btn btn-success mt-2" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -------------------------------------------------------------------------------------------------------------------- -->
+                <div class="modal fade" id="modal-gestionar-actividades_alumno">
+                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Actividades del alumnno:  </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                <div id="mostrar_data_actividades"></div>
+                            </div>
+                            <!-- modal footer  -->
+                            <div class="modal-footer d-flex justify-content-center">
+                                <div class="">
+                                    <button id="closeM" type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- -------------------------------------------------------------------------------------------------------------------- -->
                 <div class="btn-agregar-clase btnGenerarPlantilla col-md-8" style="width: 100%; display: flex; justify-content: center;">
                     <button id="studentsExcelBtn" type="button" class="btn btn-light btn-sm mb-4"
                     style="display: flex; justify-content: center; align-items: center;">
@@ -214,7 +283,7 @@ class estudiantes_vista
                         </i>
                         <span>Generar Plantilla</span>
                     </button>
-
+                    &nbsp;                           
                     <button id="studentsExcelUploadBtn" type="button" class="btn btn-light btn-sm mb-4"
                     style="display: flex; justify-content: center; align-items: center; margin-left: 5px">
                         <i class="material-icons">
@@ -274,29 +343,52 @@ class estudiantes_vista
     
         <?php
     }
-    function get_grafo()
+    function get_actividad()
     {
-        //imagen en formato base64 para pdf
-        global $imagen_logo1;
-        global $imagen_logo2;
-        global $imagen_logo3;
         ?>
-        <div class="d-flex justify-content-center mb-4">
-            <input type="hidden" name="fecha" id="fecha"></input>
-            <input type="hidden" name="variable" id="variable"></input> <!--Grafica Variable a pdf -->
-            <input type="hidden" name="logoTipo" id="logoTipo"
-                value="data:image/png;base64,<?php echo $imagen_logo1 . $imagen_logo2 . $imagen_logo3 ?>"></input>
-            <input type="hidden" name="dataTablaaa" id="dataTablaaa"></input> <!--tabla Variable a pdf -->
-            <div class="row justify-content-center mt-4" id="dataTablaa"></div>
-            <!-- <input type="submit" value="Gráfica pdf" class="btn btn-danger mt-5 mr-5 float-right"></input> -->
-        </div>
-        <div class="d-flex justify-content-center">
-            <div class="row d-flex flex-row-reverse mt-4" id="leyenda"></div>
-            <div class="row justify-content-center mt-4" id="dataTablee"></div>
-            <div id="piechart" style="width: 1200px; height: 800px;"></div>
-        </div>
+            <div class="col-11">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h5> Actividades</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="dataTables_wrapper dt-bootstrap4">
+                            <div class="table-responsive">
+                                <table id="tablaOrigen" class="table table-striped table-bordered table-ml table-hover  p-3" style="width:100%">
+                                    <thead class="table-active ">
+                                        <tr>
+                                            <th scope="col" class="text-center">No.</th>
+                                            <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center">Apellidos</th>
+                                            <th scope="col" class="text-center">Nombre Actividad</th>
+                                            <th scope="col" class="text-center">Nota Estudiante</th>
+                                            <th scope="col" class="text-center">Nota Actividad</th>
+                                            <th scope="col" class="text-center">Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Se auto llena con informacion desde el Javascript -->
+                                    </tbody>
+                                    <tfoot class="table-active">
+                                        <tr>
+                                            <th scope="col" class="text-center">No.</th>
+                                            <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center">Apellidos</th>
+                                            <th scope="col" class="text-center">Nombre Actividad</th>
+                                            <th scope="col" class="text-center">Nota Estudiante</th>
+                                            <th scope="col" class="text-center">Nota Actividad</th>
+                                            <th scope="col" class="text-center">Opciones</th>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php
     }
+
+    
 
 }
 ?>

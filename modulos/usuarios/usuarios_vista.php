@@ -20,12 +20,14 @@ class usuarios_vista
         </style>
         <div class="row justify-content-center ">
             <form id="lista_general_from1" method="post" class="mt-4">
-                <div class="btn-agregar-usuario btnAgregar">
-                    <button id="agregar_usuario" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal"
-                        data-target="#modal-gestionar-usuario" data-dismiss="modal">
-                        <i class="material-icons">group_add</i>
-                        Agregar usuario
-                    </button>
+                <div class="col-md-8" style="width: 100%; display: flex; justify-content: center;">
+                    <div class="btn-agregar-usuario btnAgregar">
+                        <button id="agregar_usuario" type="button" class="btn btn-light btn-sm mb-4" data-toggle="modal" style="display: flex; justify-content: center; align-items: center;"
+                            data-target="#modal-gestionar-usuario" data-dismiss="modal">
+                            <i class="material-icons">group_add</i>
+                            Agregar usuario
+                        </button>
+                    </div>
                 </div>
                 <div class="modal fade" id="modal-gestionar-usuario">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
