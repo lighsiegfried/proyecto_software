@@ -440,6 +440,17 @@ LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
 LEFT JOIN persona p ON p.id = es.id_persona
 where a.id_usuario = 1
 
+--version 2
+set @row_number:=0;
+SELECT @row_number:=@row_number+1 AS indice, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,
+'X' as opciones, a.nombre_actividad as nombreActividad, a2.id as idActividad2
+FROM actividad a 
+LEFT JOIN etapa e ON a.id_etapa = e.id
+LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
+LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
+LEFT JOIN persona p ON p.id = es.id_persona
+where a.id_usuario = 1 AND e.id = $idEtapa;
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ALTER TABLE etapa
 ADD id_bimestre INT NOT NULL;
