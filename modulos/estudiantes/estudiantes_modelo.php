@@ -10,9 +10,13 @@ class estudiantes_modelo{
     }
     function get_alumnos(){
         $id_usuario = $_SESSION['id'];
+
+        $qry_init = "SET @row_number = 0;";
+        $this->pdo->exec($qry_init);        
+
         $qry="
         select 
-            t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota,'X' as acciones
+        @row_number:=@row_number+1 AS clave, t2.id,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota,'X' as acciones
         from 
         (/*tabla persona*/
             select id,nombres,apellidos,correo,id_puesto from persona) t1 left join 
@@ -20,7 +24,7 @@ class estudiantes_modelo{
             select id,clave,total_nota,id_persona,id_clase,id_usuario from estudiante) t2 on t1.id = t2.id_persona left join
         (/*tabla clase*/
             select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id
-        where t2.id is not null and t2.id_usuario = $id_usuario
+        where t2.id is not null and t2.id_usuario = $id_usuario order by t1.apellidos, t1.nombres;
         ";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
@@ -312,7 +316,7 @@ class estudiantes_modelo{
         }
     }
 
-    function get_actividades($idEtapa){
+    function get_actividades($idEtapa, $idAlumno){
         $id_usuario = $_SESSION['id'];
 
         $qry_init = "SET @row_number = 0;";
@@ -326,7 +330,7 @@ class estudiantes_modelo{
         LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
         LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
         LEFT JOIN persona p ON p.id = es.id_persona
-        where a.id_usuario = $id_usuario AND e.id = $idEtapa;";
+        where a.id_usuario = $id_usuario AND e.id = $idEtapa AND es.id = $idAlumno;";
         $qqry=$this->pdo->query($qry);
         return $qqry->fetchAll();
     }

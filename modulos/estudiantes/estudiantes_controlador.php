@@ -87,8 +87,9 @@ if (isset($_POST['accion'])) {
 
         case 'consultar_actividad_datos':
             $idEtapa = $_POST['idEtapa'];
+            $idAlumno = $_POST['idAlumno'];
             $lista_actividades;
-            $lista_actividades=$modelo->get_actividades($idEtapa);
+            $lista_actividades=$modelo->get_actividades($idEtapa, $idAlumno);
             echo json_encode($lista_actividades,true);
         break;
 

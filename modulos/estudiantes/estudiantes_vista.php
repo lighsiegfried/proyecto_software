@@ -215,6 +215,7 @@ class estudiantes_vista
                             <!-- modal header -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Seleccion Etapa para ver actividades de alumno:  </h4>
+                                <input type="hidden" id="txt_idAlumnoFiltroActividades">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
                             </div>
                             <!-- modal body -->
@@ -363,7 +364,6 @@ class estudiantes_vista
                                             <th scope="col" class="text-center">Nombre Actividad</th>
                                             <th scope="col" class="text-center">Nota Estudiante</th>
                                             <th scope="col" class="text-center">Nota Actividad</th>
-                                            <th scope="col" class="text-center">Opciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -371,13 +371,12 @@ class estudiantes_vista
                                     </tbody>
                                     <tfoot class="table-active">
                                         <tr>
-                                            <th scope="col" class="text-center">No.</th>
-                                            <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
-                                            <th scope="col" class="text-center">Apellidos</th>
-                                            <th scope="col" class="text-center">Nombre Actividad</th>
-                                            <th scope="col" class="text-center">Nota Estudiante</th>
-                                            <th scope="col" class="text-center">Nota Actividad</th>
-                                            <th scope="col" class="text-center">Opciones</th>
+                                            <th scope="col" class="text-center">Total</th>
+                                            <th scope="col" class="text-center"></th> <!--codigos quemados -->
+                                            <th scope="col" class="text-center"></th>
+                                            <th scope="col" id="notaTotalEstudiante" class="text-center"></th>
+                                            <th scope="col" id="notaTotalActividades" class="text-center"></th>
+                                            <th scope="col" id="notaTotalReal" class="text-center"></th>
                                     </tfoot>
                                 </table>
                             </div>

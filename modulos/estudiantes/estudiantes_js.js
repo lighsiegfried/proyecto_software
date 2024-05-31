@@ -91,7 +91,7 @@ $(document).ready(function (){
                       data:datos,
                       select: 'single',
                     columns:[
-                        { data: 'id'},
+                        { data: 'id', visible: false},
                         { data: 'clave'},
                         { data: 'nombres'},
                         { data: 'apellidos'},
@@ -243,6 +243,9 @@ $(document).ready(function (){
                                         "</button>" + "&ensp; "+
                                         "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
                                         "<i class='material-icons'>close</i></i>" +
+                                        "</button>" + "&ensp; " +
+                                        "<button type='button' class='btn btn-info btn-sm' id='ver_actividad'>" +
+                                        "<i class='material-icons'>remove_red_eye</i></i>" +
                                         "</button>" +
                                    "</center>";
                         },
@@ -697,8 +700,12 @@ $(document).ready(function (){
     })
     
     $(this).on('click', '#ver_actividad', function(e) {
+        var datos = tablaOrigen.row($(this).parents('tr')).data();
+        console.log(datos);
         e.preventDefault(); // Evita el comportamiento predeterminado del enlace
         // muestra el primer modal y oculta el segundo
+        var total_nota = datos["id"]; 
+        $("#txt_idAlumnoFiltroActividades").val(total_nota);
         $("#modal-gestionar-alumno").modal('hide');
         $("#modal-gestionar-actividades").modal('show');
     });
@@ -708,8 +715,10 @@ $(document).ready(function (){
         $("#modal-gestionar-actividades").modal('hide');
         // obtiene el valor del campo de selección dentro del segundo modal
         var idEtapa = $('#txtetapa2').val(); 
+        var idAlumno = $('#txt_idAlumnoFiltroActividades').val();
         $("#modal-gestionar-actividades_alumno").modal('show');
         $('#mostrar_data_actividades').html(set_spinner);
+        console.log(idAlumno);
         $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                 accion: 'consultar_actividad'
                 }, success: function (data) { 
@@ -719,7 +728,8 @@ $(document).ready(function (){
                                 }, success: function (data) { 
                                         $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                                             accion: 'consultar_actividad_datos',
-                                            idEtapa:idEtapa
+                                            idEtapa:idEtapa,
+                                            idAlumno: idAlumno
                                             }, success: function (data) { 
                                             var datos;
                                             try {
@@ -742,7 +752,6 @@ $(document).ready(function (){
                                                         { data: 'nombreActividad'},
                                                         { data: 'notaEstudiante'},
                                                         { data: 'notaActividad'},
-                                                        { data: 'opciones',"bSortable": false,},
                                                         {data: 'idActividad2', visible: false}
                                                     ],
                                                     order:[
@@ -885,9 +894,6 @@ $(document).ready(function (){
                                                             return "<center>" +
                                                                         "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
                                                                         "<i class='material-icons'>edit</i></i>" +
-                                                                        "</button>" + "&ensp; "+
-                                                                        "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
-                                                                        "<i class='material-icons'>close</i></i>" +
                                                                         "</button>" +
                                                                 "</center>";
                                                         },
@@ -895,8 +901,33 @@ $(document).ready(function (){
                                                         copy: false // Corrección del error tipográfico aquí
                                                     }],
                                                     "language":idioma_espanol,
-                                                    select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": true,"Sortable":false, 
-                                                    "lengthMenu": [[5,10,40,70,100, -1],[5,10,40,70,100,"Mostrar Todo"]],
+                                                    select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": false,"Sortable":false,
+                                                    footerCallback: function(row, data, start, end, display) {
+                                                        var api = this.api();
+                                        
+                                                        // Calcula la suma de las notas del estudiante
+                                                        var totalNotaEstudiante = api
+                                                            .column(4)
+                                                            .data()
+                                                            .reduce(function(a, b) {
+                                                                return a + parseFloat(b) || 0;
+                                                            }, 0);
+                                        
+                                                        // Calcula la suma de las notas de la actividad
+                                                        var totalNotaActividad = api
+                                                            .column(5)
+                                                            .data()
+                                                            .reduce(function(a, b) {
+                                                                return a + parseFloat(b) || 0;
+                                                            }, 0);
+
+                                                        var puntosReales = (20/totalNotaActividad) * totalNotaEstudiante;
+                                        
+                                                        // Actualiza el footer
+                                                        $(api.column(3).footer()).html('Puntos Reales: ' + puntosReales.toFixed(0));
+                                                        $(api.column(4).footer()).html('Total: ' + totalNotaEstudiante);
+                                                        $(api.column(5).footer()).html('Total: ' + totalNotaActividad);
+                                                    }
                                                 });
                                         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
                             }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
