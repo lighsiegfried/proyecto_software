@@ -354,7 +354,7 @@ _____________________________________________________________________ -- query p
 				(/*tabla actividad principal*/
 						select id,nombre_actividad,descripcion,punteo,id_etapa,id_usuario from actividad ) t5 on t5.id = t4.id_actividad
         where t2.id is not null and t2.id_usuario = 1
-	
+		
 				
 	
 						
@@ -464,15 +464,27 @@ ADD CONSTRAINT fk_clase_actividad FOREIGN KEY (id_clase) REFERENCES clase(id);
 
 
 
+				SET @row_number = 0;
+        SELECT @row_number:=@row_number+1 AS indice, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,
+        'X' as opciones, a.nombre_actividad as nombreActividad, a2.id as idActividad2
+        FROM actividad a 
+        LEFT JOIN etapa e ON a.id_etapa = e.id
+        LEFT JOIN actividad2 a2 ON a2.id_actividad = a.id
+        LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
+        LEFT JOIN persona p ON p.id = es.id_persona
+        where a.id_usuario = 1 AND e.id = 7 AND es.id = 4;
 
 
+SELECT * from estudiante
+
+select * from actividad //plantilla acctividades
+select * from etapa
 
 
+select id, nota_actividad, id_estudiantes, id_actividad, id_usuario from actividad2  -- donde se agrega el estudiate
 
-
-
-
-
+buscar la lista de actividad, captura ID 
+0,5,(2),1
 
 
 

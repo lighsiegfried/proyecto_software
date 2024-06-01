@@ -118,7 +118,7 @@ class estudiantes_vista
 
                             <!-- modal footer  -->
                             <div class="modal-footer justify-content-end">
-                                <button id="ver_actividad" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Ver Actividades</button>
+                               <button id="asignar_actividad" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Asignar Actividades</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" id="btnGuardarAlumno" class="btn btn-primary">Guardar</button>
                             </div>
@@ -209,14 +209,82 @@ class estudiantes_vista
                     </div>
                 </div>
                 <!-- -------------------------------------------------------------------------------------------------------------------- -->
-                <div class="modal fade" id="modal-gestionar-actividades">
+                <div class="modal fade" id="modal-gestionar-asignacion-actividades" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Seleccion Etapa para asignarle actividades:  </h4>
+                                <input type="hidden" id="txt_idAlumnoFiltroActividades_asignacion" value="">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeM"></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">
+                                <!-- çategoria ruta y estado -->
+                                
+                                        <div class="form-group">
+                                            <label for="txtetapa">Etapa</label>
+                                            <select name="etapa2" class="form-control" id="txtetapa2_asignacion" required>
+                                                <option value="<?php if (!isset($_POST['id']))
+                                                    echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                                          echo 'selected'; ?>>Seleccione etapa</option>
+                                                <?php
+                                                foreach ($lista as $valor) {
+                                                    ?>
+                                                    <option value="<?php echo $valor['id']; ?>" <?php if (isset($_POST['id']) and $valor['id'] == $_POST['id'])
+                                                           echo "selected"; ?>>
+                                                        <?php echo $valor['nombre_etapa']; ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    
+                            </div>
+                            <!-- modal footer  -->
+                            <div class="modal-footer d-flex justify-content-center">
+                                <div class="">
+                                    <button id="closeM" type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" id="btnver_actividad2" class="btn btn-success mt-2" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -------------------------------------------------------------------------------------------------------------------- *-->
+                <div class="modal fade" id="modal-gestionar-asignacion-actividades2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Seleccion Actividad a asignarle:  </h4>
+                                <input type="hidden" id="txt_idAlumnoFiltroActividades_asignacion2" value="">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeM"></button>
+                            </div>
+                            <!-- modal body -->
+                            <div class="modal-body">                                        
+                                <div id="actividad_asignacion"></div>  
+                            </div>
+                            <!-- modal footer  -->
+                            <div class="modal-footer d-flex justify-content-center">
+                                <div class="">
+                                    <button id="closeM" type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" id="btnver_actividad3" class="btn btn-success mt-2">Asignar actividad</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -------------------------------------------------------------------------------------------------------------------- -->                                
+                <div class="modal fade" id="modal-gestionar-actividades" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <!-- modal header -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Seleccion Etapa para ver actividades de alumno:  </h4>
-                                <input type="hidden" id="txt_idAlumnoFiltroActividades">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                                <input type="hidden" id="txt_idAlumnoFiltroActividades" value="">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeM"></button>
                             </div>
                             <!-- modal body -->
                             <div class="modal-body">
@@ -245,7 +313,7 @@ class estudiantes_vista
                             <!-- modal footer  -->
                             <div class="modal-footer d-flex justify-content-center">
                                 <div class="">
-                                    <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal">Cancelar</button>
+                                    <button id="closeM" type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="button" id="btnver_actividad" class="btn btn-success mt-2" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Continuar</button>
                                 </div>
                             </div>
@@ -253,13 +321,13 @@ class estudiantes_vista
                     </div>
                 </div>
                 <!-- -------------------------------------------------------------------------------------------------------------------- -->
-                <div class="modal fade" id="modal-gestionar-actividades_alumno">
+                <div class="modal fade" id="modal-gestionar-actividades_alumno" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
                     <div class="modal-dialog modal-xl modal-dialog-centered">
                         <div class="modal-content">
                             <!-- modal header -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Actividades del alumnno:  </h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id=></button>
+                                <button id="closeM" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                             </div>
                             <!-- modal body -->
                             <div class="modal-body">
@@ -383,6 +451,30 @@ class estudiantes_vista
                         </div>
                     </div>
                 </div>
+            </div>
+        <?php
+    }
+
+    function get_actividad_asinacion($activi)
+    {
+        ?>
+            <div class="form-group">
+                <label for="txt_asignacion">Actividad</label>
+                <select name="asignacion" class="form-control" id="txt_asignacion" required>
+                    <option value="<?php if (!isset($_POST['id']))
+                        echo 'null'; ?>" <?php if (!isset($_POST['id']))
+                                echo 'selected'; ?>>Seleccione asignacion</option>
+                    <?php
+                    foreach ($activi as $valor) {
+                        ?>
+                        <option value="<?php echo $valor['id']; ?>" <?php if (isset($_POST['id']) and $valor['id'] == $_POST['id'])
+                                echo "selected"; ?>>
+                            <?php echo $valor['nombre_actividad']; ?>
+                        </option>
+                        <?php
+                    }
+                    ?>
+                </select>
             </div>
         <?php
     }

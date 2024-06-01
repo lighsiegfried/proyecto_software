@@ -3,7 +3,7 @@ $(document).ready(function (){
     //variables GLOBALES
     var set_spinner = `<div class="d-flex justify-content-center"> <div class="spinner-border text-primary" role="status"> <span class="sr-only"></span> </div> </div>`,
         meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], //para pdf
-        tablaOrigen;
+        tablaOrigen,idAlumnoo;
 
     var idioma_espanol={
         select: {
@@ -244,7 +244,7 @@ $(document).ready(function (){
                                         "<button type='button' class='btn btn-danger btn-sm btnEliminar'>" +
                                         "<i class='material-icons'>close</i></i>" +
                                         "</button>" + "&ensp; " +
-                                        "<button type='button' class='btn btn-info btn-sm' id='ver_actividad'>" +
+                                        "<button type='button' class='btn btn-info btn-sm' id='ver_actividad' data-bs-toggle='modal' data-bs-target='#modal-gestionar-actividades' >" +
                                         "<i class='material-icons'>remove_red_eye</i></i>" +
                                         "</button>" +
                                    "</center>";
@@ -265,7 +265,7 @@ $(document).ready(function (){
     $(this).on('click','.btnEditar', function(e){e.preventDefault();  //editar estudiantes
         var datos = tablaOrigen.row($(this).parents('tr')).data();
         console.log(datos);
-        var id = datos["id"];
+        var id = datos["id"];  idAlumnoo = id;
         var clave = datos["clave"];
         var nombres = datos["nombres"];
         var apellidos = datos["apellidos"];
@@ -700,243 +700,300 @@ $(document).ready(function (){
     })
     
     $(this).on('click', '#ver_actividad', function(e) {
-        var datos = tablaOrigen.row($(this).parents('tr')).data();
-        console.log(datos);
         e.preventDefault(); // Evita el comportamiento predeterminado del enlace
         // muestra el primer modal y oculta el segundo
-        var total_nota = datos["id"]; 
-        $("#txt_idAlumnoFiltroActividades").val(total_nota);
-        $("#modal-gestionar-alumno").modal('hide');
+        var datos = tablaOrigen.row($(this).parents('tr')).data();
+        id = datos["id"]; 
+        console.log("el id es: ",id)
+        $("#txt_idAlumnoFiltroActividades").val(id);
         $("#modal-gestionar-actividades").modal('show');
     });
 
     // evento click para el botón de eliminar dentro del segundo modal
     $(this).on('click', '#btnver_actividad', function() {
-        $("#modal-gestionar-actividades").modal('hide');
-        // obtiene el valor del campo de selección dentro del segundo modal
+        //capturo datos antes de ocultar el modal
         var idEtapa = $('#txtetapa2').val(); 
         var idAlumno = $('#txt_idAlumnoFiltroActividades').val();
+        $("#modal-gestionar-actividades").modal('hide');
         $("#modal-gestionar-actividades_alumno").modal('show');
         $('#mostrar_data_actividades').html(set_spinner);
-        console.log(idAlumno);
         $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
                 accion: 'consultar_actividad'
                 }, success: function (data) { 
                     $('#mostrar_data_actividades').html(data);
                             $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                accion: 'consultar_actividad'
+                                accion: 'consultar_actividad_datos',
+                                idEtapa:idEtapa,
+                                idAlumno: idAlumno
                                 }, success: function (data) { 
-                                        $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
-                                            accion: 'consultar_actividad_datos',
-                                            idEtapa:idEtapa,
-                                            idAlumno: idAlumno
-                                            }, success: function (data) { 
-                                            var datos;
-                                            try {
-                                                datos = JSON.parse(data);
-                                               } catch (error) {
-                                               //console.error("Error al analizar JSON:", error);
-                                               }
-                                               console.log(datos),
-                                                now = new Date();
-                                                fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
-                                                var contarsigeneral=0;
-                                                var contarnogeneral=0;
-                                                tablaOrigen = $('#tablaOrigen').DataTable({
-                                                    data:datos,
-                                                    select: 'single',
-                                                    columns:[
-                                                        { data: 'indice'},
-                                                        { data: 'nombres'},
-                                                        { data: 'apellidos'},
-                                                        { data: 'nombreActividad'},
-                                                        { data: 'notaEstudiante'},
-                                                        { data: 'notaActividad'},
-                                                        {data: 'idActividad2', visible: false}
-                                                    ],
-                                                    order:[
-                                                    [0, 'asc']
-                                                    ],
-                                                    dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
-                                                        "<'row'<'col-md-12'tr>>" +
-                                                        "<'row'<'col-md-6'i><'col-md-6'p>>",
-                                                    
-                                                    buttons: {
-                                                        dom: {
-                                                            container:{
-                                                            tag:'div',
-                                                            className:'flexcontent'
-                                                            },
-                                                            buttonLiner: {
-                                                            tag: null
-                                                            }
-                                                        },
-                                                        buttons:[                
-                                                            {
-                                                                extend:    'copyHtml5',
-                                                                text:      '<i class="material-icons">content_copy</i><br>Copiar',
-                                                                title:'Actividades registrados',
-                                                                titleAttr: 'Copiar',
-                                                                className: 'btn btn-app export barras',
-                                                                exportOptions: {
-                                                                    // columns: [ 0, 1 ]
-                                                                }
-                                                            },
-                                                            {
-                                                                extend:    'pdfHtml5',
-                                                                orientation: 'letter',
-                                                                pageSize: 'LEGAL',
-                                                                text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
-                                                                title:'Listado de Actividades',
-                                                                titleAttr: 'PDF',
-                                                                className: 'btn btn-app export pdf',
-                                                                filename: `Actividades registrados - ${fecha.toString()}`,
-                                                                exportOptions: {
-                                                                    // columns: [ 0, 1,2,3,4,5,6 ]
-                                                                    columnsDefs:[{
-                                                                        className: "text-center", "targets": data
-                                                                    }
-                                                                    ],
-                                                                columns: ':visible',
-                                                                search: 'applied',
-                                                                order: 'applied',
-                                                                row: {
-                                                                    selected: true
-                                                                },
-                                                                },//tr > td > colspan > 7  
-                                                                customize:function(doc) {
-                                                                    doc.styles.title = {
-                                                                        color: '#223673',
-                                                                        fontSize: '20',
-                                                                        alignment: 'center'
-                                                                    },
-                                                                    doc.styles['td:nth-child(2)'] = { 
-                                                                        width: '100px',
-                                                                        'max-width': '70px',
-                                                                    },
-                                                                    doc.styles.tableHeader = {
-                                                                        fillColor:'#3068bf', 
-                                                                        color:'white',
-                                                                        alignment:'center'
-                                                                    },
-                                                                    doc.content[1].margin = [ 1, 0, 2.5, 0 ],
-                                                                    doc.defaultStyle.fontSize = 6,
-                                                                    doc.defaultStyle.alignment='center'
-                                                                },
-                                                                iniCompleto: function() { //permite seleccion personalizada de columnas a imprimir en PDF
-                                                                    var tabla = this.api();
-                                                                    var seleccion = tabla.rows({ seleccion: true }).count();
-                                                                
-                                                                    if (seleccion > 0) {
-                                                                        var columnaSeleccionada = tabla.columns({ seleccion: true }).indexes();
-                                                                        var exportOpciones = {
-                                                                            columnas: columnaSeleccionada
-                                                                        };
-                                                                        var botonPDF = tablaOrigen.button('.export.pdf');
-                                                                        botonPDF[0].inst.s.dt.button('.export.pdf').text('Exportar Selección');
-                                                                        botonPDF[0].inst.s.dt.button('.export.pdf').conf.exportOpciones = exportOpciones;
-                                    
-                                                                        var botonDeColvis = tablaOrigen.button('.export.barras');
-                                                                        botonDeColvis[0].inst.s.dt.button('.export.barras').conf.exportOpciones = {
-                                                                            columnas: columnaSeleccionada
-                                                                        };
-                                                                    }
-                                                                },
-                                                                select: {
-                                                                    style: 'multi'
-                                                                }
-                                    
-                                                            },
-                                                            {
-                                                                extend:    'excelHtml5',
-                                                                text:      '<i class="material-icons">content_copy</i><br>Excel',
-                                                                title:'Actividades registrados',
-                                                                titleAttr: 'Excel',
-                                                                className: 'btn btn-app export excel',
-                                                                exportOptions: {
-                                                                    // columns: [ 0, 1 ]
-                                                                },
-                                                            },
-                                                            {
-                                                                extend:    'csvHtml5',
-                                                                text:      '<i class="material-icons">open_in_browser</i><br>CSV',
-                                                                title:'Actividades registrados CSV',
-                                                                titleAttr: 'CSV',
-                                                                className: 'btn btn-app export csv',
-                                                                exportOptions: {
-                                                                    // columns: [ 0, 1 ]
-                                                                }
-                                                            },
-                                                            {
-                                                                extend:    'colvis',
-                                                                text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
-                                                                title:'Actividades',
-                                                                titleAttr: 'Copiar',
-                                                                className: 'btn btn-app export barras',
-                                                                exportOptions: {
-                                                                    // columns: [ 0, 1 ]
-                                                                }
-                                                            },
-                                                            {
-                                                                extend:    'pageLength',
-                                                                titleAttr: 'Registros a mostrar',
-                                                                className: 'selectTable',
-                                                                exportOptions: {
-                                                                    columns: [ 0, 1 ]
-                                                                }
-                                                            }
-                                                        ]
-                                                    }, 
-                                                    columnDefs: [{
-                                                        targets: 6,
-                                                        sortable: false,
-                                                        render: function(data, type, full, meta) {
-                                                            return "<center>" +
-                                                                        "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
-                                                                        "<i class='material-icons'>edit</i></i>" +
-                                                                        "</button>" +
-                                                                "</center>";
-                                                        },
-                                                        selectable: false,
-                                                        copy: false // Corrección del error tipográfico aquí
-                                                    }],
-                                                    "language":idioma_espanol,
-                                                    select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": false,"Sortable":false,
-                                                    footerCallback: function(row, data, start, end, display) {
-                                                        var api = this.api();
+                                    console.log("etapa: ",idEtapa);
+                                    console.log("alumno: ",idAlumno);
+                                var datos;
+                                try {
+                                    datos = JSON.parse(data);
+                                    } catch (error) {
+                                    //console.error("Error al analizar JSON:", error);
+                                    }
+                                    console.log(datos);
+                                    console.log(data);
+                                    now = new Date();
+                                    fecha = now.getDate()+' / '+meses[now.getMonth()]+' / '+now.getFullYear();
+                                    var contarsigeneral=0;
+                                    var contarnogeneral=0;
+                                    tablaOrigen = $('#tablaOrigen').DataTable({
+                                        data:datos,
+                                        select: 'single',
+                                        columns:[
+                                            { data: 'indice'},
+                                            { data: 'nombres'},
+                                            { data: 'apellidos'},
+                                            { data: 'nombreActividad'},
+                                            { data: 'notaEstudiante'},
+                                            { data: 'notaActividad'},
+                                            {data: 'idActividad2', visible: false}
+                                        ],
+                                        order:[
+                                        [0, 'asc']
+                                        ],
+                                        dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
+                                            "<'row'<'col-md-12'tr>>" +
+                                            "<'row'<'col-md-6'i><'col-md-6'p>>",
                                         
-                                                        // Calcula la suma de las notas del estudiante
-                                                        var totalNotaEstudiante = api
-                                                            .column(4)
-                                                            .data()
-                                                            .reduce(function(a, b) {
-                                                                return a + parseFloat(b) || 0;
-                                                            }, 0);
-                                        
-                                                        // Calcula la suma de las notas de la actividad
-                                                        var totalNotaActividad = api
-                                                            .column(5)
-                                                            .data()
-                                                            .reduce(function(a, b) {
-                                                                return a + parseFloat(b) || 0;
-                                                            }, 0);
-
-                                                        var puntosReales = (20/totalNotaActividad) * totalNotaEstudiante;
-                                        
-                                                        // Actualiza el footer
-                                                        $(api.column(3).footer()).html('Puntos Reales: ' + puntosReales.toFixed(0));
-                                                        $(api.column(4).footer()).html('Total: ' + totalNotaEstudiante);
-                                                        $(api.column(5).footer()).html('Total: ' + totalNotaActividad);
+                                        buttons: {
+                                            dom: {
+                                                container:{
+                                                tag:'div',
+                                                className:'flexcontent'
+                                                },
+                                                buttonLiner: {
+                                                tag: null
+                                                }
+                                            },
+                                            buttons:[                
+                                                {
+                                                    extend:    'copyHtml5',
+                                                    text:      '<i class="material-icons">content_copy</i><br>Copiar',
+                                                    title:'Actividades registrados',
+                                                    titleAttr: 'Copiar',
+                                                    className: 'btn btn-app export barras',
+                                                    exportOptions: {
+                                                        // columns: [ 0, 1 ]
                                                     }
-                                                });
-                                        }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                                                },
+                                                {
+                                                    extend:    'pdfHtml5',
+                                                    orientation: 'letter',
+                                                    pageSize: 'LEGAL',
+                                                    text:      '<i class="material-icons">picture_as_pdf</i><br>PDF',
+                                                    title:'Listado de Actividades',
+                                                    titleAttr: 'PDF',
+                                                    className: 'btn btn-app export pdf',
+                                                    filename: `Actividades registrados - ${fecha.toString()}`,
+                                                    exportOptions: {
+                                                        // columns: [ 0, 1,2,3,4,5,6 ]
+                                                        columnsDefs:[{
+                                                            className: "text-center", "targets": data
+                                                        }
+                                                        ],
+                                                    columns: ':visible',
+                                                    search: 'applied',
+                                                    order: 'applied',
+                                                    row: {
+                                                        selected: true
+                                                    },
+                                                    },//tr > td > colspan > 7  
+                                                    customize:function(doc) {
+                                                        doc.styles.title = {
+                                                            color: '#223673',
+                                                            fontSize: '20',
+                                                            alignment: 'center'
+                                                        },
+                                                        doc.styles['td:nth-child(2)'] = { 
+                                                            width: '100px',
+                                                            'max-width': '70px',
+                                                        },
+                                                        doc.styles.tableHeader = {
+                                                            fillColor:'#3068bf', 
+                                                            color:'white',
+                                                            alignment:'center'
+                                                        },
+                                                        doc.content[1].margin = [ 1, 0, 2.5, 0 ],
+                                                        doc.defaultStyle.fontSize = 6,
+                                                        doc.defaultStyle.alignment='center'
+                                                    },
+                                                    iniCompleto: function() { //permite seleccion personalizada de columnas a imprimir en PDF
+                                                        var tabla = this.api();
+                                                        var seleccion = tabla.rows({ seleccion: true }).count();
+                                                    
+                                                        if (seleccion > 0) {
+                                                            var columnaSeleccionada = tabla.columns({ seleccion: true }).indexes();
+                                                            var exportOpciones = {
+                                                                columnas: columnaSeleccionada
+                                                            };
+                                                            var botonPDF = tablaOrigen.button('.export.pdf');
+                                                            botonPDF[0].inst.s.dt.button('.export.pdf').text('Exportar Selección');
+                                                            botonPDF[0].inst.s.dt.button('.export.pdf').conf.exportOpciones = exportOpciones;
+                        
+                                                            var botonDeColvis = tablaOrigen.button('.export.barras');
+                                                            botonDeColvis[0].inst.s.dt.button('.export.barras').conf.exportOpciones = {
+                                                                columnas: columnaSeleccionada
+                                                            };
+                                                        }
+                                                    },
+                                                    select: {
+                                                        style: 'multi'
+                                                    }
+                        
+                                                },
+                                                {
+                                                    extend:    'excelHtml5',
+                                                    text:      '<i class="material-icons">content_copy</i><br>Excel',
+                                                    title:'Actividades registrados',
+                                                    titleAttr: 'Excel',
+                                                    className: 'btn btn-app export excel',
+                                                    exportOptions: {
+                                                        // columns: [ 0, 1 ]
+                                                    },
+                                                },
+                                                {
+                                                    extend:    'csvHtml5',
+                                                    text:      '<i class="material-icons">open_in_browser</i><br>CSV',
+                                                    title:'Actividades registrados CSV',
+                                                    titleAttr: 'CSV',
+                                                    className: 'btn btn-app export csv',
+                                                    exportOptions: {
+                                                        // columns: [ 0, 1 ]
+                                                    }
+                                                },
+                                                {
+                                                    extend:    'colvis',
+                                                    text:      '<i class="material-icons">remove_red_eye</i><br>Visibilidad',
+                                                    title:'Actividades',
+                                                    titleAttr: 'Copiar',
+                                                    className: 'btn btn-app export barras',
+                                                    exportOptions: {
+                                                        // columns: [ 0, 1 ]
+                                                    }
+                                                },
+                                                {
+                                                    extend:    'pageLength',
+                                                    titleAttr: 'Registros a mostrar',
+                                                    className: 'selectTable',
+                                                    exportOptions: {
+                                                        columns: [ 0, 1 ]
+                                                    }
+                                                }
+                                            ]
+                                        }, 
+                                        columnDefs: [{
+                                            targets: 6,
+                                            sortable: false,
+                                            render: function(data, type, full, meta) {
+                                                return "<center>" +
+                                                            "<button type='button' class='btn btn-secondary btn-sm btnEditar' data-toggle='modal' data-target='#modal-gestionar-alumno'> " +
+                                                            "<i class='material-icons'>edit</i></i>" +
+                                                            "</button>" +
+                                                    "</center>";
+                                            },
+                                            selectable: false,
+                                            copy: false // Corrección del error tipográfico aquí
+                                        }],
+                                        "language":idioma_espanol,
+                                        select: true, "responsive": true, "lengthChange": false, "autoWidth": true, "paging": false,"Sortable":false,
+                                        footerCallback: function(row, data, start, end, display) {
+                                            var api = this.api();
+                            
+                                            // Calcula la suma de las notas del estudiante
+                                            var totalNotaEstudiante = api
+                                                .column(4)
+                                                .data()
+                                                .reduce(function(a, b) {
+                                                    return a + parseFloat(b) || 0;
+                                                }, 0);
+                            
+                                            // Calcula la suma de las notas de la actividad
+                                            var totalNotaActividad = api
+                                                .column(5)
+                                                .data()
+                                                .reduce(function(a, b) {
+                                                    return a + parseFloat(b) || 0;
+                                                }, 0);
+
+                                            var puntosReales = (20/totalNotaActividad) * totalNotaEstudiante;
+                            
+                                            // Actualiza el footer
+                                            $(api.column(3).footer()).html('Puntos Reales: ' + puntosReales.toFixed(0));
+                                            $(api.column(4).footer()).html('Total: ' + totalNotaEstudiante);
+                                            $(api.column(5).footer()).html('Total: ' + totalNotaActividad);
+                                        }
+                                    });
                             }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+                            
         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+    });
+
+    //asignar_actividad
+    $(this).on('click', '#asignar_actividad', function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+        $("#txt_idAlumnoFiltroActividades_asignacion").val(idAlumnoo);
+        $("#modal-gestionar-alumno").modal('hide');
+        $("#modal-gestionar-asignacion-actividades").modal('show');
+    });
+
+    // evento click para el botón de eliminar dentro del segundo modal
+    $(this).on('click', '#btnver_actividad2', function() {
+        //capturo datos antes de ocultar el modal
+        var idEtapa = $('#txtetapa2_asignacion').val(); 
+        var idAlumnoo = $('#txt_idAlumnoFiltroActividades_asignacion').val();
+        $('#actividad_asignacion').html(set_spinner);
+        $("#modal-gestionar-asignacion-actividades").modal('hide');
+        $("#modal-gestionar-asignacion-actividades2").modal('show');
+         $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                 accion: 'get_asignacion',
+                 idEtapa:idEtapa,
+                 idAlumnoo:idAlumnoo
+                 }, success: function (data) { 
+                      $('#actividad_asignacion').html(data);
+         }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+    });
+
+    $(this).on('click', '#btnver_actividad3', function() {
+        var actividad = $('#txt_asignacion').val(); 
+        Number(idAlumnoo);
+        console.log(idAlumnoo);
+        console.log(actividad);
+        
+        Swal.fire({
+            title: "Estas seguro?",
+            text: "Los datos se actualizarán",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, asignar!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+            Swal.fire({
+                title: "Actualizacion efectuada",
+                text: "Se recargara la lista..",
+                icon: "success"
+            });
+                    $.ajax({ async: true, type: 'post', url: 'estudiantes_controlador.php', data: {
+                            accion: 'get_asignacion_insert',
+                            actividad:actividad,
+                            idAlumnoo:idAlumnoo
+                            }, success: function (data) {  
+                                console.log(data);    
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);                
+                    }, error: function (request, status, error) { console.log('error en peticion'); } , timeout: 30*60*1000/*esperar 30min*/ });//ajax-close
+        }});//modal guardar sweet-close
     });
 
     $(this).on('click', '#closeM', function() {
         setTimeout(function() {
             location.reload();
-        }, 200);
+        }, 50);
     });
 });

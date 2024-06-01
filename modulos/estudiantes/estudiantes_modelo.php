@@ -316,8 +316,17 @@ class estudiantes_modelo{
         }
     }
 
-    function get_actividades($idEtapa, $idAlumno){
+    function show_actividades($idEtapa){
         $id_usuario = $_SESSION['id'];
+        $qry="
+        select * from actividad where id_usuario= $id_usuario and id_etapa=$idEtapa ;
+        ";
+        $qqry=$this->pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+
+    function get_actividades($idEtapa, $idAlumno){
+        $id_usuario = $_SESSION['id_usuario'];
 
         $qry_init = "SET @row_number = 0;";
         $this->pdo->exec($qry_init);
@@ -332,7 +341,22 @@ class estudiantes_modelo{
         LEFT JOIN persona p ON p.id = es.id_persona
         where a.id_usuario = $id_usuario AND e.id = $idEtapa AND es.id = $idAlumno;";
         $qqry=$this->pdo->query($qry);
+        echo $qry;
         return $qqry->fetchAll();
+    }
+
+    function actividades_insertt($idActivi,$idAlumno){ //agrega nueva clase
+        $id_usuario = $_SESSION['id'];
+        global $pdo;
+        $qry="
+        insert into actividad2(nota_actividad, id_estudiantes, id_actividad, id_usuario) 
+        values ('0', '$idAlumno', $idActivi,$id_usuario);
+        ";
+        $qqry=$pdo->query($qry);
+            if (!$qqry) {
+                echo "Error en la consulta: " . $pdo->errorInfo()[2];
+                exit;
+            }
     }
 
 }
