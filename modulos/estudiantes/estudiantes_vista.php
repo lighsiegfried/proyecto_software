@@ -118,7 +118,7 @@ class estudiantes_vista
 
                             <!-- modal footer  -->
                             <div class="modal-footer justify-content-end">
-                                <button id="ver_actividad" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Ver Actividades</button>
+                                <!-- <button id="ver_actividad" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-dialog modal-sm modal-dialog-centered" data-dismiss="modal">Ver Actividades</button> -->
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 <button type="button" id="btnGuardarAlumno" class="btn btn-primary">Guardar</button>
                             </div>

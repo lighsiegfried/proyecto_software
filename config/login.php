@@ -15,7 +15,7 @@ FROM
 	select id,correo,id_puesto from persona ) t3 on t1.id_personas = t3.id left JOIN 
 (/*tabla puesto*/ 
 	select id,descripcion from puesto ) t4 on t3.id_puesto = t4.id 
-where t1.usuario = '$usuario' and t1.pass = $password ;
+where t1.usuario = '$usuario' and t1.pass = '$password' ;
 ";
 
 $result = $conexion->query($query);

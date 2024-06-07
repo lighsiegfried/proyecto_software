@@ -26,21 +26,43 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
       <!--=============== nav bar===============-->
       <div class="nav__menu" id="nav-menu">
          <ul class="nav__list">
-            <?php if (isset($_SESSION['rol'])): ?>
+            <?php if (isset($_SESSION['rol'])) : ?>
                <?php $rol = $_SESSION['rol']; ?>
-               <?php if ($rol === 'Admin'): ?>
+               <?php if ($rol === 'Admin') : ?>
 
                   <li class="dropdown__item">
-                     <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
-                        </a><i class="ri-line-chart-line"></i>
-                     </div>
+               <div class="nav__link">
+                  <a href="#" class="nav__link" title="Listado de usuarios">Manuales</a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
+               </div>
+
+               <ul class="dropdown__menu">
+                  <li>
+                     <a href= "#" class="dropdown__link" onclick="downloadFile('ManualUsuario')">
+                        Usuario
+                     </a>
                   </li>
+                  <li>
+                     <a href="#" class="dropdown__link" onclick="downloadFile('ManualTecnico')">
+                        Tecnico
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#" onclick="downloadFile('ManualAdministrador')" class="dropdown__link">
+                        Administrador
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#" onclick="downloadFile('DiccionarioDatos')" class="dropdown__link">
+                        Diccionario de Datos
+                     </a>
+                  </li>
+               </ul>
+            </li>
+
                   <!--=============== dropdown usuarios ===============-->
                   <li class="dropdown__item">
                      <div class="nav__link">
-                        <a href="#" class="nav__link" title="Listado de usuarios">Usuarios</a><i
-                           class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        <a href="#" class="nav__link" title="Listado de usuarios">Usuarios</a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
                      </div>
 
                      <ul class="dropdown__menu">
@@ -59,43 +81,66 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                      </a>
                      <ul class="dropdown__menu">
                         <li>
-                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="dropdown__link">
+                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes ?>" class="dropdown__link">
                               <i class="ri-pencil-ruler-2-line"></i> Agregar alumnos
                            </a>
                         </li>
                         <!-- <li>
-                           <a href="<?php //echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
+                           <a href="<?php //echo $server_schema . $division . $server_host . $estudiantes2
+                                    ?>" class="dropdown__link">
                               <i class="ri-git-merge-fill"></i> Agregar grupo alumnos
                            </a>
                         </li> -->
                      </ul>
                   </li>
                   <li class="dropdown__item">
-                        <a href="#" class="nav__link" title="Actividades de alumnos">
+                     <a href="#" class="nav__link" title="Actividades de alumnos">
                         Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i>
-                        </a>
-                        <ul class="dropdown__menu">
-                           <li>
-                              <a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="dropdown__link">
-                                 <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
-                              </a>
-                              <!-- class="ri-pie-chart-line" -->
-                           </li>
-                           <li>
-                              <a href="<?php echo $server_schema . $division . $server_host . $actividades2?>" class="dropdown__link">
-                                 <i class="ri-corner-down-right-fill"></i> Ver actividades
-                              </a>
-                           </li>
-                        </ul>
-                     </li>
-               <?php elseif ($rol === 'Profesor'): ?>
+                     </a>
+                     <ul class="dropdown__menu">
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $actividades ?>" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
+                           </a>
+                           <!-- class="ri-pie-chart-line" -->
+                        </li>
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $actividades2 ?>" class="dropdown__link">
+                              <i class="ri-corner-down-right-fill"></i> Ver actividades
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+               <?php elseif ($rol === 'Profesor') : ?>
 
                   <li class="dropdown__item">
-                     <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
-                        </a><i class="ri-line-chart-line"></i>
-                     </div>
+               <div class="nav__link">
+                  <a href="#" class="nav__link" title="Listado de usuarios">Manuales</a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
+               </div>
+
+               <ul class="dropdown__menu">
+                  <li>
+                     <a href= "#" class="dropdown__link" onclick="downloadFile('ManualUsuario')">
+                        Usuario
+                     </a>
                   </li>
+                  <li>
+                     <a href="#" class="dropdown__link" onclick="downloadFile('ManualTecnico')">
+                        Tecnico
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#" onclick="downloadFile('ManualAdministrador')" class="dropdown__link">
+                        Administrador
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#" onclick="downloadFile('DiccionarioDatos')" class="dropdown__link">
+                        Diccionario de Datos
+                     </a>
+                  </li>
+               </ul>
+            </li>
                   <!--=============== dropdown estudiantes ===============-->
                   <li class="dropdown__item">
                      <a href="#" class="nav__link" title="Lista de estudiantes">
@@ -103,46 +148,68 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
                      </a>
                      <ul class="dropdown__menu">
                         <li>
-                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes?>" class="dropdown__link">
+                           <a href="<?php echo $server_schema . $division . $server_host . $estudiantes ?>" class="dropdown__link">
                               <i class="ri-pencil-ruler-2-line"></i> Agregar alumnos
                            </a>
                         </li>
                         <!-- <li>
-                           <a href="<?php //echo $server_schema . $division . $server_host . $estudiantes2?>" class="dropdown__link">
+                           <a href="<?php //echo $server_schema . $division . $server_host . $estudiantes2
+                                    ?>" class="dropdown__link">
                               <i class="ri-git-merge-fill"></i> Agregar grupo alumnos
                            </a>
                         </li> -->
                      </ul>
                   </li>
                   <li class="dropdown__item">
-                        <a href="#" class="nav__link" title="Actividades de alumnos">
+                     <a href="#" class="nav__link" title="Actividades de alumnos">
                         Actividades<i class="ri-arrow-down-s-line dropdown__arrow"></i>
-                        </a>
-                        <ul class="dropdown__menu">
-                           <li>
-                              <a href="<?php echo $server_schema . $division . $server_host . $actividades?>" class="dropdown__link">
-                                 <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
-                              </a>
-                              <!-- class="ri-pie-chart-line" -->
-                           </li>
-                           <li>
-                              <a href="<?php echo $server_schema . $division . $server_host . $actividades2?>" class="dropdown__link">
-                                 <i class="ri-corner-down-right-fill"></i> Ver actividades
-                              </a>
-                           </li>
-                        </ul>
+                     </a>
+                     <ul class="dropdown__menu">
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $actividades ?>" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> Crear actividad y etapa
+                           </a>
+                           <!-- class="ri-pie-chart-line" -->
+                        </li>
+                        <li>
+                           <a href="<?php echo $server_schema . $division . $server_host . $actividades2 ?>" class="dropdown__link">
+                              <i class="ri-corner-down-right-fill"></i> Ver actividades
+                           </a>
+                        </li>
+                     </ul>
                   </li>
-               <?php elseif ($rol === 'Consultor'): ?>
+               <?php elseif ($rol === 'Consultor') : ?>
                   <li class="dropdown__item">
-                     <div class="nav__link">
-                        <i class="ri-bar-chart-line"></i><a href="<?php  echo $server_schema . $division . $server_host . $reportes ?>" class="nav__link" title="Reportes de alumnos"> Reportes
-                        </a><i class="ri-line-chart-line"></i>
-                     </div>
+               <div class="nav__link">
+                  <a href="#" class="nav__link" title="Listado de usuarios">Manuales</a><i class="ri-arrow-down-s-line dropdown__arrow"></i>
+               </div>
+
+               <ul class="dropdown__menu">
+                  <li>
+                     <a href= "#" class="dropdown__link" onclick="downloadFile('ManualUsuario')">
+                        Usuario
+                     </a>
                   </li>
+                  <li>
+                     <a href="#" class="dropdown__link" onclick="downloadFile('ManualTecnico')">
+                        Tecnico
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#" onclick="downloadFile('ManualAdministrador')" class="dropdown__link">
+                        Administrador
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#" onclick="downloadFile('DiccionarioDatos')" class="dropdown__link">
+                        Diccionario de Datos
+                     </a>
+                  </li>
+               </ul>
+            </li>
                <?php endif; ?>
             <?php endif; ?>
-            <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host. $retornoIndex ?>" class="nav__link" title="Cerrar sesion">Salir<i
-                           class="ri-logout-box-r-line"></i></a></li>
+            <li class="dropdown__item"><a href="<?php echo $server_schema . $division . $server_host . $retornoIndex ?>" class="nav__link" title="Cerrar sesion">Salir<i class="ri-logout-box-r-line"></i></a></li>
          </ul>
       </div>
    </nav>
@@ -166,4 +233,25 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/proyecto_software/modulos/SinPermisos
    }
 
    showMenu('nav-toggle', 'nav-menu')
+
+    document.getElementById('manualUser').onclick = function(event) {
+        event.preventDefault(); // Evita que el enlace se siga
+         downloadFile("ManualUsuario")        
+    };
+
+    function downloadFile(fileName){
+      // Crear un blob con el contenido del href
+      const hrefContent = this.href;
+      var link = document.createElement('a');
+            link.href = '/proyecto_software/menu/assets/manuals/' + fileName + '.pdf'; // Ruta del archivo PDF
+            link.download = fileName + '.pdf'; // Nombre con el que se descargará el archivo
+
+            // Simula un clic en el enlace
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+
+            // Elimina el enlace del DOM
+            document.body.removeChild(link);
+    }
 </script>
