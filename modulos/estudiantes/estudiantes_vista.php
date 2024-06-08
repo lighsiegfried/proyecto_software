@@ -238,6 +238,7 @@ class estudiantes_vista
                                                     <?php
                                                 }
                                                 ?>
+                                                    <option value="9999999999">Mostrar todas las Etapas</option>
                                             </select>
                                         </div>
                                     
@@ -361,7 +362,7 @@ class estudiantes_vista
                                             <th scope="col" class="text-center">No.</th>
                                             <th scope="col" class="text-center">Nombres</th> <!--codigos quemados -->
                                             <th scope="col" class="text-center">Apellidos</th>
-                                            <th scope="col" class="text-center">Nombre Actividad</th>
+                                            <th scope="col" class="text-center">Actividad / Etapa</th>
                                             <th scope="col" class="text-center">Nota Estudiante</th>
                                             <th scope="col" class="text-center">Nota Actividad</th>
                                         </tr>

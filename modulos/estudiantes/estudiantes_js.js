@@ -912,6 +912,16 @@ $(document).ready(function (){
                                                             .reduce(function(a, b) {
                                                                 return a + parseFloat(b) || 0;
                                                             }, 0);
+
+                                                        // Obtengo valores reales por fila solo cuando muestra todas las etapas
+                                                        var totalNotaEtapas = api
+                                                        .column(4)
+                                                        .data()
+                                                        .reduce(function(a, b, currentIndex) {
+                                                            var rowData = api.row(currentIndex).data();
+                                                            var puntoReal = 20/parseFloat(rowData[5]);
+                                                            return a + (parseFloat(b) * puntoReal) || 0;
+                                                        }, 0);
                                         
                                                         // Calcula la suma de las notas de la actividad
                                                         var totalNotaActividad = api
@@ -921,8 +931,9 @@ $(document).ready(function (){
                                                                 return a + parseFloat(b) || 0;
                                                             }, 0);
 
-                                                        var puntosReales = (20/totalNotaActividad) * totalNotaEstudiante;
-                                        
+                                                        var puntosReales = 0;
+                                                        if(idEtapa != 9999999999) puntosReales = (20/totalNotaActividad) * totalNotaEstudiante;
+                                                        else puntosReales = totalNotaEtapas;
                                                         // Actualiza el footer
                                                         $(api.column(3).footer()).html('Puntos Reales: ' + puntosReales.toFixed(0));
                                                         $(api.column(4).footer()).html('Total: ' + totalNotaEstudiante);

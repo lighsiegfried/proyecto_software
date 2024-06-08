@@ -89,7 +89,11 @@ if (isset($_POST['accion'])) {
             $idEtapa = $_POST['idEtapa'];
             $idAlumno = $_POST['idAlumno'];
             $lista_actividades;
-            $lista_actividades=$modelo->get_actividades($idEtapa, $idAlumno);
+            if($idEtapa == 9999999999){
+                $lista_actividades=$modelo->get_actividades_etapas($idAlumno);
+            }else{
+                $lista_actividades=$modelo->get_actividades($idEtapa, $idAlumno);
+            }
             echo json_encode($lista_actividades,true);
         break;
 

@@ -1,20 +1,22 @@
 <?php
 
 //Data
-class estudiantes_modelo{
+class estudiantes_modelo
+{
     private $pdo;
     public function __construct()
     {
         global $pdo;
-        $this->pdo=$pdo;
+        $this->pdo = $pdo;
     }
-    function get_alumnos(){
+    function get_alumnos()
+    {
         $id_usuario = $_SESSION['id'];
 
         $qry_init = "SET @row_number = 0;";
-        $this->pdo->exec($qry_init);        
+        $this->pdo->exec($qry_init);
 
-        $qry="
+        $qry = "
         select 
         @row_number:=@row_number+1 AS clave, t2.id,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota,'X' as acciones
         from 
@@ -26,13 +28,14 @@ class estudiantes_modelo{
             select id,grado,seccion,fecha from clase) t3 on t2.id_clase = t3.id
         where t2.id is not null and t2.id_usuario = $id_usuario order by t1.apellidos, t1.nombres;
         ";
-        $qqry=$this->pdo->query($qry);
+        $qqry = $this->pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function consultar_clase($id){
+    function consultar_clase($id)
+    {
         $id_usuario = $_SESSION['id'];
-        $qry="
+        $qry = "
         select 
             t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
         from 
@@ -44,14 +47,15 @@ class estudiantes_modelo{
             select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
             where t2.id is not null and t2.id_usuario = $id_usuario and t3.id = $id
         ";
-        $qqry=$this->pdo->query($qry);
+        $qqry = $this->pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function consultar_clases($id){
+    function consultar_clases($id)
+    {
         $id_usuario = $_SESSION['id'];
         global $pdo;
-        $qry="
+        $qry = "
         select 
             t2.id,t2.clave,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
         from 
@@ -63,26 +67,28 @@ class estudiantes_modelo{
             select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
             where t2.id is not null and t2.id_usuario = $id_usuario and t3.id = $id
         ";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         $resultados = $qqry->fetchAll();
-    if (empty($resultados)) {
-        return null;
-    }
-    return $resultados;
+        if (empty($resultados)) {
+            return null;
+        }
+        return $resultados;
     }
 
-    function id_up_personas(){ //captura id a ingresar en personas..
+    function id_up_personas()
+    { //captura id a ingresar en personas..
         global $pdo;
-        $qry="
+        $qry = "
         select id+1 as id from persona order by id desc limit 1;";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function existe_clase_asignacion($id_clase){ //captura clave futura de alumno, si es null o vacia, sera igual a 1
+    function existe_clase_asignacion($id_clase)
+    { //captura clave futura de alumno, si es null o vacia, sera igual a 1
         $id_usuario = $_SESSION['id'];
         global $pdo;
-        $qry="
+        $qry = "
         select 
             t1.clave+1 as clave
         from 
@@ -92,17 +98,18 @@ class estudiantes_modelo{
             select id,grado,seccion,fecha,id_usuario  from clase) t2 on t2.id=t1.id_clase
         where id_clase = $id_clase  and t1.id_usuario = $id_usuario order by t1.clave desc limit 1
         ;";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         $resultados = $qqry->fetchAll();
         if (empty($resultados)) {
-        return null;
+            return null;
         }
         return $resultados;
     }
 
-    function insert_pesona($nombres,$apellidos,$correo,$puesto){
+    function insert_pesona($nombres, $apellidos, $correo, $puesto)
+    {
         global $pdo;
-        $qry="
+        $qry = "
         start transaction;
 
         -- Insertar en la tabla de persona
@@ -111,55 +118,56 @@ class estudiantes_modelo{
 
         commit;
         ";
-        $qqry=$pdo->query($qry);
-            if (!$qqry) {
-                echo "Error en la consulta: " . $pdo->errorInfo()[2];
-                exit;
-            }
+        $qqry = $pdo->query($qry);
+        if (!$qqry) {
+            echo "Error en la consulta: " . $pdo->errorInfo()[2];
+            exit;
+        }
     }
 
-    function get_id_pesona(){
-        $qry="
+    function get_id_pesona()
+    {
+        $qry = "
         select id from persona order by id desc limit 1;
         ";
-        $qqry=$this->pdo->query($qry);
+        $qqry = $this->pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function agregar_nuevo_alumno($id_clave, $id_persona, $id_clase, $id_usuario) {
+    function agregar_nuevo_alumno($id_clave, $id_persona, $id_clase, $id_usuario)
+    {
         global $pdo;
-    
+
         try {
             // Iniciar la transacción
             $pdo->beginTransaction();
-    
+
             // Preparar la consulta de inserción
             $qry = "
                 INSERT INTO estudiante (clave, total_nota, id_persona, id_clase, id_usuario)
                 VALUES (:id_clave, NULL, :id_persona, :id_clase, :id_usuario)
             ";
-    
+
             // Preparar la sentencia
             $stmt = $pdo->prepare($qry);
-    
+
             // Vincular los parámetros
             $stmt->bindParam(':id_clave', $id_clave, PDO::PARAM_INT);
             $stmt->bindParam(':id_persona', $id_persona, PDO::PARAM_INT);
             $stmt->bindParam(':id_clase', $id_clase, PDO::PARAM_INT);
             $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-    
+
             // Ejecutar la sentencia
             $stmt->execute();
-    
+
             // Obtener el ID generado
             $lastInsertId = $pdo->lastInsertId();
-    
+
             // Confirmar la transacción
             $pdo->commit();
-    
+
             // Retornar el ID generado
             return $lastInsertId;
-    
         } catch (PDOException $e) {
             // Revertir la transacción en caso de error
             $pdo->rollBack();
@@ -168,31 +176,33 @@ class estudiantes_modelo{
         }
     }
 
-    function add_class($grado,$seccion,$id_usuario){ //agrega nueva clase
+    function add_class($grado, $seccion, $id_usuario)
+    { //agrega nueva clase
         global $pdo;
-        $qry="
+        $qry = "
         insert into clase (grado,seccion,fecha,id_usuario)
         values ('$grado', '$seccion', now(),$id_usuario);
         ";
-        $qqry=$pdo->query($qry);
-            if (!$qqry) {
-                echo "Error en la consulta: " . $pdo->errorInfo()[2];
-                exit;
-            }
+        $qqry = $pdo->query($qry);
+        if (!$qqry) {
+            echo "Error en la consulta: " . $pdo->errorInfo()[2];
+            exit;
+        }
     }
 
-    function show_class(){//muestra las clases existentes cuando se crea/actualiza un alumno
+    function show_class()
+    { //muestra las clases existentes cuando se crea/actualiza un alumno
         $id_usuario = $_SESSION['id'];
         global $pdo;
-        $qry="
+        $qry = "
         select id,grado,seccion,fecha from clase where id_usuario = $id_usuario;
         ";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         return $qqry->fetchAll();
     }
 
 
-    function editar_usuario($id,$nombres,$apellidos,$correo,$puesto,$id_personas,$clave,$clase, $total_nota)
+    function editar_usuario($id, $nombres, $apellidos, $correo, $puesto, $id_personas, $clave, $clase, $total_nota)
     {
         global $pdo;
 
@@ -205,8 +215,8 @@ class estudiantes_modelo{
 
             // Actualizar la tabla estudiante
             $stmt_estudiante = $pdo->prepare("update estudiante SET clave = ?, total_nota = ?, id_persona = ?, id_clase = ? WHERE id = ?");
-            $stmt_estudiante->execute([$clave,$total_nota,$id_personas, $clase, $id]);
-    
+            $stmt_estudiante->execute([$clave, $total_nota, $id_personas, $clase, $id]);
+
 
             $pdo->commit();
             return true;
@@ -216,20 +226,22 @@ class estudiantes_modelo{
             return false;
         }
     }
-    
-    function show(){//muestra las etapas existentes cuando se crea/actualiza un alumno
+
+    function show()
+    { //muestra las etapas existentes cuando se crea/actualiza un alumno
         $id_usuario = $_SESSION['id'];
         global $pdo;
-        $qry="
+        $qry = "
         select id,nombre_etapa from etapa where id_usuario = $id_usuario;
         ";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         return $qqry->fetchAll();
     }
-    function capturar_id_clases($id,$grado,$seccion){ //captura id personas para actualizar/editar/eliminar data.
+    function capturar_id_clases($id, $grado, $seccion)
+    { //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
         $id_usuario = $_SESSION['id'];
-        $qry="
+        $qry = "
         select 
             t2.id,t2.clave,t1.id as id_persona,t3.id as id_clase,t1.nombres,t1.apellidos,t3.grado,t3.seccion,t2.total_nota
         from 
@@ -241,37 +253,40 @@ class estudiantes_modelo{
             select id,grado,seccion,fecha,id_usuario from clase) t3 on t2.id_clase = t3.id
         where t2.id = $id and t2.id_usuario = $id_usuario and t3.grado = '$grado' and t3.seccion = '$seccion'
         ";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function capturar_personas_estudiante($id){ //captura id personas para actualizar/editar/eliminar data.
+    function capturar_personas_estudiante($id)
+    { //captura id personas para actualizar/editar/eliminar data.
         global $pdo;
-        $qry="
+        $qry = "
         select id_persona from estudiante where id = $id;";
-        $qqry=$pdo->query($qry);
+        $qqry = $pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function eliminar_alumno($id,$persona){ //eliminar alumno y persona asignada a alumno
+    function eliminar_alumno($id, $persona)
+    { //eliminar alumno y persona asignada a alumno
         global $pdo;
-        
+
         // Eliminar en 'login'
         $qryLogin = "delete from estudiante where id = :id";
         $stmtLogin = $pdo->prepare($qryLogin);
         $stmtLogin->bindParam(':id', $id);  //evita inserciones por usuarios con conocimientos SQL
         $stmtLogin->execute();              //fin ejecucion
-    
+
         // Eliminar en 'persona'
         $qryPersona = "delete from persona where id = :id";
         $stmtPersona = $pdo->prepare($qryPersona);
-        $stmtPersona->bindParam(':id', $persona); 
+        $stmtPersona->bindParam(':id', $persona);
         $stmtPersona->execute();
     }
 
-    function eliminar_clase($id){ //eliminar alumno y persona asignada a alumno
+    function eliminar_clase($id)
+    { //eliminar alumno y persona asignada a alumno
         global $pdo;
-        
+
         // Eliminar 
         $qry = "delete from clase where id = :id";
         $stmt = $pdo->prepare($qry);
@@ -279,50 +294,53 @@ class estudiantes_modelo{
         $stmt->execute();              //fin ejecucion
     }
 
-    function get_lista_clases_excel(){
+    function get_lista_clases_excel()
+    {
         $id_usuario = $_SESSION['id'];
-        $qry= "select CONCAT(c.grado, ' ', c.seccion, ' -', c.id) as clase FROM clase c 
+        $qry = "select CONCAT(c.grado, ' ', c.seccion, ' -', c.id) as clase FROM clase c 
         WHERE c.id_usuario = $id_usuario;";
-        $qqry=$this->pdo->query($qry);
+        $qqry = $this->pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-    function actualizar_actividades_nuevo_estudiante($id_estud, $lista_id_actividades){
-        try{
+    function actualizar_actividades_nuevo_estudiante($id_estud, $lista_id_actividades)
+    {
+        try {
             $this->pdo->beginTransaction();
-            foreach($lista_id_actividades as $actividad_id){
+            foreach ($lista_id_actividades as $actividad_id) {
                 $query = "insert into actividad2(nota_actividad, id_estudiantes, id_actividad)
-                values (0, $id_estud, ". $actividad_id['id'] .")";
-                if(!($this->pdo->query($query))){
+                values (0, $id_estud, " . $actividad_id['id'] . ")";
+                if (!($this->pdo->query($query))) {
                     throw new Exception("Error en el primer insert: " . $this->pdo->error);
                 }
             }
 
             $this->pdo->commit();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $this->pdo->rollback();
             echo "Error en la transacción: " . $e->getMessage();
         }
-        
     }
 
-    function get_actividades_clase($id_clase){
-        try{
+    function get_actividades_clase($id_clase)
+    {
+        try {
             $qry = "select id FROM actividad where id_clase = $id_clase;";
-            $qqry=$this->pdo->query($qry);
+            $qqry = $this->pdo->query($qry);
             return $qqry->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo "Error al traer actividades: " . $e->getMessage();
         }
     }
 
-    function get_actividades($idEtapa, $idAlumno){
+    function get_actividades($idEtapa, $idAlumno)
+    {
         $id_usuario = $_SESSION['id'];
 
         $qry_init = "SET @row_number = 0;";
         $this->pdo->exec($qry_init);
 
-        $qry="
+        $qry = "
         SELECT @row_number:=@row_number+1 AS indice, p.nombres, p.apellidos, a2.nota_actividad as notaEstudiante, a.punteo as notaActividad, a.id as idActividad, e.id as etapaId ,
         'X' as opciones, a.nombre_actividad as nombreActividad, a2.id as idActividad2
         FROM actividad a 
@@ -331,10 +349,49 @@ class estudiantes_modelo{
         LEFT JOIN estudiante es ON a2.id_estudiantes = es.id
         LEFT JOIN persona p ON p.id = es.id_persona
         where a.id_usuario = $id_usuario AND e.id = $idEtapa AND es.id = $idAlumno;";
-        $qqry=$this->pdo->query($qry);
+        $qqry = $this->pdo->query($qry);
         return $qqry->fetchAll();
     }
 
-}
+    function get_actividades_etapas($idAlumno)
+    {
+        $id_usuario = $_SESSION['id'];
 
-?>
+        $qry_init = "SET @row_number = 0;";
+        $this->pdo->exec($qry_init);
+
+        $qry = "
+        SELECT 
+    @row_number:=@row_number+1 as indice,
+    p.nombres,
+    p.apellidos,
+    e.nombre_etapa as nombreActividad,
+    SUM(a2.nota_actividad) AS notaEstudiante,
+    SUM(a.punteo) as notaActividad,
+	es.id as idEstudiante,
+	e.id as etapaId,
+	'0' as idActividad,
+	'0' as idActividad2, 
+	'x' as acciones
+FROM 
+    actividad a 
+LEFT JOIN 
+    etapa e ON a.id_etapa = e.id
+LEFT JOIN 
+    actividad2 a2 ON a2.id_actividad = a.id
+LEFT JOIN 
+    estudiante es ON a2.id_estudiantes = es.id
+LEFT JOIN 
+    clase c ON es.id_clase = c.id 
+LEFT JOIN 
+    persona p ON p.id = es.id_persona
+WHERE 
+    a.id_usuario = 1 
+    AND c.id = es.id_clase
+    AND es.id = 4
+GROUP BY 
+    e.id, e.nombre_etapa, c.id;";
+        $qqry = $this->pdo->query($qry);
+        return $qqry->fetchAll();
+    }
+}
